@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "grep -q shadcn && node \"$CLAUDE_PROJECT_DIR/.claude/scripts/normalize-shadcn.mjs\" || true",
+            "statusMessage": "Normalizando componente do shadcn...",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  }
+}

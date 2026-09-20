@@ -1,11 +1,20 @@
-import { Button } from 'presentation/components/Button/Button';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { queryClient } from 'data/config/queryClient';
+import { AuthProvider } from 'data/contexts/AuthProvider';
+import { Toaster } from 'presentation/components/Toaster/Toaster';
+import { Router } from 'shared/routes/Router';
 
 export function App() {
 	return (
-		<main className="flex min-h-svh flex-col items-center justify-center gap-4">
-			<h1 className="text-2xl font-semibold">MyFood Dashboard</h1>
-			<p className="text-sm text-muted-foreground">Scaffold inicial.</p>
-			<Button>Tudo certo</Button>
-		</main>
+		<QueryClientProvider client={queryClient}>
+			<AuthProvider>
+				<Router />
+			</AuthProvider>
+
+			<Toaster />
+
+			<ReactQueryDevtools buttonPosition="bottom-right" />
+		</QueryClientProvider>
 	);
 }

@@ -6,4 +6,5 @@ export interface IButtonProps
 	extends ComponentProps<'button'>,
 		VariantProps<typeof buttonVariants> {
 	asChild?: boolean;
+	isLoading?: boolean;
 }

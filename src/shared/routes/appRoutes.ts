@@ -2,5 +2,6 @@ export const APP_ROUTES = {
 	home: '/',
 	login: '/login',
 	signUp: '/cadastro',
-	restaurantOnboarding: '/cadastro/restaurante'
+	restaurantOnboarding: '/cadastro/restaurante',
+	restaurantSelection: '/restaurantes'
 } as const;

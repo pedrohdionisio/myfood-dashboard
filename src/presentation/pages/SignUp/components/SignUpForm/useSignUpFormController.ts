@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getApiErrorMessage } from 'data/config/apiError';
-import { useAuth } from 'data/contexts/AuthProvider';
+import { useAuth } from 'data/contexts/AuthProvider/AuthProvider';
 import {
 	type SignUpFormType,
 	type SignUpPayloadType,

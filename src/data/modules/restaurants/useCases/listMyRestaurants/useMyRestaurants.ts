@@ -3,7 +3,7 @@ import { RestaurantsService } from 'data/modules/restaurants/services/Restaurant
 import { RestaurantQueryKeys } from '../../keys/RestaurantKeys';
 
 export function useMyRestaurants() {
-	const { data, isLoading, error } = useQuery({
+	const { data, isLoading, isRefetching, error, refetch } = useQuery({
 		queryKey: [RestaurantQueryKeys.MY_RESTAURANTS],
 		queryFn: RestaurantsService.listMyRestaurants
 	});
@@ -11,6 +11,8 @@ export function useMyRestaurants() {
 	return {
 		myRestaurants: data ?? [],
 		isLoadingMyRestaurants: isLoading,
-		myRestaurantsError: error
+		isRefetchingMyRestaurants: isRefetching,
+		myRestaurantsError: error,
+		refetchMyRestaurants: refetch
 	};
 }

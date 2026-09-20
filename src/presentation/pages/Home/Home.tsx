@@ -1,31 +1,26 @@
-import { Button } from 'presentation/components/Button/Button';
-import { Link } from 'react-router-dom';
-import logo from 'shared/assets/black-red-logo.svg';
-import { APP_ROUTES } from 'shared/routes/appRoutes';
 import { useHomeController } from './useHomeController';
 
 export function Home() {
-	const { userName, restaurantName, canSwitchRestaurant, handleSignOut } = useHomeController();
+	const { userName, isRestaurantDraft } = useHomeController();
 
 	return (
-		<main className="flex min-h-svh flex-col items-center justify-center gap-6 bg-background px-4">
-			<header className="flex flex-col items-center gap-2 text-center">
-				<img src={logo} alt="MyFood" className="h-10 w-auto" />
-				<h1 className="text-title-md">{restaurantName}</h1>
-				<p className="text-body-md text-muted-foreground">Sessão ativa como {userName}</p>
+		<div className="flex flex-col gap-6">
+			<header className="flex flex-col gap-1">
+				<h1 className="text-title-md">Olá, {userName}</h1>
+
+				<p className="text-body-sm text-muted-foreground">Acompanhe seu restaurante por aqui.</p>
 			</header>
 
-			<div className="flex items-center gap-3">
-				{canSwitchRestaurant ? (
-					<Button variant="outline" asChild>
-						<Link to={APP_ROUTES.restaurantSelection}>Trocar restaurante</Link>
-					</Button>
-				) : null}
+			{isRestaurantDraft ? (
+				<section className="flex flex-col gap-2 rounded-lg border bg-card p-6">
+					<h2 className="text-title-sm">Seu restaurante ainda não está publicado</h2>
 
-				<Button variant="outline" onClick={handleSignOut}>
-					Sair
-				</Button>
-			</div>
-		</main>
+					<p className="text-body-sm text-muted-foreground">
+						Para abrir a loja, cadastre os horários de funcionamento e pelo menos um produto
+						disponível no cardápio.
+					</p>
+				</section>
+			) : null}
+		</div>
 	);
 }

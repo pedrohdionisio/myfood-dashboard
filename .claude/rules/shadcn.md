@@ -47,8 +47,8 @@ Button/
 └── buttonVariants.ts     # o cva, quando o componente tem variantes
 ```
 
-1. **Tipos para `<Nome>Types.ts`.** As props que o CLI declara inline viram interface com
-   prefixo `I`:
+1. **Tipos para `<Nome>Types.ts`, só quando o tipo acrescenta algo.** As props que o CLI
+   declara inline viram interface com prefixo `I` **se houver prop própria**:
 
    ```ts
    import type { VariantProps } from 'class-variance-authority';
@@ -61,6 +61,12 @@ Button/
    	asChild?: boolean;
    }
    ```
+
+   Quando o tipo é só repasse — `ComponentProps<'div'>`, `ComponentProps<typeof Primitive.Root>`
+   —, a interface ficaria vazia e não paga o próprio custo: deixe **inline na assinatura** e
+   não crie o `<Nome>Types.ts`. Um componente como o `Sidebar`, que exporta dezenas de peças,
+   tem umas poucas com prop de verdade (`asChild`, `isActive`, `tooltip`) e todo o resto
+   inline.
 
 2. **cva para `<nome>Variants.ts`.** Fica em arquivo próprio porque `<Nome>Types.ts`
    precisa dele (`VariantProps<typeof buttonVariants>`) e `<Nome>.tsx` também — deixar no

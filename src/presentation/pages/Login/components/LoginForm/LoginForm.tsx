@@ -4,8 +4,7 @@ import { TextInput } from 'presentation/components/TextInput/TextInput';
 import { useLoginFormController } from './useLoginFormController';
 
 export function LoginForm() {
-	const { register, emailError, passwordError, isSubmitting, handleSubmit } =
-		useLoginFormController();
+	const { register, errors, isSubmitting, handleSubmit } = useLoginFormController();
 
 	return (
 		<form className="mt-10 flex flex-col gap-6" onSubmit={handleSubmit} noValidate>
@@ -15,7 +14,7 @@ export function LoginForm() {
 				label="E-mail"
 				placeholder="Seu e-mail de acesso"
 				autoComplete="email"
-				error={emailError}
+				error={errors.email?.message}
 				{...register('email')}
 			/>
 
@@ -24,7 +23,7 @@ export function LoginForm() {
 				label="Senha"
 				placeholder="Informe sua senha"
 				autoComplete="current-password"
-				error={passwordError}
+				error={errors.password?.message}
 				{...register('password')}
 			/>
 

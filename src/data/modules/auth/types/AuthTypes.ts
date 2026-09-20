@@ -5,6 +5,13 @@ export interface ILoginPayload {
 	password: string;
 }
 
+export interface ISignUpPayload {
+	name: string;
+	email: string;
+	password: string;
+	phone?: string;
+}
+
 export interface IAuthSession {
 	accessToken: string;
 	idToken: string;
@@ -12,7 +19,7 @@ export interface IAuthSession {
 	expiresIn: number;
 }
 
-export interface ILoginResponse {
+export interface IAuthSessionResponse {
 	user: IUser;
 	session: IAuthSession;
 }

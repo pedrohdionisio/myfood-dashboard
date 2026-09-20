@@ -1,14 +1,27 @@
 import { api, publicApi } from 'data/config/api';
 import type {
+	IAuthSessionResponse,
 	ILoginPayload,
-	ILoginResponse,
 	IRefreshTokenPayload,
-	IRefreshTokenResponse
+	IRefreshTokenResponse,
+	ISignUpPayload
 } from 'data/modules/auth/types/AuthTypes';
 import type { IUser } from 'shared/entities/IUser';
 
-async function login(payload: ILoginPayload): Promise<ILoginResponse> {
-	const { data } = await publicApi.post<ILoginResponse>('/auth/restaurant-users/sign-in', payload);
+async function login(payload: ILoginPayload): Promise<IAuthSessionResponse> {
+	const { data } = await publicApi.post<IAuthSessionResponse>(
+		'/auth/restaurant-users/sign-in',
+		payload
+	);
+
+	return data;
+}
+
+async function signUp(payload: ISignUpPayload): Promise<IAuthSessionResponse> {
+	const { data } = await publicApi.post<IAuthSessionResponse>(
+		'/auth/restaurant-users/sign-up',
+		payload
+	);
 
 	return data;
 }
@@ -30,6 +43,7 @@ async function getMe(): Promise<IUser> {
 
 export const AuthService = {
 	login,
+	signUp,
 	refreshToken,
 	getMe
 };

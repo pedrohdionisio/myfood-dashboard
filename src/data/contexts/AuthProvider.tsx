@@ -7,7 +7,7 @@ import {
 } from 'data/config/api';
 import { AuthTokensManager, type IAuthTokens } from 'data/libs/AuthTokensManager';
 import { AuthService } from 'data/modules/auth/services/AuthService';
-import type { ILoginResponse } from 'data/modules/auth/types/AuthTypes';
+import type { IAuthSessionResponse } from 'data/modules/auth/types/AuthTypes';
 import {
 	createContext,
 	type PropsWithChildren,
@@ -67,7 +67,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 	);
 
 	const signIn = useCallback(
-		({ user: signedInUser, session }: ILoginResponse) => {
+		({ user: signedInUser, session }: IAuthSessionResponse) => {
 			activateSession({
 				accessToken: session.accessToken,
 				refreshToken: session.refreshToken

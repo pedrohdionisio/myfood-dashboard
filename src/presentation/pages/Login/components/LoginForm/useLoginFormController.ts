@@ -31,8 +31,7 @@ export function useLoginFormController() {
 
 	return {
 		register,
-		emailError: errors.email?.message,
-		passwordError: errors.password?.message,
+		errors,
 		isSubmitting,
 		handleSubmit
 	};

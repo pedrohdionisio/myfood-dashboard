@@ -10,9 +10,11 @@ export function TextInput({
 	error,
 	startIcon,
 	endSlot,
+	mask,
+	onChange,
 	...props
 }: ITextInputProps) {
-	const { inputId, errorId } = useTextInputController({ id, error });
+	const { inputId, errorId, handleChange } = useTextInputController({ id, error, mask, onChange });
 
 	return (
 		<div data-slot="text-input" className="flex w-full flex-col gap-2">
@@ -37,6 +39,7 @@ export function TextInput({
 					aria-invalid={!!error}
 					aria-describedby={errorId}
 					className={cn(startIcon ? 'pl-9' : undefined, endSlot ? 'pr-10' : undefined, className)}
+					onChange={handleChange}
 					{...props}
 				/>
 

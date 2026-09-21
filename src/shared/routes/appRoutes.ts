@@ -3,5 +3,6 @@ export const APP_ROUTES = {
 	login: '/login',
 	signUp: '/cadastro',
 	restaurantOnboarding: '/cadastro/restaurante',
-	restaurantSelection: '/restaurantes'
+	restaurantSelection: '/restaurantes',
+	settings: '/configuracoes'
 } as const;

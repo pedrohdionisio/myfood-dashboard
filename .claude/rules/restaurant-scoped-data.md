@@ -10,9 +10,10 @@ Fora de auth e do próprio cadastro, **toda rota da API é escopada**:
 `/restaurants/:restaurantId/...`. O `restaurantId` sai sempre do restaurante selecionado, que
 vive em `data/contexts/SelectedRestaurantProvider`.
 
-## Quem resolve o escopo
+## O use-case não conhece o contexto
 
-O **service não conhece React**: recebe o `restaurantId` como primeiro parâmetro e pronto.
+Nada em `data/modules/` lê o `SelectedRestaurantProvider`. O service recebe o `restaurantId`
+como primeiro parâmetro, e o hook do use-case recebe de quem o chama:
 
 ```ts
 async function listMenuCategories(restaurantId: string): Promise<IMenuCategory[]> {
@@ -22,13 +23,8 @@ async function listMenuCategories(restaurantId: string): Promise<IMenuCategory[]
 }
 ```
 
-Quem resolve o escopo é o **hook do use-case**, lendo o contexto:
-
 ```ts
-export function useMenuCategories() {
-	const { selectedRestaurant } = useSelectedRestaurant();
-	const restaurantId = selectedRestaurant?.restaurantId ?? null;
-
+export function useMenuCategories(restaurantId: string | null) {
 	const { data, isLoading, error } = useQuery({
 		queryKey: [MenuQueryKeys.MENU_CATEGORIES, restaurantId],
 		queryFn: restaurantId
@@ -44,8 +40,42 @@ export function useMenuCategories() {
 }
 ```
 
-Assim nenhuma página precisa carregar o `restaurantId` na mão, e o dia em que houver rota com
-`:restaurantId` na URL o único arquivo que muda é o provider.
+Na mutation o id entra como **variável da mutation**, junto do payload, e o `onSuccess` lê ele
+de volta do segundo argumento:
+
+```ts
+export function useReplaceOpeningHours() {
+	const queryClient = useQueryClient();
+
+	const { mutateAsync, isPending } = useMutation({
+		mutationKey: [OpeningHoursMutationKeys.REPLACE_OPENING_HOURS],
+		mutationFn: ({ restaurantId, ...payload }: IReplaceOpeningHoursVariables) =>
+			OpeningHoursService.replaceOpeningHours(restaurantId, payload),
+		onSuccess(openingHours, { restaurantId }) {
+			queryClient.setQueryData([OpeningHoursQueryKeys.OPENING_HOURS, restaurantId], openingHours);
+		}
+	});
+
+	return {
+		replaceOpeningHours: mutateAsync,
+		isReplacingOpeningHours: isPending
+	};
+}
+```
+
+Quem lê o contexto é o **controller da página ou do componente** — `useSettingsController` é o
+exemplo vivo. O use-case fica sem regra nenhuma dentro: nada de `if (!restaurantId) throw`,
+porque isso é decisão de produto e mora na tela.
+
+## Sem restaurante, a tela não monta
+
+O jeito de tratar `restaurantId` nulo é **não renderizar** quem depende dele, não estourar erro
+lá embaixo. O controller devolve `restaurantId: string | null`, a página condiciona o render e
+o TypeScript estreita para `string` na prop:
+
+```tsx
+{restaurantId ? <OpeningHoursForm restaurantId={restaurantId} /> : null}
+```
 
 ## O `restaurantId` vai na queryKey — sem exceção
 
@@ -54,8 +84,7 @@ cacheados sob a mesma chave dos outros e **trocar de restaurante serve o cardáp
 anterior**. Com o id na key, a troca refaz as queries sozinha e o cache de cada restaurante
 sobrevive separado — não precisa invalidar nada no `selectRestaurant`.
 
-Vale para mutation também: o `onSuccess` invalida incluindo o id
-(`queryKey: [MenuQueryKeys.MENU_CATEGORIES, restaurantId]`), senão limpa a chave errada.
+No `mutationKey` o id não entra: lá ele não separa cache nenhum, só o estado de pending.
 
 ## `skipToken`, não `enabled`
 

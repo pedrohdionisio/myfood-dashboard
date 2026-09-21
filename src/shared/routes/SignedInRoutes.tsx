@@ -3,6 +3,7 @@ import { useMyRestaurants } from 'data/modules/restaurants/useCases/listMyRestau
 import { Home } from 'presentation/pages/Home/Home';
 import { RestaurantOnboarding } from 'presentation/pages/RestaurantOnboarding/RestaurantOnboarding';
 import { RestaurantSelection } from 'presentation/pages/RestaurantSelection/RestaurantSelection';
+import { Settings } from 'presentation/pages/Settings/Settings';
 import { DashboardTemplate } from 'presentation/templates/DashboardTemplate/DashboardTemplate';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { APP_ROUTES } from './appRoutes';
@@ -39,6 +40,7 @@ export function SignedInRoutes() {
 		<Routes>
 			<Route element={<DashboardTemplate />}>
 				<Route path={APP_ROUTES.home} element={<Home />} />
+				<Route path={APP_ROUTES.settings} element={<Settings />} />
 			</Route>
 
 			<Route path={APP_ROUTES.restaurantSelection} element={<RestaurantSelection />} />

@@ -12,13 +12,13 @@ export const publicApi = axios.create({
 
 function delayRequests(instance: AxiosInstance) {
 	instance.interceptors.request.use(async (config) => {
-		await sleep(env.requestDelayMs);
+		await sleep(500);
 
 		return config;
 	});
 }
 
-if (import.meta.env.DEV && env.requestDelayMs > 0) {
+if (import.meta.env.DEV && 500 > 0) {
 	delayRequests(api);
 	delayRequests(publicApi);
 }

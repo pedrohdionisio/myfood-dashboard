@@ -52,6 +52,16 @@ Ao mexer em alias, lembre que ele vive em **três arquivos que precisam ficar em
 o bundle) e uma cópia dos `paths` no `tsconfig.json` — essa terceira é inerte para o build e
 existe só porque o CLI do shadcn lê os paths do `tsconfig.json`.
 
+### Função de uso local sai do arquivo
+
+Função utilitária ou hook que só aquele componente/página usa não fica no meio do arquivo: vai
+para `utils/<nomeDaFuncao>.ts` ou `hooks/<useNome>.ts` **dentro da pasta do próprio
+componente/página**, importada de lá (`./utils/toFormValues`). No dia em que servir mais de uma
+pasta, sobe para `shared/utils` ou `shared/hooks`.
+
+Sem exagero: a regra é sobre função. Constante fica onde está — a não ser que exista só para
+aquela função, e aí desce junto com ela.
+
 ## Regras por contexto
 
 As regras detalhadas ficam em `.claude/rules/`. Elas carregam sozinhas quando você **lê** um
@@ -69,6 +79,13 @@ rode `pnpm format`.
 - Indentação com **tab** (JSON, YAML e Markdown com 2 espaços), largura de linha 100.
 - Aspas simples, ponto e vírgula sempre, sem trailing comma.
 - `export function Nome()` — sem `export default`, sem arrow function para componentes.
+- **Função é declarada, não atribuída.** No corpo do arquivo é `function x() {}`, nunca
+  `const x = () => {}`. Arrow function só como argumento — callback de `.map`, de hook, de
+  evento.
+- **Só renomeie o que é nosso.** Nome de função de lib fica como a lib batizou: nada de
+  `handleSubmit: submitForm` na desestruturação. Quem ganha nome novo é a nossa função — o
+  submit do formulário é `onSubmit`, e ele entra no `handleSubmit` do react-hook-form:
+  `handleSubmit: handleSubmit(onSubmit)`.
 - Toda interface começa com `I`.
 
 ## Comentários

@@ -1,6 +1,4 @@
 const apiUrl: string | undefined = import.meta.env.VITE_API_URL;
-const configuredDelayMs = Number(import.meta.env.VITE_REQUEST_DELAY_MS);
-const requestDelayMs = Number.isFinite(configuredDelayMs) ? configuredDelayMs : 0;
 
 if (!apiUrl) {
 	throw new Error(
@@ -9,6 +7,5 @@ if (!apiUrl) {
 }
 
 export const env = {
-	apiUrl,
-	requestDelayMs: import.meta.env.DEV ? requestDelayMs : 0
+	apiUrl
 };

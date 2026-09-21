@@ -23,25 +23,25 @@ export function useSignUpFormController() {
 
 	const {
 		register,
-		handleSubmit: submitForm,
+		handleSubmit,
 		formState: { errors, isSubmitting }
 	} = useForm<SignUpFormType, unknown, SignUpPayloadType>({
 		resolver: zodResolver(signUpSchema),
 		defaultValues: SIGN_UP_DEFAULT_VALUES
 	});
 
-	const handleSubmit = submitForm(async (payload) => {
+	async function onSubmit(payload: SignUpPayloadType) {
 		try {
 			signIn(await signUp(payload));
 		} catch (error) {
 			toast.error(getApiErrorMessage(error));
 		}
-	});
+	}
 
 	return {
 		register,
 		errors,
 		isSubmitting,
-		handleSubmit
+		handleSubmit: handleSubmit(onSubmit)
 	};
 }

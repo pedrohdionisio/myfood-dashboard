@@ -15,24 +15,24 @@ export function useLoginFormController() {
 
 	const {
 		register,
-		handleSubmit: submitForm,
+		handleSubmit,
 		formState: { errors, isSubmitting }
 	} = useForm<LoginFormType>({
 		resolver: zodResolver(loginSchema)
 	});
 
-	const handleSubmit = submitForm(async (formData) => {
+	async function onSubmit(formData: LoginFormType) {
 		try {
 			signIn(await login(formData));
 		} catch (error) {
 			toast.error(getApiErrorMessage(error));
 		}
-	});
+	}
 
 	return {
 		register,
 		errors,
 		isSubmitting,
-		handleSubmit
+		handleSubmit: handleSubmit(onSubmit)
 	};
 }

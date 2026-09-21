@@ -36,7 +36,7 @@ export function useRestaurantOnboardingFormController() {
 		setError,
 		clearErrors,
 		setValues,
-		handleSubmit: submitForm,
+		handleSubmit,
 		formState: { errors, isSubmitting }
 	} = useForm<CreateRestaurantFormType, unknown, CreateRestaurantPayloadType>({
 		resolver: zodResolver(createRestaurantSchema),
@@ -89,7 +89,7 @@ export function useRestaurantOnboardingFormController() {
 		clearErrors
 	]);
 
-	const handleSubmit = submitForm(async (payload) => {
+	async function onSubmit(payload: CreateRestaurantPayloadType) {
 		try {
 			const restaurant = await createRestaurant(payload);
 
@@ -97,13 +97,13 @@ export function useRestaurantOnboardingFormController() {
 		} catch (error) {
 			toast.error(getApiErrorMessage(error));
 		}
-	});
+	}
 
 	return {
 		register,
 		errors,
 		isLoadingAddress,
 		isSubmitting,
-		handleSubmit
+		handleSubmit: handleSubmit(onSubmit)
 	};
 }

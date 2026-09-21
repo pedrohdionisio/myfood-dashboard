@@ -1,4 +1,4 @@
-import { LayoutDashboardIcon } from 'lucide-react';
+import { LayoutDashboardIcon, SettingsIcon } from 'lucide-react';
 import {
 	Sidebar,
 	SidebarContent,
@@ -10,12 +10,17 @@ import {
 	SidebarMenuItem,
 	SidebarRail
 } from 'presentation/components/Sidebar/Sidebar';
-import { NavLink, useMatch } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import logo from 'shared/assets/black-red-logo.svg';
 import { APP_ROUTES } from 'shared/routes/appRoutes';
 
+const DASHBOARD_MENU_ITEMS = [
+	{ label: 'Visão geral', to: APP_ROUTES.home, icon: LayoutDashboardIcon },
+	{ label: 'Configurações', to: APP_ROUTES.settings, icon: SettingsIcon }
+];
+
 export function DashboardSidebar() {
-	const isOverviewActive = !!useMatch(APP_ROUTES.home);
+	const { pathname } = useLocation();
 
 	return (
 		<Sidebar collapsible="icon">
@@ -27,14 +32,16 @@ export function DashboardSidebar() {
 				<SidebarGroup>
 					<SidebarGroupContent>
 						<SidebarMenu>
-							<SidebarMenuItem>
-								<SidebarMenuButton asChild isActive={isOverviewActive} tooltip="Visão geral">
-									<NavLink to={APP_ROUTES.home}>
-										<LayoutDashboardIcon aria-hidden="true" />
-										<span>Visão geral</span>
-									</NavLink>
-								</SidebarMenuButton>
-							</SidebarMenuItem>
+							{DASHBOARD_MENU_ITEMS.map(({ label, to, icon: Icon }) => (
+								<SidebarMenuItem key={to}>
+									<SidebarMenuButton asChild isActive={pathname === to} tooltip={label}>
+										<NavLink to={to}>
+											<Icon aria-hidden="true" />
+											<span>{label}</span>
+										</NavLink>
+									</SidebarMenuButton>
+								</SidebarMenuItem>
+							))}
 						</SidebarMenu>
 					</SidebarGroupContent>
 				</SidebarGroup>

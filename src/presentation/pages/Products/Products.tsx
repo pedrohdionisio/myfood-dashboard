@@ -1,4 +1,4 @@
-import { InfoIcon, PencilIcon, PlusIcon, Trash2Icon } from 'lucide-react';
+import { ArrowUpDownIcon, InfoIcon, PencilIcon, PlusIcon, Trash2Icon } from 'lucide-react';
 import { ActionModal } from 'presentation/components/ActionModal/ActionModal';
 import { Alert, AlertDescription, AlertTitle } from 'presentation/components/Alert/Alert';
 import { Button } from 'presentation/components/Button/Button';
@@ -23,16 +23,20 @@ export function Products() {
 		menuCategories,
 		selectedMenuCategoryId,
 		hasMenuCategories,
-		products,
+		visibleProducts,
+		reorderIds,
 		isLoadingProducts,
 		productsErrorMessage,
 		isEmpty,
 		canManageProducts,
+		canReorder,
 		isFormModalOpen,
 		editingProduct,
 		archivingProduct,
 		isArchivingProduct,
 		togglingProductId,
+		isReorderMode,
+		isReorderingProducts,
 		handleSelectMenuCategory,
 		handleOpenCreateModal,
 		handleOpenEditModal,
@@ -40,7 +44,11 @@ export function Products() {
 		handleOpenArchiveModal,
 		handleCloseArchiveModal,
 		handleConfirmArchive,
-		handleToggleAvailability
+		handleToggleAvailability,
+		handleEnterReorderMode,
+		handleCancelReorder,
+		handleReorder,
+		handleSaveReorder
 	} = useProductsController();
 
 	return (
@@ -54,11 +62,40 @@ export function Products() {
 					</p>
 				</div>
 
-				{canManageProducts && hasMenuCategories ? (
-					<Button type="button" onClick={handleOpenCreateModal}>
-						<PlusIcon aria-hidden="true" />
-						Novo produto
-					</Button>
+				{canManageProducts && hasMenuCategories && !isReorderMode ? (
+					<div className="flex items-center gap-2">
+						<Button
+							type="button"
+							variant="outline"
+							disabled={!canReorder}
+							onClick={handleEnterReorderMode}
+						>
+							<ArrowUpDownIcon aria-hidden="true" />
+							Reordenar
+						</Button>
+
+						<Button type="button" onClick={handleOpenCreateModal}>
+							<PlusIcon aria-hidden="true" />
+							Novo produto
+						</Button>
+					</div>
+				) : null}
+
+				{canManageProducts && isReorderMode ? (
+					<div className="flex items-center gap-2">
+						<Button
+							type="button"
+							variant="outline"
+							disabled={isReorderingProducts}
+							onClick={handleCancelReorder}
+						>
+							Cancelar
+						</Button>
+
+						<Button type="button" isLoading={isReorderingProducts} onClick={handleSaveReorder}>
+							Salvar ordem
+						</Button>
+					</div>
 				) : null}
 			</header>
 
@@ -83,7 +120,11 @@ export function Products() {
 						Categoria
 					</label>
 
-					<Select value={selectedMenuCategoryId} onValueChange={handleSelectMenuCategory}>
+					<Select
+						value={selectedMenuCategoryId}
+						disabled={isReorderMode}
+						onValueChange={handleSelectMenuCategory}
+					>
 						<SelectTrigger id="menuCategoryFilter" className="w-full">
 							<SelectValue />
 						</SelectTrigger>
@@ -99,83 +140,122 @@ export function Products() {
 				</div>
 			) : null}
 
+			{isReorderMode ? (
+				<Alert>
+					<InfoIcon aria-hidden="true" />
+
+					<AlertTitle>Esta é a ordem que o cliente vê</AlertTitle>
+
+					<AlertDescription>
+						Os produtos aparecem nesta sequência dentro da categoria. Arraste pela alça à esquerda e
+						clique em "Salvar ordem" para confirmar.
+					</AlertDescription>
+				</Alert>
+			) : null}
+
 			<DataTable.Root columnCount={canManageProducts ? 4 : 3}>
 				<DataTable.Header>
+					{isReorderMode ? (
+						<DataTable.Head className="w-12">
+							<span className="sr-only">Ordem</span>
+						</DataTable.Head>
+					) : null}
+
 					<DataTable.Head>Nome</DataTable.Head>
 
 					<DataTable.Head align="right">Preço</DataTable.Head>
 
-					<DataTable.Head>Disponível</DataTable.Head>
+					{!isReorderMode ? <DataTable.Head>Disponível</DataTable.Head> : null}
 
-					{canManageProducts ? <DataTable.Head align="right">Ações</DataTable.Head> : null}
+					{canManageProducts && !isReorderMode ? (
+						<DataTable.Head align="right">Ações</DataTable.Head>
+					) : null}
 				</DataTable.Header>
 
-				<DataTable.Body>
-					{isLoadingProducts ? <DataTable.LoadingRows /> : null}
+				{isReorderMode ? (
+					<DataTable.SortableBody ids={reorderIds} onReorder={handleReorder}>
+						{visibleProducts.map((product) => (
+							<DataTable.SortableRow key={product.id} id={product.id}>
+								<DataTable.Cell className="w-12">
+									<DataTable.DragHandle>Reordenar {product.name}</DataTable.DragHandle>
+								</DataTable.Cell>
 
-					{productsErrorMessage ? (
-						<DataTable.ErrorRow>{productsErrorMessage}</DataTable.ErrorRow>
-					) : null}
+								<DataTable.Cell className="font-medium">{product.name}</DataTable.Cell>
 
-					{isEmpty ? (
-						<DataTable.EmptyRow>Nenhum produto nesta categoria ainda.</DataTable.EmptyRow>
-					) : null}
-
-					{products.map((product) => (
-						<DataTable.Row key={product.id}>
-							<DataTable.Cell>
-								<div className="flex flex-col gap-0.5">
-									<span className="font-medium">{product.name}</span>
-
-									{product.description ? (
-										<span className="line-clamp-1 text-body-sm text-muted-foreground">
-											{product.description}
-										</span>
-									) : null}
-								</div>
-							</DataTable.Cell>
-
-							<DataTable.Cell align="right">
-								R$ {Mask.currency(String(product.priceCents))}
-							</DataTable.Cell>
-
-							<DataTable.Cell>
-								<Switch
-									checked={product.isAvailable}
-									disabled={!canManageProducts || togglingProductId === product.id}
-									aria-label={`Disponibilidade de ${product.name}`}
-									onCheckedChange={() => handleToggleAvailability(product)}
-								/>
-							</DataTable.Cell>
-
-							{canManageProducts ? (
 								<DataTable.Cell align="right">
-									<div className="flex items-center justify-end gap-2">
-										<Button
-											type="button"
-											variant="outline"
-											size="icon-sm"
-											onClick={() => handleOpenEditModal(product)}
-										>
-											<PencilIcon aria-hidden="true" />
-											<span className="sr-only">Editar {product.name}</span>
-										</Button>
+									R$ {Mask.currency(String(product.priceCents))}
+								</DataTable.Cell>
+							</DataTable.SortableRow>
+						))}
+					</DataTable.SortableBody>
+				) : (
+					<DataTable.Body>
+						{isLoadingProducts ? <DataTable.LoadingRows /> : null}
 
-										<Button
-											type="button"
-											variant="destructive"
-											size="icon-sm"
-											onClick={() => handleOpenArchiveModal(product)}
-										>
-											<Trash2Icon aria-hidden="true" />
-											<span className="sr-only">Arquivar {product.name}</span>
-										</Button>
+						{productsErrorMessage ? (
+							<DataTable.ErrorRow>{productsErrorMessage}</DataTable.ErrorRow>
+						) : null}
+
+						{isEmpty ? (
+							<DataTable.EmptyRow>Nenhum produto nesta categoria ainda.</DataTable.EmptyRow>
+						) : null}
+
+						{visibleProducts.map((product) => (
+							<DataTable.Row key={product.id}>
+								<DataTable.Cell>
+									<div className="flex flex-col gap-0.5">
+										<span className="font-medium">{product.name}</span>
+
+										{product.description ? (
+											<span className="line-clamp-1 text-body-sm text-muted-foreground">
+												{product.description}
+											</span>
+										) : null}
 									</div>
 								</DataTable.Cell>
-							) : null}
-						</DataTable.Row>
-					))}
-				</DataTable.Body>
+
+								<DataTable.Cell align="right">
+									R$ {Mask.currency(String(product.priceCents))}
+								</DataTable.Cell>
+
+								<DataTable.Cell>
+									<Switch
+										checked={product.isAvailable}
+										disabled={!canManageProducts || togglingProductId === product.id}
+										aria-label={`Disponibilidade de ${product.name}`}
+										onCheckedChange={() => handleToggleAvailability(product)}
+									/>
+								</DataTable.Cell>
+
+								{canManageProducts ? (
+									<DataTable.Cell align="right">
+										<div className="flex items-center justify-end gap-2">
+											<Button
+												type="button"
+												variant="outline"
+												size="icon-sm"
+												onClick={() => handleOpenEditModal(product)}
+											>
+												<PencilIcon aria-hidden="true" />
+												<span className="sr-only">Editar {product.name}</span>
+											</Button>
+
+											<Button
+												type="button"
+												variant="destructive"
+												size="icon-sm"
+												onClick={() => handleOpenArchiveModal(product)}
+											>
+												<Trash2Icon aria-hidden="true" />
+												<span className="sr-only">Arquivar {product.name}</span>
+											</Button>
+										</div>
+									</DataTable.Cell>
+								) : null}
+							</DataTable.Row>
+						))}
+					</DataTable.Body>
+				)}
 			</DataTable.Root>
 
 			{restaurantId && selectedMenuCategoryId ? (

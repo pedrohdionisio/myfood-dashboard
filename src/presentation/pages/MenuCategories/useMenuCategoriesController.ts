@@ -6,7 +6,7 @@ import { useReorderMenuCategories } from 'data/modules/menuCategories/useCases/r
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import type { IMenuCategory } from 'shared/entities/IMenuCategory';
-import { sortMenuCategoriesByIds } from './utils/sortMenuCategoriesByIds';
+import { sortByIds } from 'shared/utils/sortByIds';
 
 export function useMenuCategoriesController() {
 	const { selectedRestaurant } = useSelectedRestaurant();
@@ -72,7 +72,7 @@ export function useMenuCategoriesController() {
 	}
 
 	function handleReorder(ids: string[]) {
-		setReorderedMenuCategories((current) => sortMenuCategoriesByIds(current, ids));
+		setReorderedMenuCategories((current) => sortByIds(current, ids));
 	}
 
 	async function handleSaveReorder() {

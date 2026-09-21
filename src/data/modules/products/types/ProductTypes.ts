@@ -24,3 +24,12 @@ export interface IArchiveProductVariables {
 	restaurantId: string;
 	productId: string;
 }
+
+export interface IReorderProductsPayload {
+	menuCategoryId: string;
+	ids: string[];
+}
+
+export interface IReorderProductsVariables extends IReorderProductsPayload {
+	restaurantId: string;
+}

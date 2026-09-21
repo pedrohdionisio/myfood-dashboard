@@ -3,10 +3,12 @@ import { useSelectedRestaurant } from 'data/contexts/SelectedRestaurantProvider/
 import { useMenuCategories } from 'data/modules/menuCategories/useCases/listMenuCategories/useMenuCategories';
 import { useArchiveProduct } from 'data/modules/products/useCases/archiveProduct/useArchiveProduct';
 import { useProducts } from 'data/modules/products/useCases/listProducts/useProducts';
+import { useReorderProducts } from 'data/modules/products/useCases/reorderProducts/useReorderProducts';
 import { useSetProductAvailability } from 'data/modules/products/useCases/setProductAvailability/useSetProductAvailability';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import type { IProduct } from 'shared/entities/IProduct';
+import { sortByIds } from 'shared/utils/sortByIds';
 
 export function useProductsController() {
 	const { selectedRestaurant } = useSelectedRestaurant();
@@ -18,6 +20,8 @@ export function useProductsController() {
 	const [isFormModalOpen, setIsFormModalOpen] = useState(false);
 	const [editingProduct, setEditingProduct] = useState<IProduct | null>(null);
 	const [archivingProduct, setArchivingProduct] = useState<IProduct | null>(null);
+	const [isReorderMode, setIsReorderMode] = useState(false);
+	const [reorderedProducts, setReorderedProducts] = useState<IProduct[]>([]);
 
 	const { products, isLoadingProducts, productsError } = useProducts(
 		restaurantId,
@@ -25,6 +29,7 @@ export function useProductsController() {
 	);
 	const { setProductAvailability, togglingProductId } = useSetProductAvailability();
 	const { archiveProduct, isArchivingProduct } = useArchiveProduct();
+	const { reorderProducts, isReorderingProducts } = useReorderProducts();
 
 	const [firstMenuCategory] = menuCategories;
 
@@ -36,6 +41,8 @@ export function useProductsController() {
 
 	function handleSelectMenuCategory(menuCategoryId: string) {
 		setSelectedMenuCategoryId(menuCategoryId);
+		setIsReorderMode(false);
+		setReorderedProducts([]);
 	}
 
 	function handleOpenCreateModal() {
@@ -90,22 +97,59 @@ export function useProductsController() {
 		}
 	}
 
+	function handleEnterReorderMode() {
+		setReorderedProducts(products);
+		setIsReorderMode(true);
+	}
+
+	function handleCancelReorder() {
+		setIsReorderMode(false);
+		setReorderedProducts([]);
+	}
+
+	function handleReorder(ids: string[]) {
+		setReorderedProducts((current) => sortByIds(current, ids));
+	}
+
+	async function handleSaveReorder() {
+		if (!restaurantId || !selectedMenuCategoryId) {
+			return;
+		}
+
+		try {
+			await reorderProducts({
+				restaurantId,
+				menuCategoryId: selectedMenuCategoryId,
+				ids: reorderedProducts.map((product) => product.id)
+			});
+			toast.success('Ordem dos produtos salva.');
+			setIsReorderMode(false);
+			setReorderedProducts([]);
+		} catch (error) {
+			toast.error(getApiErrorMessage(error));
+		}
+	}
+
 	return {
 		restaurantId,
 		menuCategories,
 		selectedMenuCategoryId,
 		hasMenuCategories: !isLoadingMenuCategories && menuCategories.length > 0,
 		isLoadingMenuCategories,
-		products,
+		visibleProducts: isReorderMode ? reorderedProducts : products,
+		reorderIds: reorderedProducts.map((product) => product.id),
 		isLoadingProducts,
 		productsErrorMessage: productsError ? getApiErrorMessage(productsError) : null,
 		isEmpty: !isLoadingProducts && !productsError && products.length === 0,
 		canManageProducts: selectedRestaurant?.role === 'OWNER',
+		canReorder: !isLoadingProducts && !productsError && products.length > 1,
 		isFormModalOpen,
 		editingProduct,
 		archivingProduct,
 		isArchivingProduct,
 		togglingProductId,
+		isReorderMode,
+		isReorderingProducts,
 		handleSelectMenuCategory,
 		handleOpenCreateModal,
 		handleOpenEditModal,
@@ -113,6 +157,10 @@ export function useProductsController() {
 		handleOpenArchiveModal,
 		handleCloseArchiveModal,
 		handleConfirmArchive,
-		handleToggleAvailability
+		handleToggleAvailability,
+		handleEnterReorderMode,
+		handleCancelReorder,
+		handleReorder,
+		handleSaveReorder
 	};
 }

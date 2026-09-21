@@ -1,5 +1,8 @@
 import { api } from 'data/config/api';
-import type { IProductPayload } from 'data/modules/products/types/ProductTypes';
+import type {
+	IProductPayload,
+	IReorderProductsPayload
+} from 'data/modules/products/types/ProductTypes';
 import type { IProduct } from 'shared/entities/IProduct';
 
 async function list(restaurantId: string, menuCategoryId: string): Promise<IProduct[]> {
@@ -54,10 +57,23 @@ async function archive(restaurantId: string, productId: string): Promise<IProduc
 	return data;
 }
 
+async function reorder(
+	restaurantId: string,
+	payload: IReorderProductsPayload
+): Promise<IProduct[]> {
+	const { data } = await api.patch<IProduct[]>(
+		`/restaurants/${restaurantId}/products/reorder`,
+		payload
+	);
+
+	return data;
+}
+
 export const ProductsService = {
 	list,
 	create,
 	update,
 	setAvailability,
-	archive
+	archive,
+	reorder
 };

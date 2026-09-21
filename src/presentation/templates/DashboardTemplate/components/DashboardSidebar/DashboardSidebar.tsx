@@ -1,4 +1,4 @@
-import { LayoutDashboardIcon, SettingsIcon } from 'lucide-react';
+import { LayersIcon, LayoutDashboardIcon, SettingsIcon } from 'lucide-react';
 import {
 	Sidebar,
 	SidebarContent,
@@ -16,6 +16,7 @@ import { APP_ROUTES } from 'shared/routes/appRoutes';
 
 const DASHBOARD_MENU_ITEMS = [
 	{ label: 'Visão geral', to: APP_ROUTES.home, icon: LayoutDashboardIcon },
+	{ label: 'Categorias', to: APP_ROUTES.menuCategories, icon: LayersIcon },
 	{ label: 'Configurações', to: APP_ROUTES.settings, icon: SettingsIcon }
 ];
 

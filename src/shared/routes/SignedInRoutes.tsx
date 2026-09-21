@@ -1,6 +1,7 @@
 import { useSelectedRestaurant } from 'data/contexts/SelectedRestaurantProvider/SelectedRestaurantProvider';
 import { useMyRestaurants } from 'data/modules/restaurants/useCases/listMyRestaurants/useMyRestaurants';
 import { Home } from 'presentation/pages/Home/Home';
+import { MenuCategories } from 'presentation/pages/MenuCategories/MenuCategories';
 import { RestaurantOnboarding } from 'presentation/pages/RestaurantOnboarding/RestaurantOnboarding';
 import { RestaurantSelection } from 'presentation/pages/RestaurantSelection/RestaurantSelection';
 import { Settings } from 'presentation/pages/Settings/Settings';
@@ -40,6 +41,7 @@ export function SignedInRoutes() {
 		<Routes>
 			<Route element={<DashboardTemplate />}>
 				<Route path={APP_ROUTES.home} element={<Home />} />
+				<Route path={APP_ROUTES.menuCategories} element={<MenuCategories />} />
 				<Route path={APP_ROUTES.settings} element={<Settings />} />
 			</Route>
 

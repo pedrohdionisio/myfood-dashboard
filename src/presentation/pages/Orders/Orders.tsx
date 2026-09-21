@@ -1,5 +1,6 @@
 import { InfoIcon } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from 'presentation/components/Alert/Alert';
+import { RestaurantGateNotice } from 'presentation/components/RestaurantGateNotice/RestaurantGateNotice';
 import { OrderBoardColumn } from './components/OrderBoardColumn/OrderBoardColumn';
 import { OrderDetailsModal } from './components/OrderDetailsModal/OrderDetailsModal';
 import { useOrdersController } from './useOrdersController';
@@ -7,6 +8,8 @@ import { useOrdersController } from './useOrdersController';
 export function Orders() {
 	const {
 		restaurantId,
+		restaurantGate,
+		isBoardVisible,
 		selectedOrder,
 		columns,
 		hasTruncatedColumn,
@@ -24,6 +27,10 @@ export function Orders() {
 				</p>
 			</header>
 
+			{restaurantId ? (
+				<RestaurantGateNotice gate={restaurantGate} restaurantId={restaurantId} />
+			) : null}
+
 			{hasTruncatedColumn ? (
 				<Alert>
 					<InfoIcon aria-hidden="true" />
@@ -36,20 +43,22 @@ export function Orders() {
 				</Alert>
 			) : null}
 
-			<div className="flex gap-4 overflow-x-auto pb-2">
-				{columns.map((column) => (
-					<OrderBoardColumn
-						key={column.status}
-						label={column.label}
-						orders={column.orders}
-						isLoadingOrders={column.isLoadingOrders}
-						ordersErrorMessage={column.ordersErrorMessage}
-						onSelectOrder={handleSelectOrder}
-					/>
-				))}
-			</div>
+			{isBoardVisible ? (
+				<div className="flex gap-4 overflow-x-auto pb-2">
+					{columns.map((column) => (
+						<OrderBoardColumn
+							key={column.status}
+							label={column.label}
+							orders={column.orders}
+							isLoadingOrders={column.isLoadingOrders}
+							ordersErrorMessage={column.ordersErrorMessage}
+							onSelectOrder={handleSelectOrder}
+						/>
+					))}
+				</div>
+			) : null}
 
-			{restaurantId ? (
+			{restaurantId && isBoardVisible ? (
 				<OrderDetailsModal
 					isOpen={!!selectedOrder}
 					restaurantId={restaurantId}

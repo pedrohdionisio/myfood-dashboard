@@ -1,8 +1,8 @@
 import { getApiErrorMessage } from 'data/config/apiError';
-import { useSelectedRestaurant } from 'data/contexts/SelectedRestaurantProvider/SelectedRestaurantProvider';
 import { useOrdersByStatus } from 'data/modules/orders/useCases/listOrders/useOrdersByStatus';
 import { useState } from 'react';
 import type { IOrder } from 'shared/entities/IOrder';
+import { useRestaurantGate } from 'shared/hooks/useRestaurantGate';
 
 const BOARD_STATUSES = [
 	'PENDING',
@@ -25,19 +25,22 @@ const ORDER_COLUMN_LABELS: Record<OrderBoardStatus, string> = {
 };
 
 export function useOrdersController() {
-	const { selectedRestaurant } = useSelectedRestaurant();
-	const restaurantId = selectedRestaurant?.restaurantId ?? null;
+	const { restaurantId, restaurantGate } = useRestaurantGate();
 
 	const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
 
-	const columns = useOrdersByStatus(restaurantId, BOARD_STATUSES).map((column) => ({
-		status: column.status,
-		label: ORDER_COLUMN_LABELS[column.status],
-		orders: column.orders,
-		hasMoreOrders: column.hasMoreOrders,
-		isLoadingOrders: column.isLoadingOrders,
-		ordersErrorMessage: column.ordersError ? getApiErrorMessage(column.ordersError) : null
-	}));
+	const isBoardVisible = restaurantGate === 'OPERATING';
+
+	const columns = useOrdersByStatus(isBoardVisible ? restaurantId : null, BOARD_STATUSES).map(
+		(column) => ({
+			status: column.status,
+			label: ORDER_COLUMN_LABELS[column.status],
+			orders: column.orders,
+			hasMoreOrders: column.hasMoreOrders,
+			isLoadingOrders: column.isLoadingOrders,
+			ordersErrorMessage: column.ordersError ? getApiErrorMessage(column.ordersError) : null
+		})
+	);
 
 	function handleSelectOrder(order: IOrder) {
 		setSelectedOrder(order);
@@ -49,6 +52,8 @@ export function useOrdersController() {
 
 	return {
 		restaurantId,
+		restaurantGate,
+		isBoardVisible,
 		selectedOrder,
 		handleSelectOrder,
 		handleCloseDetailsModal,

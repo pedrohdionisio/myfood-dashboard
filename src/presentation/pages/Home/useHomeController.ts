@@ -1,8 +1,8 @@
 import { getApiErrorMessage } from 'data/config/apiError';
 import { useAuth } from 'data/contexts/AuthProvider/AuthProvider';
-import { useSelectedRestaurant } from 'data/contexts/SelectedRestaurantProvider/SelectedRestaurantProvider';
 import { useAnalytics } from 'data/modules/analytics/useCases/getAnalytics/useAnalytics';
 import { useMemo, useState } from 'react';
+import { useRestaurantGate } from 'shared/hooks/useRestaurantGate';
 import { resolveAnalyticsRanges } from './utils/resolveAnalyticsRanges';
 import { toDailySeries } from './utils/toDailySeries';
 import { toStatCards } from './utils/toStatCards';
@@ -15,20 +15,22 @@ const PERIOD_OPTIONS = [
 
 export function useHomeController() {
 	const { user } = useAuth();
-	const { selectedRestaurant } = useSelectedRestaurant();
+	const { restaurantId, isOwner, restaurantGate } = useRestaurantGate();
 
 	const [periodInDays, setPeriodInDays] = useState(30);
 
-	const isOwner = selectedRestaurant?.role === 'OWNER';
-	const analyticsRestaurantId = isOwner ? selectedRestaurant.restaurantId : null;
+	const canSeeAnalytics = isOwner && restaurantGate === 'OPERATING';
 
 	const ranges = useMemo(() => resolveAnalyticsRanges(periodInDays), [periodInDays]);
 
 	const { analytics, isLoadingAnalytics, analyticsError } = useAnalytics(
-		analyticsRestaurantId,
+		canSeeAnalytics ? restaurantId : null,
 		ranges.current
 	);
-	const { analytics: previousAnalytics } = useAnalytics(analyticsRestaurantId, ranges.previous);
+	const { analytics: previousAnalytics } = useAnalytics(
+		canSeeAnalytics ? restaurantId : null,
+		ranges.previous
+	);
 
 	function handleSelectPeriod(value: string) {
 		setPeriodInDays(Number(value));
@@ -36,8 +38,10 @@ export function useHomeController() {
 
 	return {
 		userName: user?.name ?? '',
-		isRestaurantDraft: selectedRestaurant?.restaurantStatus === 'DRAFT',
-		canSeeAnalytics: isOwner,
+		restaurantId,
+		restaurantGate,
+		canSeeAnalytics,
+		isAnalyticsBlockedByRole: !isOwner && restaurantGate === 'OPERATING',
 		periodOptions: PERIOD_OPTIONS,
 		selectedPeriod: String(periodInDays),
 		statCards: analytics ? toStatCards(analytics.totals, previousAnalytics?.totals ?? null) : [],

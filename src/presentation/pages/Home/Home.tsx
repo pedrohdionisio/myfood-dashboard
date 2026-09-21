@@ -1,5 +1,6 @@
 import { TriangleAlertIcon } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from 'presentation/components/Alert/Alert';
+import { RestaurantGateNotice } from 'presentation/components/RestaurantGateNotice/RestaurantGateNotice';
 import {
 	Select,
 	SelectContent,
@@ -18,8 +19,10 @@ import { useHomeController } from './useHomeController';
 export function Home() {
 	const {
 		userName,
-		isRestaurantDraft,
+		restaurantId,
+		restaurantGate,
 		canSeeAnalytics,
+		isAnalyticsBlockedByRole,
 		periodOptions,
 		selectedPeriod,
 		statCards,
@@ -62,22 +65,15 @@ export function Home() {
 				) : null}
 			</header>
 
-			{isRestaurantDraft ? (
-				<section className="flex flex-col gap-2 rounded-lg border bg-card p-6">
-					<h2 className="text-title-sm">Seu restaurante ainda não está publicado</h2>
-
-					<p className="text-body-sm text-muted-foreground">
-						Para abrir a loja, cadastre os horários de funcionamento e pelo menos um produto
-						disponível no cardápio.
-					</p>
-				</section>
+			{restaurantId ? (
+				<RestaurantGateNotice gate={restaurantGate} restaurantId={restaurantId} />
 			) : null}
 
-			{canSeeAnalytics ? null : (
+			{isAnalyticsBlockedByRole ? (
 				<p className="text-body-sm text-muted-foreground">
 					Os números do restaurante aparecem para quem é dono dele.
 				</p>
-			)}
+			) : null}
 
 			{analyticsErrorMessage ? (
 				<Alert variant="destructive">

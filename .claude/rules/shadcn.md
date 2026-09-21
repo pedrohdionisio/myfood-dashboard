@@ -86,9 +86,45 @@ e `text-xs` do Tailwind ficam como vieram.
 Não mexa no comportamento: `data-slot`, props do Radix, `aria-*` e estados de foco ficam
 como o shadcn entregou. A normalização é de forma, não de função.
 
+## Quando o lint não deixa a função passar
+
+A exceção é quando o componente **não passa no `pnpm lint` como o CLI entrega** — aí não há o
+que preservar, e a mudança de comportamento é obrigatória. Aconteceu uma vez, com o `chart`:
+
+| O que o CLI trouxe                            | Regra que barra                       |
+| --------------------------------------------- | ------------------------------------- |
+| `dangerouslySetInnerHTML` no `ChartStyle`      | `security/noDangerouslySetInnerHtml`  |
+| `key={index}` no tooltip e na legenda          | `suspicious/noArrayIndexKey`          |
+
+O `ChartStyle` saiu inteiro, junto do `THEMES`. Ele existe para injetar `--color-<serie>` por
+tema, e **aqui isso não tem serventia**: os tokens `--chart-1..5` do `src/index.css` já viram
+no `.dark` sozinhos. A cor vai do `config` direto para o `stroke`/`fill` do recharts.
+
+A consequência é que `fill="var(--color-minhaSerie)"`, que os exemplos do shadcn usam, **não
+funciona neste projeto** — a var nunca é declarada. Referencie o config:
+
+```tsx
+const REVENUE_CHART_CONFIG = {
+	grossRevenueCents: { label: 'Receita bruta', color: 'var(--chart-1)' }
+} satisfies ChartConfig;
+
+<Area dataKey="grossRevenueCents" stroke={REVENUE_CHART_CONFIG.grossRevenueCents.color} />;
+```
+
+As keys passaram a sair do `dataKey` da série, que é estável e não muda de ordem.
+
+O `ChartTooltipContent` também ganhou um `valueFormatter?: (value: number) => string`, que não
+é do shadcn. Sem ele o tooltip imprime centavos crus (`123456`), e o `formatter` que o shadcn
+oferece substitui a **linha inteira** — formatar o valor por ali significaria repetir o
+indicador e o label em cada gráfico.
+
+Reinstalar o `chart` pelo CLI traz o `ChartStyle` de volta e quebra o lint de novo. É refazer
+as duas remoções e devolver o `valueFormatter`.
+
 ## Fechamento
 
 `pnpm typecheck && pnpm lint` — é o mesmo par que o pre-commit roda. Nunca `pnpm build` nem
 `pnpm dev`; ver `CLAUDE.md`.
 
-O `Button` já normalizado é a referência viva: `src/presentation/components/Button/`.
+O `Button` já normalizado é a referência viva: `src/presentation/components/Button/`. Para o
+caso em que o lint obrigou a mexer na função, é o `Chart/`.

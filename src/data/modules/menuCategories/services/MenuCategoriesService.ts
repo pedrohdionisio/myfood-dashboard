@@ -1,5 +1,8 @@
 import { api } from 'data/config/api';
-import type { IMenuCategoryPayload } from 'data/modules/menuCategories/types/MenuCategoryTypes';
+import type {
+	IMenuCategoryPayload,
+	IReorderMenuCategoriesPayload
+} from 'data/modules/menuCategories/types/MenuCategoryTypes';
 import type { IMenuCategory } from 'shared/entities/IMenuCategory';
 
 async function listMenuCategories(restaurantId: string): Promise<IMenuCategory[]> {
@@ -44,9 +47,22 @@ async function archiveMenuCategory(
 	return data;
 }
 
+async function reorderMenuCategories(
+	restaurantId: string,
+	payload: IReorderMenuCategoriesPayload
+): Promise<IMenuCategory[]> {
+	const { data } = await api.patch<IMenuCategory[]>(
+		`/restaurants/${restaurantId}/menu-categories/reorder`,
+		payload
+	);
+
+	return data;
+}
+
 export const MenuCategoriesService = {
 	listMenuCategories,
 	createMenuCategory,
 	updateMenuCategory,
-	archiveMenuCategory
+	archiveMenuCategory,
+	reorderMenuCategories
 };

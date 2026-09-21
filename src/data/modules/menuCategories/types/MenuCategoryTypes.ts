@@ -15,3 +15,11 @@ export interface IArchiveMenuCategoryVariables {
 	restaurantId: string;
 	menuCategoryId: string;
 }
+
+export interface IReorderMenuCategoriesPayload {
+	ids: string[];
+}
+
+export interface IReorderMenuCategoriesVariables extends IReorderMenuCategoriesPayload {
+	restaurantId: string;
+}

@@ -1,5 +1,6 @@
-import { PencilIcon, PlusIcon, Trash2Icon } from 'lucide-react';
+import { ArrowUpDownIcon, InfoIcon, PencilIcon, PlusIcon, Trash2Icon } from 'lucide-react';
 import { ActionModal } from 'presentation/components/ActionModal/ActionModal';
+import { Alert, AlertDescription, AlertTitle } from 'presentation/components/Alert/Alert';
 import { Button } from 'presentation/components/Button/Button';
 import { DataTable } from 'presentation/components/DataTable/DataTable';
 import { MenuCategoryFormModal } from './components/MenuCategoryFormModal/MenuCategoryFormModal';
@@ -8,21 +9,29 @@ import { useMenuCategoriesController } from './useMenuCategoriesController';
 export function MenuCategories() {
 	const {
 		restaurantId,
-		menuCategories,
+		visibleMenuCategories,
+		reorderIds,
 		isLoadingMenuCategories,
 		menuCategoriesErrorMessage,
 		isEmpty,
 		canManageMenuCategories,
+		canReorder,
 		isFormModalOpen,
 		editingMenuCategory,
 		archivingMenuCategory,
 		isArchivingMenuCategory,
+		isReorderMode,
+		isReorderingMenuCategories,
 		handleOpenCreateModal,
 		handleOpenEditModal,
 		handleCloseFormModal,
 		handleOpenArchiveModal,
 		handleCloseArchiveModal,
-		handleConfirmArchive
+		handleConfirmArchive,
+		handleEnterReorderMode,
+		handleCancelReorder,
+		handleReorder,
+		handleSaveReorder
 	} = useMenuCategoriesController();
 
 	return (
@@ -36,66 +45,134 @@ export function MenuCategories() {
 					</p>
 				</div>
 
-				{canManageMenuCategories ? (
-					<Button type="button" onClick={handleOpenCreateModal}>
-						<PlusIcon aria-hidden="true" />
-						Nova categoria
-					</Button>
+				{canManageMenuCategories && !isReorderMode ? (
+					<div className="flex items-center gap-2">
+						<Button
+							type="button"
+							variant="outline"
+							disabled={!canReorder}
+							onClick={handleEnterReorderMode}
+						>
+							<ArrowUpDownIcon aria-hidden="true" />
+							Reordenar
+						</Button>
+
+						<Button type="button" onClick={handleOpenCreateModal}>
+							<PlusIcon aria-hidden="true" />
+							Nova categoria
+						</Button>
+					</div>
+				) : null}
+
+				{canManageMenuCategories && isReorderMode ? (
+					<div className="flex items-center gap-2">
+						<Button
+							type="button"
+							variant="outline"
+							disabled={isReorderingMenuCategories}
+							onClick={handleCancelReorder}
+						>
+							Cancelar
+						</Button>
+
+						<Button
+							type="button"
+							isLoading={isReorderingMenuCategories}
+							onClick={handleSaveReorder}
+						>
+							Salvar ordem
+						</Button>
+					</div>
 				) : null}
 			</header>
 
+			<Alert>
+				<InfoIcon aria-hidden="true" />
+
+				<AlertTitle>Esta é a ordem que o cliente vê</AlertTitle>
+
+				<AlertDescription>
+					As categorias aparecem no cardápio nesta mesma sequência, de cima para baixo.
+					{isReorderMode
+						? ' Arraste pela alça à esquerda e clique em "Salvar ordem" para confirmar.'
+						: null}
+				</AlertDescription>
+			</Alert>
+
 			<DataTable.Root columnCount={canManageMenuCategories ? 2 : 1}>
 				<DataTable.Header>
+					{isReorderMode ? (
+						<DataTable.Head className="w-12">
+							<span className="sr-only">Ordem</span>
+						</DataTable.Head>
+					) : null}
+
 					<DataTable.Head>Nome</DataTable.Head>
 
-					{canManageMenuCategories ? <DataTable.Head align="right">Ações</DataTable.Head> : null}
+					{canManageMenuCategories && !isReorderMode ? (
+						<DataTable.Head align="right">Ações</DataTable.Head>
+					) : null}
 				</DataTable.Header>
 
-				<DataTable.Body>
-					{isLoadingMenuCategories ? <DataTable.LoadingRows /> : null}
-
-					{menuCategoriesErrorMessage ? (
-						<DataTable.ErrorRow>{menuCategoriesErrorMessage}</DataTable.ErrorRow>
-					) : null}
-
-					{isEmpty ? (
-						<DataTable.EmptyRow>
-							Nenhuma categoria por aqui ainda. Crie a primeira para começar o cardápio.
-						</DataTable.EmptyRow>
-					) : null}
-
-					{menuCategories.map((menuCategory) => (
-						<DataTable.Row key={menuCategory.id}>
-							<DataTable.Cell className="font-medium">{menuCategory.name}</DataTable.Cell>
-
-							{canManageMenuCategories ? (
-								<DataTable.Cell align="right">
-									<div className="flex items-center justify-end gap-2">
-										<Button
-											type="button"
-											variant="outline"
-											size="icon-sm"
-											onClick={() => handleOpenEditModal(menuCategory)}
-										>
-											<PencilIcon aria-hidden="true" />
-											<span className="sr-only">Renomear {menuCategory.name}</span>
-										</Button>
-
-										<Button
-											type="button"
-											variant="destructive"
-											size="icon-sm"
-											onClick={() => handleOpenArchiveModal(menuCategory)}
-										>
-											<Trash2Icon aria-hidden="true" />
-											<span className="sr-only">Arquivar {menuCategory.name}</span>
-										</Button>
-									</div>
+				{isReorderMode ? (
+					<DataTable.SortableBody ids={reorderIds} onReorder={handleReorder}>
+						{visibleMenuCategories.map((menuCategory) => (
+							<DataTable.SortableRow key={menuCategory.id} id={menuCategory.id}>
+								<DataTable.Cell className="w-12">
+									<DataTable.DragHandle>Reordenar {menuCategory.name}</DataTable.DragHandle>
 								</DataTable.Cell>
-							) : null}
-						</DataTable.Row>
-					))}
-				</DataTable.Body>
+
+								<DataTable.Cell className="font-medium">{menuCategory.name}</DataTable.Cell>
+							</DataTable.SortableRow>
+						))}
+					</DataTable.SortableBody>
+				) : (
+					<DataTable.Body>
+						{isLoadingMenuCategories ? <DataTable.LoadingRows /> : null}
+
+						{menuCategoriesErrorMessage ? (
+							<DataTable.ErrorRow>{menuCategoriesErrorMessage}</DataTable.ErrorRow>
+						) : null}
+
+						{isEmpty ? (
+							<DataTable.EmptyRow>
+								Nenhuma categoria por aqui ainda. Crie a primeira para começar o cardápio.
+							</DataTable.EmptyRow>
+						) : null}
+
+						{visibleMenuCategories.map((menuCategory) => (
+							<DataTable.Row key={menuCategory.id}>
+								<DataTable.Cell className="font-medium">{menuCategory.name}</DataTable.Cell>
+
+								{canManageMenuCategories ? (
+									<DataTable.Cell align="right">
+										<div className="flex items-center justify-end gap-2">
+											<Button
+												type="button"
+												variant="outline"
+												size="icon-sm"
+												onClick={() => handleOpenEditModal(menuCategory)}
+											>
+												<PencilIcon aria-hidden="true" />
+												<span className="sr-only">Renomear {menuCategory.name}</span>
+											</Button>
+
+											<Button
+												type="button"
+												variant="destructive"
+												size="icon-sm"
+												onClick={() => handleOpenArchiveModal(menuCategory)}
+											>
+												<Trash2Icon aria-hidden="true" />
+												<span className="sr-only">Arquivar {menuCategory.name}</span>
+											</Button>
+										</div>
+									</DataTable.Cell>
+								) : null}
+							</DataTable.Row>
+						))}
+					</DataTable.Body>
+				)}
 			</DataTable.Root>
 
 			{restaurantId ? (

@@ -7,7 +7,7 @@ export function useProducts(restaurantId: string | null, menuCategoryId: string 
 		queryKey: [ProductQueryKeys.PRODUCTS, restaurantId, menuCategoryId],
 		queryFn:
 			restaurantId && menuCategoryId
-				? () => ProductsService.listProducts(restaurantId, menuCategoryId)
+				? () => ProductsService.list(restaurantId, menuCategoryId)
 				: skipToken
 	});
 

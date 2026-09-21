@@ -8,7 +8,7 @@ export function useAddressByZipCode(zipCode: string) {
 
 	const { data, isFetching, error } = useQuery({
 		queryKey: [AddressQueryKeys.ADDRESS_BY_ZIP_CODE, zipCodeDigits],
-		queryFn: () => AddressService.findAddressByZipCode(zipCodeDigits),
+		queryFn: () => AddressService.findByZipCode(zipCodeDigits),
 		enabled: zipCodeDigits.length === 8,
 		staleTime: Number.POSITIVE_INFINITY
 	});

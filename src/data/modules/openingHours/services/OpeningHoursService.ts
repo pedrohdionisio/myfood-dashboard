@@ -2,13 +2,13 @@ import { api } from 'data/config/api';
 import type { IReplaceOpeningHoursPayload } from 'data/modules/openingHours/types/OpeningHoursTypes';
 import type { IOpeningHour } from 'shared/entities/IOpeningHour';
 
-async function listOpeningHours(restaurantId: string): Promise<IOpeningHour[]> {
+async function list(restaurantId: string): Promise<IOpeningHour[]> {
 	const { data } = await api.get<IOpeningHour[]>(`/restaurants/${restaurantId}/opening-hours`);
 
 	return data;
 }
 
-async function replaceOpeningHours(
+async function replace(
 	restaurantId: string,
 	payload: IReplaceOpeningHoursPayload
 ): Promise<IOpeningHour[]> {
@@ -21,6 +21,6 @@ async function replaceOpeningHours(
 }
 
 export const OpeningHoursService = {
-	listOpeningHours,
-	replaceOpeningHours
+	list,
+	replace
 };

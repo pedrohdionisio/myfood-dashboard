@@ -10,7 +10,7 @@ export function useSetProductAvailability() {
 	const { mutateAsync, isPending, variables } = useMutation({
 		mutationKey: [ProductMutationKeys.SET_PRODUCT_AVAILABILITY],
 		mutationFn: ({ restaurantId, productId, isAvailable }: ISetProductAvailabilityVariables) =>
-			ProductsService.setProductAvailability(restaurantId, productId, isAvailable),
+			ProductsService.setAvailability(restaurantId, productId, isAvailable),
 		onSuccess(product, { restaurantId }) {
 			queryClient.setQueryData<IProduct[]>(
 				[ProductQueryKeys.PRODUCTS, restaurantId, product.menuCategoryId],

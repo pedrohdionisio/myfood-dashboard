@@ -4,7 +4,7 @@ import type { IPersistenceViaCepAddress } from 'data/modules/address/types/Addre
 import type { IAddress } from 'shared/entities/IAddress';
 import { Mask } from 'shared/utils/Mask';
 
-async function findAddressByZipCode(zipCode: string): Promise<IAddress | null> {
+async function findByZipCode(zipCode: string): Promise<IAddress | null> {
 	const { data } = await viaCepApi.get<IPersistenceViaCepAddress>(`/${Mask.remove(zipCode)}/json/`);
 
 	if (data.erro) {
@@ -15,5 +15,5 @@ async function findAddressByZipCode(zipCode: string): Promise<IAddress | null> {
 }
 
 export const AddressService = {
-	findAddressByZipCode
+	findByZipCode
 };

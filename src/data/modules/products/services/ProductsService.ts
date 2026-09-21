@@ -2,7 +2,7 @@ import { api } from 'data/config/api';
 import type { IProductPayload } from 'data/modules/products/types/ProductTypes';
 import type { IProduct } from 'shared/entities/IProduct';
 
-async function listProducts(restaurantId: string, menuCategoryId: string): Promise<IProduct[]> {
+async function list(restaurantId: string, menuCategoryId: string): Promise<IProduct[]> {
 	const { data } = await api.get<IProduct[]>(`/restaurants/${restaurantId}/products`, {
 		params: { menuCategoryId }
 	});
@@ -10,7 +10,7 @@ async function listProducts(restaurantId: string, menuCategoryId: string): Promi
 	return data;
 }
 
-async function createProduct(
+async function create(
 	restaurantId: string,
 	{ description, ...payload }: IProductPayload
 ): Promise<IProduct> {
@@ -22,7 +22,7 @@ async function createProduct(
 	return data;
 }
 
-async function updateProduct(
+async function update(
 	restaurantId: string,
 	productId: string,
 	{ description, ...payload }: IProductPayload
@@ -35,7 +35,7 @@ async function updateProduct(
 	return data;
 }
 
-async function setProductAvailability(
+async function setAvailability(
 	restaurantId: string,
 	productId: string,
 	isAvailable: boolean
@@ -48,16 +48,16 @@ async function setProductAvailability(
 	return data;
 }
 
-async function archiveProduct(restaurantId: string, productId: string): Promise<IProduct> {
+async function archive(restaurantId: string, productId: string): Promise<IProduct> {
 	const { data } = await api.delete<IProduct>(`/restaurants/${restaurantId}/products/${productId}`);
 
 	return data;
 }
 
 export const ProductsService = {
-	listProducts,
-	createProduct,
-	updateProduct,
-	setProductAvailability,
-	archiveProduct
+	list,
+	create,
+	update,
+	setAvailability,
+	archive
 };

@@ -12,7 +12,7 @@ export function useArchiveMenuCategory() {
 	const { mutateAsync, isPending } = useMutation({
 		mutationKey: [MenuCategoryMutationKeys.ARCHIVE_MENU_CATEGORY],
 		mutationFn: ({ restaurantId, menuCategoryId }: IArchiveMenuCategoryVariables) =>
-			MenuCategoriesService.archiveMenuCategory(restaurantId, menuCategoryId),
+			MenuCategoriesService.archive(restaurantId, menuCategoryId),
 		async onSuccess(_menuCategory, { restaurantId }) {
 			await queryClient.invalidateQueries({
 				queryKey: [MenuCategoryQueryKeys.MENU_CATEGORIES, restaurantId]

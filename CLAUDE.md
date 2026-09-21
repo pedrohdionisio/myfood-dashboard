@@ -62,6 +62,30 @@ pasta, sobe para `shared/utils` ou `shared/hooks`.
 Sem exagero: a regra é sobre função. Constante fica onde está — a não ser que exista só para
 aquela função, e aí desce junto com ela.
 
+### Método de service não repete o nome do service
+
+O objeto já diz de que entidade se trata, então o método só carrega o verbo:
+`ProductsService.create()`, não `ProductsService.createProduct()`. O nome completo aparece uma
+vez na chamada e repetir vira ruído.
+
+```ts
+ProductsService.list(restaurantId, menuCategoryId);
+ProductsService.setAvailability(restaurantId, productId, isAvailable);
+MenuCategoriesService.reorder(restaurantId, payload);
+RestaurantsService.listMine();
+```
+
+**O qualificador volta quando sem ele o nome fica ambíguo ou colide.** Se um dia o
+`ProductsService` também mexer em categoria, aí é `createCategory` — porque `create` sozinho
+não diria mais o quê. Mesma lógica para `AddressService.findByZipCode`: `find` sozinho não diz
+por onde se busca, então `ByZipCode` fica.
+
+Verbo que não repete o nome do service já está certo e não muda: `AuthService.login()`,
+`AuthService.refreshToken()`, `AuthService.getMe()`.
+
+A regra é do método do service. O hook do use case continua com o nome inteiro
+(`useCreateProduct`), porque ele é importado solto e `useCreate` não diria nada.
+
 ## Regras por contexto
 
 As regras detalhadas ficam em `.claude/rules/`. Elas carregam sozinhas quando você **lê** um

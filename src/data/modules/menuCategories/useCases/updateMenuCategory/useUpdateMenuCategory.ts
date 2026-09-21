@@ -12,7 +12,7 @@ export function useUpdateMenuCategory() {
 	const { mutateAsync, isPending } = useMutation({
 		mutationKey: [MenuCategoryMutationKeys.UPDATE_MENU_CATEGORY],
 		mutationFn: ({ restaurantId, menuCategoryId, ...payload }: IUpdateMenuCategoryVariables) =>
-			MenuCategoriesService.updateMenuCategory(restaurantId, menuCategoryId, payload),
+			MenuCategoriesService.update(restaurantId, menuCategoryId, payload),
 		async onSuccess(_menuCategory, { restaurantId }) {
 			await queryClient.invalidateQueries({
 				queryKey: [MenuCategoryQueryKeys.MENU_CATEGORIES, restaurantId]

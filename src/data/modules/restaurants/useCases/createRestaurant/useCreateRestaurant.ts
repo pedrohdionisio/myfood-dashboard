@@ -7,7 +7,7 @@ export function useCreateRestaurant() {
 
 	const { mutateAsync, isPending } = useMutation({
 		mutationKey: [RestaurantMutationKeys.CREATE_RESTAURANT],
-		mutationFn: RestaurantsService.createRestaurant,
+		mutationFn: RestaurantsService.create,
 		async onSuccess() {
 			await queryClient.invalidateQueries({ queryKey: [RestaurantQueryKeys.MY_RESTAURANTS] });
 		}

@@ -5,7 +5,7 @@ import { MenuCategoriesService } from 'data/modules/menuCategories/services/Menu
 export function useMenuCategories(restaurantId: string | null) {
 	const { data, isLoading, error } = useQuery({
 		queryKey: [MenuCategoryQueryKeys.MENU_CATEGORIES, restaurantId],
-		queryFn: restaurantId ? () => MenuCategoriesService.listMenuCategories(restaurantId) : skipToken
+		queryFn: restaurantId ? () => MenuCategoriesService.list(restaurantId) : skipToken
 	});
 
 	return {

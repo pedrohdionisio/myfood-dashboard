@@ -12,7 +12,7 @@ export function useReorderMenuCategories() {
 	const { mutateAsync, isPending } = useMutation({
 		mutationKey: [MenuCategoryMutationKeys.REORDER_MENU_CATEGORIES],
 		mutationFn: ({ restaurantId, ...payload }: IReorderMenuCategoriesVariables) =>
-			MenuCategoriesService.reorderMenuCategories(restaurantId, payload),
+			MenuCategoriesService.reorder(restaurantId, payload),
 		onSuccess(menuCategories, { restaurantId }) {
 			queryClient.setQueryData(
 				[MenuCategoryQueryKeys.MENU_CATEGORIES, restaurantId],

@@ -9,7 +9,7 @@ export function useUpdateProduct() {
 	const { mutateAsync, isPending } = useMutation({
 		mutationKey: [ProductMutationKeys.UPDATE_PRODUCT],
 		mutationFn: ({ restaurantId, productId, ...payload }: IUpdateProductVariables) =>
-			ProductsService.updateProduct(restaurantId, productId, payload),
+			ProductsService.update(restaurantId, productId, payload),
 		async onSuccess(_product, { restaurantId }) {
 			await queryClient.invalidateQueries({
 				queryKey: [ProductQueryKeys.PRODUCTS, restaurantId]

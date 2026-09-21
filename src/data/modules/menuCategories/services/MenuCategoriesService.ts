@@ -5,16 +5,13 @@ import type {
 } from 'data/modules/menuCategories/types/MenuCategoryTypes';
 import type { IMenuCategory } from 'shared/entities/IMenuCategory';
 
-async function listMenuCategories(restaurantId: string): Promise<IMenuCategory[]> {
+async function list(restaurantId: string): Promise<IMenuCategory[]> {
 	const { data } = await api.get<IMenuCategory[]>(`/restaurants/${restaurantId}/menu-categories`);
 
 	return data;
 }
 
-async function createMenuCategory(
-	restaurantId: string,
-	payload: IMenuCategoryPayload
-): Promise<IMenuCategory> {
+async function create(restaurantId: string, payload: IMenuCategoryPayload): Promise<IMenuCategory> {
 	const { data } = await api.post<IMenuCategory>(
 		`/restaurants/${restaurantId}/menu-categories`,
 		payload
@@ -23,7 +20,7 @@ async function createMenuCategory(
 	return data;
 }
 
-async function updateMenuCategory(
+async function update(
 	restaurantId: string,
 	menuCategoryId: string,
 	payload: IMenuCategoryPayload
@@ -36,10 +33,7 @@ async function updateMenuCategory(
 	return data;
 }
 
-async function archiveMenuCategory(
-	restaurantId: string,
-	menuCategoryId: string
-): Promise<IMenuCategory> {
+async function archive(restaurantId: string, menuCategoryId: string): Promise<IMenuCategory> {
 	const { data } = await api.delete<IMenuCategory>(
 		`/restaurants/${restaurantId}/menu-categories/${menuCategoryId}`
 	);
@@ -47,7 +41,7 @@ async function archiveMenuCategory(
 	return data;
 }
 
-async function reorderMenuCategories(
+async function reorder(
 	restaurantId: string,
 	payload: IReorderMenuCategoriesPayload
 ): Promise<IMenuCategory[]> {
@@ -60,9 +54,9 @@ async function reorderMenuCategories(
 }
 
 export const MenuCategoriesService = {
-	listMenuCategories,
-	createMenuCategory,
-	updateMenuCategory,
-	archiveMenuCategory,
-	reorderMenuCategories
+	list,
+	create,
+	update,
+	archive,
+	reorder
 };

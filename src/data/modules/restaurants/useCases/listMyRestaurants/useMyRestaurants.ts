@@ -5,7 +5,7 @@ import { RestaurantQueryKeys } from '../../keys/RestaurantKeys';
 export function useMyRestaurants() {
 	const { data, isLoading, isRefetching, error, refetch } = useQuery({
 		queryKey: [RestaurantQueryKeys.MY_RESTAURANTS],
-		queryFn: RestaurantsService.listMyRestaurants
+		queryFn: RestaurantsService.listMine
 	});
 
 	return {

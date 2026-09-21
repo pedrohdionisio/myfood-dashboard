@@ -9,7 +9,7 @@ export function useReplaceOpeningHours() {
 	const { mutateAsync, isPending } = useMutation({
 		mutationKey: [OpeningHoursMutationKeys.REPLACE_OPENING_HOURS],
 		mutationFn: ({ restaurantId, ...payload }: IReplaceOpeningHoursVariables) =>
-			OpeningHoursService.replaceOpeningHours(restaurantId, payload),
+			OpeningHoursService.replace(restaurantId, payload),
 		onSuccess(openingHours, { restaurantId }) {
 			queryClient.setQueryData([OpeningHoursQueryKeys.OPENING_HOURS, restaurantId], openingHours);
 		}

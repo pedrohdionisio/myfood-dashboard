@@ -16,7 +16,7 @@ Nada em `data/modules/` lê o `SelectedRestaurantProvider`. O service recebe o `
 como primeiro parâmetro, e o hook do use-case recebe de quem o chama:
 
 ```ts
-async function listMenuCategories(restaurantId: string): Promise<IMenuCategory[]> {
+async function list(restaurantId: string): Promise<IMenuCategory[]> {
 	const { data } = await api.get<IMenuCategory[]>(`/restaurants/${restaurantId}/menu-categories`);
 
 	return data;
@@ -28,7 +28,7 @@ export function useMenuCategories(restaurantId: string | null) {
 	const { data, isLoading, error } = useQuery({
 		queryKey: [MenuQueryKeys.MENU_CATEGORIES, restaurantId],
 		queryFn: restaurantId
-			? () => MenuCategoriesService.listMenuCategories(restaurantId)
+			? () => MenuCategoriesService.list(restaurantId)
 			: skipToken
 	});
 
@@ -50,7 +50,7 @@ export function useReplaceOpeningHours() {
 	const { mutateAsync, isPending } = useMutation({
 		mutationKey: [OpeningHoursMutationKeys.REPLACE_OPENING_HOURS],
 		mutationFn: ({ restaurantId, ...payload }: IReplaceOpeningHoursVariables) =>
-			OpeningHoursService.replaceOpeningHours(restaurantId, payload),
+			OpeningHoursService.replace(restaurantId, payload),
 		onSuccess(openingHours, { restaurantId }) {
 			queryClient.setQueryData([OpeningHoursQueryKeys.OPENING_HOURS, restaurantId], openingHours);
 		}

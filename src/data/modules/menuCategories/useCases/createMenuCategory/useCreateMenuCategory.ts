@@ -12,7 +12,7 @@ export function useCreateMenuCategory() {
 	const { mutateAsync, isPending } = useMutation({
 		mutationKey: [MenuCategoryMutationKeys.CREATE_MENU_CATEGORY],
 		mutationFn: ({ restaurantId, ...payload }: ICreateMenuCategoryVariables) =>
-			MenuCategoriesService.createMenuCategory(restaurantId, payload),
+			MenuCategoriesService.create(restaurantId, payload),
 		async onSuccess(_menuCategory, { restaurantId }) {
 			await queryClient.invalidateQueries({
 				queryKey: [MenuCategoryQueryKeys.MENU_CATEGORIES, restaurantId]

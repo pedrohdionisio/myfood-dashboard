@@ -5,7 +5,7 @@ import { OpeningHoursQueryKeys } from '../../keys/OpeningHoursKeys';
 export function useOpeningHours(restaurantId: string | null) {
 	const { data, isLoading, error } = useQuery({
 		queryKey: [OpeningHoursQueryKeys.OPENING_HOURS, restaurantId],
-		queryFn: restaurantId ? () => OpeningHoursService.listOpeningHours(restaurantId) : skipToken
+		queryFn: restaurantId ? () => OpeningHoursService.list(restaurantId) : skipToken
 	});
 
 	return {

@@ -9,7 +9,7 @@ export function useArchiveProduct() {
 	const { mutateAsync, isPending } = useMutation({
 		mutationKey: [ProductMutationKeys.ARCHIVE_PRODUCT],
 		mutationFn: ({ restaurantId, productId }: IArchiveProductVariables) =>
-			ProductsService.archiveProduct(restaurantId, productId),
+			ProductsService.archive(restaurantId, productId),
 		async onSuccess(_product, { restaurantId }) {
 			await queryClient.invalidateQueries({
 				queryKey: [ProductQueryKeys.PRODUCTS, restaurantId]

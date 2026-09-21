@@ -1,9 +1,11 @@
 import {
 	BikeIcon,
 	ClipboardListIcon,
+	HistoryIcon,
 	LayersIcon,
 	LayoutDashboardIcon,
 	SettingsIcon,
+	StarIcon,
 	UtensilsCrossedIcon
 } from 'lucide-react';
 import {
@@ -30,8 +32,16 @@ const DASHBOARD_MENU_GROUPS = [
 	},
 	{
 		id: 'orders',
+		label: 'Pedidos',
+		items: [
+			{ label: 'Em aberto', to: APP_ROUTES.orders, icon: ClipboardListIcon },
+			{ label: 'Histórico', to: APP_ROUTES.ordersHistory, icon: HistoryIcon }
+		]
+	},
+	{
+		id: 'reviews',
 		label: null,
-		items: [{ label: 'Pedidos', to: APP_ROUTES.orders, icon: ClipboardListIcon }]
+		items: [{ label: 'Avaliações', to: APP_ROUTES.reviews, icon: StarIcon }]
 	},
 	{
 		id: 'menu',

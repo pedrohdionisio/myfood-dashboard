@@ -9,7 +9,7 @@ export type OrderTransition =
 	| 'delivery-failed';
 
 export interface IListOrdersParams {
-	status: OrderStatus;
+	status?: OrderStatus;
 	page?: number;
 	perPage?: number;
 }

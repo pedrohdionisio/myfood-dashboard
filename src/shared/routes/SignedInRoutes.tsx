@@ -1,5 +1,6 @@
 import { useSelectedRestaurant } from 'data/contexts/SelectedRestaurantProvider/SelectedRestaurantProvider';
 import { useMyRestaurants } from 'data/modules/restaurants/useCases/listMyRestaurants/useMyRestaurants';
+import { Drivers } from 'presentation/pages/Drivers/Drivers';
 import { Home } from 'presentation/pages/Home/Home';
 import { MenuCategories } from 'presentation/pages/MenuCategories/MenuCategories';
 import { Orders } from 'presentation/pages/Orders/Orders';
@@ -46,6 +47,7 @@ export function SignedInRoutes() {
 				<Route path={APP_ROUTES.orders} element={<Orders />} />
 				<Route path={APP_ROUTES.menuCategories} element={<MenuCategories />} />
 				<Route path={APP_ROUTES.products} element={<Products />} />
+				<Route path={APP_ROUTES.drivers} element={<Drivers />} />
 				<Route path={APP_ROUTES.settings} element={<Settings />} />
 			</Route>
 

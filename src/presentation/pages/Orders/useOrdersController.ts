@@ -4,7 +4,14 @@ import { useOrdersByStatus } from 'data/modules/orders/useCases/listOrders/useOr
 import { useState } from 'react';
 import type { IOrder } from 'shared/entities/IOrder';
 
-const BOARD_STATUSES = ['PENDING', 'CONFIRMED', 'PREPARING', 'READY', 'OUT_FOR_DELIVERY'] as const;
+const BOARD_STATUSES = [
+	'PENDING',
+	'CONFIRMED',
+	'PREPARING',
+	'READY',
+	'OUT_FOR_DELIVERY',
+	'DELIVERED'
+] as const;
 
 type OrderBoardStatus = (typeof BOARD_STATUSES)[number];
 
@@ -13,7 +20,8 @@ const ORDER_COLUMN_LABELS: Record<OrderBoardStatus, string> = {
 	CONFIRMED: 'Aceitos',
 	PREPARING: 'Em preparo',
 	READY: 'Prontos',
-	OUT_FOR_DELIVERY: 'Saiu para entrega'
+	OUT_FOR_DELIVERY: 'Saiu para entrega',
+	DELIVERED: 'Entregues'
 };
 
 export function useOrdersController() {

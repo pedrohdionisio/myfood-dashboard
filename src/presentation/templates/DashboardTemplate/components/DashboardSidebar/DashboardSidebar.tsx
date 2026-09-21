@@ -1,4 +1,5 @@
 import {
+	BikeIcon,
 	ClipboardListIcon,
 	LayersIcon,
 	LayoutDashboardIcon,
@@ -39,6 +40,11 @@ const DASHBOARD_MENU_GROUPS = [
 			{ label: 'Categorias', to: APP_ROUTES.menuCategories, icon: LayersIcon },
 			{ label: 'Produtos', to: APP_ROUTES.products, icon: UtensilsCrossedIcon }
 		]
+	},
+	{
+		id: 'team',
+		label: 'Equipe',
+		items: [{ label: 'Entregadores', to: APP_ROUTES.drivers, icon: BikeIcon }]
 	},
 	{
 		id: 'settings',

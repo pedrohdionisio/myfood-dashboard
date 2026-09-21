@@ -1,4 +1,10 @@
-import { LayersIcon, LayoutDashboardIcon, SettingsIcon, UtensilsCrossedIcon } from 'lucide-react';
+import {
+	ClipboardListIcon,
+	LayersIcon,
+	LayoutDashboardIcon,
+	SettingsIcon,
+	UtensilsCrossedIcon
+} from 'lucide-react';
 import {
 	Sidebar,
 	SidebarContent,
@@ -20,6 +26,11 @@ const DASHBOARD_MENU_GROUPS = [
 		id: 'overview',
 		label: null,
 		items: [{ label: 'Visão geral', to: APP_ROUTES.home, icon: LayoutDashboardIcon }]
+	},
+	{
+		id: 'orders',
+		label: null,
+		items: [{ label: 'Pedidos', to: APP_ROUTES.orders, icon: ClipboardListIcon }]
 	},
 	{
 		id: 'menu',

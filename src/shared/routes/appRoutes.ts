@@ -4,6 +4,7 @@ export const APP_ROUTES = {
 	signUp: '/cadastro',
 	restaurantOnboarding: '/cadastro/restaurante',
 	restaurantSelection: '/restaurantes',
+	orders: '/pedidos',
 	menuCategories: '/cardapio/categorias',
 	products: '/cardapio/produtos',
 	settings: '/configuracoes'

@@ -1,9 +1,10 @@
-import { LayersIcon, LayoutDashboardIcon, SettingsIcon } from 'lucide-react';
+import { LayersIcon, LayoutDashboardIcon, SettingsIcon, UtensilsCrossedIcon } from 'lucide-react';
 import {
 	Sidebar,
 	SidebarContent,
 	SidebarGroup,
 	SidebarGroupContent,
+	SidebarGroupLabel,
 	SidebarHeader,
 	SidebarMenu,
 	SidebarMenuButton,
@@ -14,10 +15,25 @@ import { NavLink, useLocation } from 'react-router-dom';
 import logo from 'shared/assets/black-red-logo.svg';
 import { APP_ROUTES } from 'shared/routes/appRoutes';
 
-const DASHBOARD_MENU_ITEMS = [
-	{ label: 'Visão geral', to: APP_ROUTES.home, icon: LayoutDashboardIcon },
-	{ label: 'Categorias', to: APP_ROUTES.menuCategories, icon: LayersIcon },
-	{ label: 'Configurações', to: APP_ROUTES.settings, icon: SettingsIcon }
+const DASHBOARD_MENU_GROUPS = [
+	{
+		id: 'overview',
+		label: null,
+		items: [{ label: 'Visão geral', to: APP_ROUTES.home, icon: LayoutDashboardIcon }]
+	},
+	{
+		id: 'menu',
+		label: 'Cardápio',
+		items: [
+			{ label: 'Categorias', to: APP_ROUTES.menuCategories, icon: LayersIcon },
+			{ label: 'Produtos', to: APP_ROUTES.products, icon: UtensilsCrossedIcon }
+		]
+	},
+	{
+		id: 'settings',
+		label: null,
+		items: [{ label: 'Configurações', to: APP_ROUTES.settings, icon: SettingsIcon }]
+	}
 ];
 
 export function DashboardSidebar() {
@@ -30,22 +46,26 @@ export function DashboardSidebar() {
 			</SidebarHeader>
 
 			<SidebarContent>
-				<SidebarGroup>
-					<SidebarGroupContent>
-						<SidebarMenu>
-							{DASHBOARD_MENU_ITEMS.map(({ label, to, icon: Icon }) => (
-								<SidebarMenuItem key={to}>
-									<SidebarMenuButton asChild isActive={pathname === to} tooltip={label}>
-										<NavLink to={to}>
-											<Icon aria-hidden="true" />
-											<span>{label}</span>
-										</NavLink>
-									</SidebarMenuButton>
-								</SidebarMenuItem>
-							))}
-						</SidebarMenu>
-					</SidebarGroupContent>
-				</SidebarGroup>
+				{DASHBOARD_MENU_GROUPS.map((group) => (
+					<SidebarGroup key={group.id}>
+						{group.label ? <SidebarGroupLabel>{group.label}</SidebarGroupLabel> : null}
+
+						<SidebarGroupContent>
+							<SidebarMenu>
+								{group.items.map(({ label, to, icon: Icon }) => (
+									<SidebarMenuItem key={to}>
+										<SidebarMenuButton asChild isActive={pathname === to} tooltip={label}>
+											<NavLink to={to}>
+												<Icon aria-hidden="true" />
+												<span>{label}</span>
+											</NavLink>
+										</SidebarMenuButton>
+									</SidebarMenuItem>
+								))}
+							</SidebarMenu>
+						</SidebarGroupContent>
+					</SidebarGroup>
+				))}
 			</SidebarContent>
 
 			<SidebarRail />

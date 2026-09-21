@@ -10,11 +10,15 @@ const PAYMENT_METHOD_LABELS: Record<PaymentMethod, string> = {
 	CARD_ON_DELIVERY: 'Cartão na entrega'
 };
 
-export function OrderCard({ order }: IOrderCardProps) {
+export function OrderCard({ order, onSelect }: IOrderCardProps) {
 	const itemCount = order.items.reduce((total, item) => total + item.quantity, 0);
 
 	return (
-		<article className="flex flex-col gap-3 rounded-xl border border-border bg-background p-4 shadow-xs">
+		<button
+			type="button"
+			onClick={() => onSelect(order)}
+			className="flex w-full flex-col gap-3 rounded-xl border border-border bg-background p-4 text-left shadow-xs transition-colors hover:border-ring hover:bg-accent/40 focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
+		>
 			<header className="flex items-center justify-between gap-2">
 				<span className="font-medium">#{order.displayNumber}</span>
 
@@ -39,6 +43,6 @@ export function OrderCard({ order }: IOrderCardProps) {
 					{PAYMENT_METHOD_LABELS[order.paymentMethod]}
 				</span>
 			</footer>
-		</article>
+		</button>
 	);
 }

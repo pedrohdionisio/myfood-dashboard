@@ -9,7 +9,8 @@ export function OrderBoardColumn({
 	label,
 	orders,
 	isLoadingOrders,
-	ordersErrorMessage
+	ordersErrorMessage,
+	onSelectOrder
 }: IOrderBoardColumnProps) {
 	const isEmpty = !isLoadingOrders && !ordersErrorMessage && orders.length === 0;
 
@@ -45,7 +46,7 @@ export function OrderBoardColumn({
 				) : null}
 
 				{orders.map((order) => (
-					<OrderCard key={order.id} order={order} />
+					<OrderCard key={order.id} order={order} onSelect={onSelectOrder} />
 				))}
 			</div>
 		</section>

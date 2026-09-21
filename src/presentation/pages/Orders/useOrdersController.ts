@@ -1,6 +1,8 @@
 import { getApiErrorMessage } from 'data/config/apiError';
 import { useSelectedRestaurant } from 'data/contexts/SelectedRestaurantProvider/SelectedRestaurantProvider';
 import { useOrdersByStatus } from 'data/modules/orders/useCases/listOrders/useOrdersByStatus';
+import { useState } from 'react';
+import type { IOrder } from 'shared/entities/IOrder';
 
 const BOARD_STATUSES = ['PENDING', 'CONFIRMED', 'PREPARING', 'READY', 'OUT_FOR_DELIVERY'] as const;
 
@@ -18,6 +20,8 @@ export function useOrdersController() {
 	const { selectedRestaurant } = useSelectedRestaurant();
 	const restaurantId = selectedRestaurant?.restaurantId ?? null;
 
+	const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
+
 	const columns = useOrdersByStatus(restaurantId, BOARD_STATUSES).map((column) => ({
 		status: column.status,
 		label: ORDER_COLUMN_LABELS[column.status],
@@ -27,7 +31,19 @@ export function useOrdersController() {
 		ordersErrorMessage: column.ordersError ? getApiErrorMessage(column.ordersError) : null
 	}));
 
+	function handleSelectOrder(order: IOrder) {
+		setSelectedOrder(order);
+	}
+
+	function handleCloseDetailsModal() {
+		setSelectedOrder(null);
+	}
+
 	return {
+		restaurantId,
+		selectedOrder,
+		handleSelectOrder,
+		handleCloseDetailsModal,
 		columns,
 		hasTruncatedColumn: columns.some((column) => column.hasMoreOrders)
 	};

@@ -1,10 +1,18 @@
 import { InfoIcon } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from 'presentation/components/Alert/Alert';
 import { OrderBoardColumn } from './components/OrderBoardColumn/OrderBoardColumn';
+import { OrderDetailsModal } from './components/OrderDetailsModal/OrderDetailsModal';
 import { useOrdersController } from './useOrdersController';
 
 export function Orders() {
-	const { columns, hasTruncatedColumn } = useOrdersController();
+	const {
+		restaurantId,
+		selectedOrder,
+		columns,
+		hasTruncatedColumn,
+		handleSelectOrder,
+		handleCloseDetailsModal
+	} = useOrdersController();
 
 	return (
 		<div className="flex flex-col gap-6">
@@ -36,9 +44,19 @@ export function Orders() {
 						orders={column.orders}
 						isLoadingOrders={column.isLoadingOrders}
 						ordersErrorMessage={column.ordersErrorMessage}
+						onSelectOrder={handleSelectOrder}
 					/>
 				))}
 			</div>
+
+			{restaurantId ? (
+				<OrderDetailsModal
+					isOpen={!!selectedOrder}
+					restaurantId={restaurantId}
+					order={selectedOrder}
+					onClose={handleCloseDetailsModal}
+				/>
+			) : null}
 		</div>
 	);
 }

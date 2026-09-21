@@ -5,4 +5,5 @@ export interface IOrderBoardColumnProps {
 	orders: IOrder[];
 	isLoadingOrders: boolean;
 	ordersErrorMessage: string | null;
+	onSelectOrder: (order: IOrder) => void;
 }

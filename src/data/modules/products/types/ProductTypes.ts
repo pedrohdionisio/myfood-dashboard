@@ -3,6 +3,7 @@ export interface IProductPayload {
 	name: string;
 	description: string;
 	priceCents: number;
+	imageKey: string | null;
 }
 
 export interface ICreateProductVariables extends IProductPayload {

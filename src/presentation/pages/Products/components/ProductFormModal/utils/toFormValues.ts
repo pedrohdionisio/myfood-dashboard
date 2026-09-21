@@ -11,7 +11,8 @@ export function toFormValues(
 			menuCategoryId: defaultMenuCategoryId,
 			name: '',
 			description: '',
-			price: ''
+			price: '',
+			imageKey: null
 		};
 	}
 
@@ -19,6 +20,7 @@ export function toFormValues(
 		menuCategoryId: product.menuCategoryId,
 		name: product.name,
 		description: product.description ?? '',
-		price: Mask.currency(String(product.priceCents))
+		price: Mask.currency(String(product.priceCents)),
+		imageKey: product.imageKey
 	};
 }

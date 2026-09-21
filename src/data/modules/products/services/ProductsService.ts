@@ -15,11 +15,12 @@ async function list(restaurantId: string, menuCategoryId: string): Promise<IProd
 
 async function create(
 	restaurantId: string,
-	{ description, ...payload }: IProductPayload
+	{ description, imageKey, ...payload }: IProductPayload
 ): Promise<IProduct> {
 	const { data } = await api.post<IProduct>(`/restaurants/${restaurantId}/products`, {
 		...payload,
-		description: description || undefined
+		description: description || undefined,
+		imageKey: imageKey ?? undefined
 	});
 
 	return data;

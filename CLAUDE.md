@@ -62,6 +62,19 @@ pasta, sobe para `shared/utils` ou `shared/hooks`.
 Sem exagero: a regra é sobre função. Constante fica onde está — a não ser que exista só para
 aquela função, e aí desce junto com ela.
 
+### Imagem de produto: o 4:3 e o 1280 vêm da API
+
+O `ImageInput` exporta a foto do produto em **1280×960 WebP**, e nenhum dos dois números é
+escolha de layout. `1280` é a largura da variante `lg` em `IMAGE_VARIANTS`
+(`myfood-api/src/domain/images.ts`). O 4:3 é nosso, mas vira contrato porque o sharp lá
+redimensiona **só por largura** (`resize({ width, withoutEnlargement: true })`) e nunca corta —
+a proporção que sobe é a proporção que o cliente vê no cardápio.
+
+Mexer em um lado só falha calado. Abaixo de 1280, o `withoutEnlargement` não amplia: o `lg` sai
+menor que o esperado e borra. Acima, o sharp joga o excedente fora e o byte extra só encareceu o
+upload. Mudou `IMAGE_VARIANTS` na API, mude o `outputWidth` em
+`presentation/pages/Products/components/ProductFormModal/ProductFormModal.tsx`.
+
 ### Método de service não repete o nome do service
 
 O objeto já diz de que entidade se trata, então o método só carrega o verbo:

@@ -10,7 +10,8 @@ const productFormSchema = z.object({
 		.min(2, 'O nome deve ter ao menos 2 caracteres')
 		.max(120, 'O nome deve ter no máximo 120 caracteres'),
 	description: z.string().max(2000, 'A descrição deve ter no máximo 2000 caracteres'),
-	price: z.string()
+	price: z.string(),
+	imageKey: z.string().nullable()
 });
 
 export const productSchema = productFormSchema
@@ -28,7 +29,8 @@ export const productSchema = productFormSchema
 			menuCategoryId: values.menuCategoryId,
 			name: values.name,
 			description: values.description.trim(),
-			priceCents: Number(Mask.remove(values.price))
+			priceCents: Number(Mask.remove(values.price)),
+			imageKey: values.imageKey
 		})
 	);
 

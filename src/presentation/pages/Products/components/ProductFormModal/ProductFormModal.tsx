@@ -1,4 +1,5 @@
 import { Button } from 'presentation/components/Button/Button';
+import { ImageInput } from 'presentation/components/ImageInput/ImageInput';
 import { Modal } from 'presentation/components/Modal/Modal';
 import {
 	Select,
@@ -22,19 +23,31 @@ export function ProductFormModal({
 	product,
 	onClose
 }: IProductFormModalProps) {
-	const { register, control, errors, isEditing, isSubmitting, handleSubmit } =
-		useProductFormModalController({
-			isOpen,
-			restaurantId,
-			menuCategories,
-			defaultMenuCategoryId,
-			product,
-			onClose
-		});
+	const {
+		register,
+		control,
+		errors,
+		previewUrl,
+		isEditing,
+		isUploadingImage,
+		isCroppingImage,
+		isSubmitting,
+		handleSelectImage,
+		handleRemoveImage,
+		handleCroppingChange,
+		handleSubmit
+	} = useProductFormModalController({
+		isOpen,
+		restaurantId,
+		menuCategories,
+		defaultMenuCategoryId,
+		product,
+		onClose
+	});
 
 	return (
 		<Modal.Root open={isOpen} onOpenChange={onClose}>
-			<Modal.Content>
+			<Modal.Content size="lg">
 				<Modal.Header>
 					<Modal.Title>{isEditing ? 'Editar produto' : 'Novo produto'}</Modal.Title>
 
@@ -51,39 +64,18 @@ export function ProductFormModal({
 					noValidate
 				>
 					<Modal.Body>
-						<div className="flex w-full flex-col gap-2">
-							<label htmlFor="menuCategoryId" className="text-label">
-								Categoria
-							</label>
-
-							<Controller
-								control={control}
-								name="menuCategoryId"
-								render={({ field }) => (
-									<Select value={field.value} onValueChange={field.onChange}>
-										<SelectTrigger
-											id="menuCategoryId"
-											className="w-full"
-											aria-invalid={!!errors.menuCategoryId}
-										>
-											<SelectValue placeholder="Escolha uma categoria" />
-										</SelectTrigger>
-
-										<SelectContent>
-											{menuCategories.map((menuCategory) => (
-												<SelectItem key={menuCategory.id} value={menuCategory.id}>
-													{menuCategory.name}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-								)}
-							/>
-
-							{errors.menuCategoryId ? (
-								<p className="text-body-sm text-destructive">{errors.menuCategoryId.message}</p>
-							) : null}
-						</div>
+						<ImageInput
+							label="Imagem"
+							hint="JPG, PNG ou WebP. A foto é cortada em 4:3."
+							previewUrl={previewUrl}
+							aspect={4 / 3}
+							outputWidth={1280}
+							disabled={isSubmitting}
+							isUploading={isUploadingImage}
+							onSelect={handleSelectImage}
+							onRemove={handleRemoveImage}
+							onCroppingChange={handleCroppingChange}
+						/>
 
 						<TextInput
 							id="name"
@@ -94,17 +86,53 @@ export function ProductFormModal({
 							{...register('name')}
 						/>
 
-						<TextInput
-							id="price"
-							label="Preço"
-							placeholder="0,00"
-							inputMode="numeric"
-							autoComplete="off"
-							startIcon={<span className="text-body-sm">R$</span>}
-							mask={Mask.currency}
-							error={errors.price?.message}
-							{...register('price')}
-						/>
+						<div className="grid gap-6 sm:grid-cols-2">
+							<div className="flex w-full flex-col gap-2">
+								<label htmlFor="menuCategoryId" className="text-label">
+									Categoria
+								</label>
+
+								<Controller
+									control={control}
+									name="menuCategoryId"
+									render={({ field }) => (
+										<Select value={field.value} onValueChange={field.onChange}>
+											<SelectTrigger
+												id="menuCategoryId"
+												className="w-full"
+												aria-invalid={!!errors.menuCategoryId}
+											>
+												<SelectValue placeholder="Escolha uma categoria" />
+											</SelectTrigger>
+
+											<SelectContent>
+												{menuCategories.map((menuCategory) => (
+													<SelectItem key={menuCategory.id} value={menuCategory.id}>
+														{menuCategory.name}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+									)}
+								/>
+
+								{errors.menuCategoryId ? (
+									<p className="text-body-sm text-destructive">{errors.menuCategoryId.message}</p>
+								) : null}
+							</div>
+
+							<TextInput
+								id="price"
+								label="Preço"
+								placeholder="0,00"
+								inputMode="numeric"
+								autoComplete="off"
+								startIcon={<span className="text-body-sm">R$</span>}
+								mask={Mask.currency}
+								error={errors.price?.message}
+								{...register('price')}
+							/>
+						</div>
 
 						<TextareaInput
 							id="description"
@@ -123,7 +151,11 @@ export function ProductFormModal({
 							</Button>
 						</Modal.Close>
 
-						<Button type="submit" isLoading={isSubmitting}>
+						<Button
+							type="submit"
+							disabled={isUploadingImage || isCroppingImage}
+							isLoading={isSubmitting}
+						>
 							{isEditing ? 'Salvar' : 'Criar produto'}
 						</Button>
 					</Modal.Footer>

@@ -1,14 +1,23 @@
+import { TriangleAlertIcon } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from 'presentation/components/Alert/Alert';
 import { Skeleton } from 'presentation/components/Skeleton/Skeleton';
+import { AcceptingOrdersCard } from './components/AcceptingOrdersCard/AcceptingOrdersCard';
 import { OpeningHoursForm } from './components/OpeningHoursForm/OpeningHoursForm';
+import { RestaurantImagesForm } from './components/RestaurantImagesForm/RestaurantImagesForm';
+import { RestaurantProfileForm } from './components/RestaurantProfileForm/RestaurantProfileForm';
 import { useSettingsController } from './useSettingsController';
 
 export function Settings() {
 	const {
 		restaurantId,
+		restaurant,
 		openingHours,
 		isLoadingOpeningHours,
 		openingHoursError,
-		canManageOpeningHours
+		isLoadingRestaurant,
+		restaurantErrorMessage,
+		canManageOpeningHours,
+		isOwner
 	} = useSettingsController();
 
 	return (
@@ -20,6 +29,36 @@ export function Settings() {
 					Defina como o restaurante funciona no dia a dia.
 				</p>
 			</header>
+
+			{restaurantErrorMessage ? (
+				<Alert variant="destructive">
+					<TriangleAlertIcon aria-hidden="true" />
+
+					<AlertTitle>Não foi possível carregar o cadastro</AlertTitle>
+
+					<AlertDescription>{restaurantErrorMessage}</AlertDescription>
+				</Alert>
+			) : null}
+
+			{isOwner && isLoadingRestaurant ? (
+				<>
+					<Skeleton className="h-28 w-full rounded-xl" />
+
+					<Skeleton className="h-72 w-full rounded-xl" />
+
+					<Skeleton className="h-128 w-full rounded-xl" />
+				</>
+			) : null}
+
+			{restaurant ? (
+				<>
+					<AcceptingOrdersCard restaurant={restaurant} />
+
+					<RestaurantImagesForm restaurant={restaurant} />
+
+					<RestaurantProfileForm restaurant={restaurant} />
+				</>
+			) : null}
 
 			{isLoadingOpeningHours ? <Skeleton className="h-128 w-full rounded-lg" /> : null}
 

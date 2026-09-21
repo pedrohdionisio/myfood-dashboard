@@ -81,8 +81,8 @@ export function ImageInput({
 					{isSourceTooSmall ? (
 						<p className="flex items-start gap-2 text-body-sm text-muted-foreground">
 							<TriangleAlertIcon aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
-							Esta imagem tem menos de {outputWidth}px de largura e pode sair sem nitidez no
-							cardápio.
+							Esta imagem tem menos de {outputWidth}px de largura e pode sair sem nitidez para o
+							cliente.
 						</p>
 					) : null}
 

@@ -33,3 +33,15 @@ export interface IDispatchOrderVariables {
 	orderId: string;
 	driverMemberId: string;
 }
+
+export const ORDER_STREAM_EVENT_TYPES = ['ORDER_PLACED', 'ORDER_STATUS_CHANGED'] as const;
+
+export type OrderStreamEventType = (typeof ORDER_STREAM_EVENT_TYPES)[number];
+
+export interface IOrderStreamEvent {
+	type: OrderStreamEventType;
+	orderId: string;
+	displayNumber: number;
+	status: OrderStatus;
+	occurredAt: string;
+}

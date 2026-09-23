@@ -33,6 +33,7 @@ export interface ISessionHandlers {
 }
 
 let sessionInterceptorId: number | undefined;
+let sessionHandlers: ISessionHandlers | null = null;
 let refreshPromise: Promise<void> | null = null;
 
 export function setAccessToken(accessToken: string) {
@@ -43,17 +44,40 @@ export function removeAccessToken() {
 	api.defaults.headers.common.Authorization = undefined;
 }
 
+export function getAuthorizationHeader(): string | null {
+	const authorization = api.defaults.headers.common.Authorization;
+
+	return typeof authorization === 'string' ? authorization : null;
+}
+
+export function renewAccessToken(): Promise<void> {
+	if (!sessionHandlers) {
+		return Promise.reject(new Error('Não há sessão ativa para renovar'));
+	}
+
+	if (!refreshPromise) {
+		refreshPromise = sessionHandlers.refreshAccessToken().finally(() => {
+			refreshPromise = null;
+		});
+	}
+
+	return refreshPromise;
+}
+
 export function removeSessionHandlers() {
 	if (sessionInterceptorId !== undefined) {
 		api.interceptors.response.eject(sessionInterceptorId);
 		sessionInterceptorId = undefined;
 	}
 
+	sessionHandlers = null;
 	refreshPromise = null;
 }
 
-export function setSessionHandlers({ refreshAccessToken, signOut }: ISessionHandlers) {
+export function setSessionHandlers(handlers: ISessionHandlers) {
 	removeSessionHandlers();
+
+	sessionHandlers = handlers;
 
 	sessionInterceptorId = api.interceptors.response.use(
 		(response) => response,
@@ -69,22 +93,16 @@ export function setSessionHandlers({ refreshAccessToken, signOut }: ISessionHand
 			}
 
 			if (config._retry) {
-				signOut();
+				handlers.signOut();
 
 				return Promise.reject(error);
 			}
 
 			config._retry = true;
 
-			if (!refreshPromise) {
-				refreshPromise = refreshAccessToken().finally(() => {
-					refreshPromise = null;
-				});
-			}
+			await renewAccessToken();
 
-			await refreshPromise;
-
-			const authorization = api.defaults.headers.common.Authorization;
+			const authorization = getAuthorizationHeader();
 
 			if (authorization) {
 				config.headers.Authorization = authorization;

@@ -19,7 +19,7 @@ export function useOrdersByStatus<TStatus extends OrderStatus>(
 		queries: statuses.map((status) => ({
 			queryKey: [OrderQueryKeys.ORDERS, restaurantId, status],
 			queryFn: restaurantId ? () => OrdersService.list(restaurantId, { status }) : skipToken,
-			refetchInterval: 30_000
+			refetchInterval: 60_000
 		}))
 	});
 

@@ -3,6 +3,7 @@ import { Alert, AlertDescription, AlertTitle } from 'presentation/components/Ale
 import { Skeleton } from 'presentation/components/Skeleton/Skeleton';
 import { AcceptingOrdersCard } from './components/AcceptingOrdersCard/AcceptingOrdersCard';
 import { OpeningHoursForm } from './components/OpeningHoursForm/OpeningHoursForm';
+import { RestaurantCuisinesForm } from './components/RestaurantCuisinesForm/RestaurantCuisinesForm';
 import { RestaurantImagesForm } from './components/RestaurantImagesForm/RestaurantImagesForm';
 import { RestaurantProfileForm } from './components/RestaurantProfileForm/RestaurantProfileForm';
 import { useSettingsController } from './useSettingsController';
@@ -15,7 +16,12 @@ export function Settings() {
 		isLoadingOpeningHours,
 		openingHoursError,
 		isLoadingRestaurant,
-		restaurantErrorMessage
+		restaurantErrorMessage,
+		cuisineCatalog,
+		restaurantCuisines,
+		isLoadingCuisines,
+		hasCuisinesError,
+		canEditCuisines
 	} = useSettingsController();
 
 	return (
@@ -56,6 +62,23 @@ export function Settings() {
 
 					<RestaurantProfileForm restaurant={restaurant} />
 				</>
+			) : null}
+
+			{isLoadingCuisines ? <Skeleton className="h-56 w-full rounded-xl" /> : null}
+
+			{hasCuisinesError ? (
+				<p className="rounded-lg border bg-card p-6 text-body-sm text-muted-foreground">
+					Não foi possível carregar as culinárias. Atualize a página para tentar de novo.
+				</p>
+			) : null}
+
+			{canEditCuisines && restaurantId ? (
+				<RestaurantCuisinesForm
+					key={restaurantId}
+					restaurantId={restaurantId}
+					cuisineCatalog={cuisineCatalog}
+					restaurantCuisines={restaurantCuisines}
+				/>
 			) : null}
 
 			{isLoadingOpeningHours ? <Skeleton className="h-128 w-full rounded-lg" /> : null}

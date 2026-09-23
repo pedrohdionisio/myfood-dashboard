@@ -1,0 +1,1 @@
+export const MAX_RESTAURANT_CUISINES = 10;

@@ -7,13 +7,7 @@ import type { IOpeningHoursDayProps } from './OpeningHoursDayTypes';
 
 const EMPTY_SHIFT = { opensAt: '', closesAt: '' };
 
-export function OpeningHoursDay({
-	control,
-	register,
-	dayOfWeek,
-	label,
-	isDisabled
-}: IOpeningHoursDayProps) {
+export function OpeningHoursDay({ control, register, dayOfWeek, label }: IOpeningHoursDayProps) {
 	const { fields, append, remove } = useFieldArray({
 		control,
 		name: `days.${dayOfWeek}.shifts`
@@ -23,7 +17,7 @@ export function OpeningHoursDay({
 
 	const shiftErrors = errors.days?.[dayOfWeek]?.shifts;
 	const switchId = `opening-hours-day-${dayOfWeek}`;
-	const areShiftsDisabled = isDisabled || !isOpenField.value;
+	const areShiftsDisabled = !isOpenField.value;
 
 	return (
 		<div className="flex flex-col gap-3 border-b py-4 last:border-b-0 sm:flex-row sm:gap-6">
@@ -32,7 +26,6 @@ export function OpeningHoursDay({
 					id={switchId}
 					ref={isOpenField.ref}
 					checked={isOpenField.value}
-					disabled={isDisabled}
 					onCheckedChange={isOpenField.onChange}
 					onBlur={isOpenField.onBlur}
 				/>

@@ -1,16 +1,8 @@
 import type { RestaurantStatus } from 'shared/entities/IRestaurant';
 
-export type RestaurantGate =
-	| 'OPERATING'
-	| 'OWNER_MUST_ACTIVATE'
-	| 'WAITING_OWNER'
-	| 'SUSPENDED'
-	| 'NO_RESTAURANT';
+export type RestaurantGate = 'OPERATING' | 'MUST_ACTIVATE' | 'SUSPENDED' | 'NO_RESTAURANT';
 
-export function resolveRestaurantGate(
-	status: RestaurantStatus | undefined,
-	isOwner: boolean
-): RestaurantGate {
+export function resolveRestaurantGate(status: RestaurantStatus | undefined): RestaurantGate {
 	if (status === 'ACTIVE') {
 		return 'OPERATING';
 	}
@@ -20,7 +12,7 @@ export function resolveRestaurantGate(
 	}
 
 	if (status === 'DRAFT') {
-		return isOwner ? 'OWNER_MUST_ACTIVATE' : 'WAITING_OWNER';
+		return 'MUST_ACTIVATE';
 	}
 
 	return 'NO_RESTAURANT';

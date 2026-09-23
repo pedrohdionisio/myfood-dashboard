@@ -27,7 +27,6 @@ export function OrdersHistory() {
 		restaurantId,
 		restaurantGate,
 		canSeeHistory,
-		isBlockedByRole,
 		orders,
 		statusOptions,
 		perPageOptions,
@@ -57,12 +56,6 @@ export function OrdersHistory() {
 
 			{restaurantId ? (
 				<RestaurantGateNotice gate={restaurantGate} restaurantId={restaurantId} />
-			) : null}
-
-			{isBlockedByRole ? (
-				<p className="text-body-sm text-muted-foreground">
-					O histórico do restaurante aparece para quem é dono dele.
-				</p>
 			) : null}
 
 			{ordersErrorMessage ? (

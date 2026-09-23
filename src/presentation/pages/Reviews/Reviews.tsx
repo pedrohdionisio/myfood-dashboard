@@ -19,7 +19,6 @@ export function Reviews() {
 		restaurantId,
 		restaurantGate,
 		canSeeReviews,
-		isBlockedByRole,
 		reviews,
 		ratingAvg,
 		ratingCount,
@@ -61,12 +60,6 @@ export function Reviews() {
 
 			{restaurantId ? (
 				<RestaurantGateNotice gate={restaurantGate} restaurantId={restaurantId} />
-			) : null}
-
-			{isBlockedByRole ? (
-				<p className="text-body-sm text-muted-foreground">
-					As avaliações do restaurante aparecem para quem é dono dele.
-				</p>
 			) : null}
 
 			{reviewsErrorMessage ? (

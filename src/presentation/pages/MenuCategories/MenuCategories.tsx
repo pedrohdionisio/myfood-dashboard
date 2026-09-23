@@ -14,7 +14,6 @@ export function MenuCategories() {
 		isLoadingMenuCategories,
 		menuCategoriesErrorMessage,
 		isEmpty,
-		canManageMenuCategories,
 		canReorder,
 		isFormModalOpen,
 		editingMenuCategory,
@@ -45,7 +44,7 @@ export function MenuCategories() {
 					</p>
 				</div>
 
-				{canManageMenuCategories && !isReorderMode ? (
+				{!isReorderMode ? (
 					<div className="flex items-center gap-2">
 						<Button
 							type="button"
@@ -64,7 +63,7 @@ export function MenuCategories() {
 					</div>
 				) : null}
 
-				{canManageMenuCategories && isReorderMode ? (
+				{isReorderMode ? (
 					<div className="flex items-center gap-2">
 						<Button
 							type="button"
@@ -99,7 +98,7 @@ export function MenuCategories() {
 				</AlertDescription>
 			</Alert>
 
-			<DataTable.Root columnCount={canManageMenuCategories ? 2 : 1}>
+			<DataTable.Root columnCount={2}>
 				<DataTable.Header>
 					{isReorderMode ? (
 						<DataTable.Head className="w-12">
@@ -109,9 +108,7 @@ export function MenuCategories() {
 
 					<DataTable.Head>Nome</DataTable.Head>
 
-					{canManageMenuCategories && !isReorderMode ? (
-						<DataTable.Head align="right">Ações</DataTable.Head>
-					) : null}
+					{!isReorderMode ? <DataTable.Head align="right">Ações</DataTable.Head> : null}
 				</DataTable.Header>
 
 				{isReorderMode ? (
@@ -144,31 +141,29 @@ export function MenuCategories() {
 							<DataTable.Row key={menuCategory.id}>
 								<DataTable.Cell className="font-medium">{menuCategory.name}</DataTable.Cell>
 
-								{canManageMenuCategories ? (
-									<DataTable.Cell align="right">
-										<div className="flex items-center justify-end gap-2">
-											<Button
-												type="button"
-												variant="outline"
-												size="icon-sm"
-												onClick={() => handleOpenEditModal(menuCategory)}
-											>
-												<PencilIcon aria-hidden="true" />
-												<span className="sr-only">Renomear {menuCategory.name}</span>
-											</Button>
+								<DataTable.Cell align="right">
+									<div className="flex items-center justify-end gap-2">
+										<Button
+											type="button"
+											variant="outline"
+											size="icon-sm"
+											onClick={() => handleOpenEditModal(menuCategory)}
+										>
+											<PencilIcon aria-hidden="true" />
+											<span className="sr-only">Renomear {menuCategory.name}</span>
+										</Button>
 
-											<Button
-												type="button"
-												variant="destructive"
-												size="icon-sm"
-												onClick={() => handleOpenArchiveModal(menuCategory)}
-											>
-												<Trash2Icon aria-hidden="true" />
-												<span className="sr-only">Arquivar {menuCategory.name}</span>
-											</Button>
-										</div>
-									</DataTable.Cell>
-								) : null}
+										<Button
+											type="button"
+											variant="destructive"
+											size="icon-sm"
+											onClick={() => handleOpenArchiveModal(menuCategory)}
+										>
+											<Trash2Icon aria-hidden="true" />
+											<span className="sr-only">Arquivar {menuCategory.name}</span>
+										</Button>
+									</div>
+								</DataTable.Cell>
 							</DataTable.Row>
 						))}
 					</DataTable.Body>

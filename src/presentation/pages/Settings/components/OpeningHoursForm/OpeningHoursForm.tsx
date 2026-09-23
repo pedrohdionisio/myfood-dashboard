@@ -4,11 +4,7 @@ import { OpeningHoursDay } from '../OpeningHoursDay/OpeningHoursDay';
 import type { IOpeningHoursFormProps } from './OpeningHoursFormTypes';
 import { useOpeningHoursFormController } from './useOpeningHoursFormController';
 
-export function OpeningHoursForm({
-	restaurantId,
-	openingHours,
-	canManage
-}: IOpeningHoursFormProps) {
+export function OpeningHoursForm({ restaurantId, openingHours }: IOpeningHoursFormProps) {
 	const { control, register, isDirty, isSubmitting, handleSubmit } = useOpeningHoursFormController({
 		restaurantId,
 		openingHours
@@ -33,22 +29,15 @@ export function OpeningHoursForm({
 						register={register}
 						dayOfWeek={dayOfWeek}
 						label={label}
-						isDisabled={!canManage}
 					/>
 				))}
 			</div>
 
-			{canManage ? (
-				<div className="flex justify-end">
-					<Button type="submit" disabled={!isDirty} isLoading={isSubmitting}>
-						Salvar horários
-					</Button>
-				</div>
-			) : (
-				<p className="text-body-sm text-muted-foreground">
-					Só o dono do restaurante pode alterar os horários.
-				</p>
-			)}
+			<div className="flex justify-end">
+				<Button type="submit" disabled={!isDirty} isLoading={isSubmitting}>
+					Salvar horários
+				</Button>
+			</div>
 		</form>
 	);
 }

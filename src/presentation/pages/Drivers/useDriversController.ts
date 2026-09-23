@@ -27,7 +27,6 @@ export function useDriversController() {
 		isLoadingDrivers: isLoadingMembers,
 		driversErrorMessage: membersError ? getApiErrorMessage(membersError) : null,
 		isEmpty: !isLoadingMembers && !membersError && drivers.length === 0,
-		canManageDrivers: selectedRestaurant?.role === 'OWNER',
 		isFormModalOpen,
 		handleOpenCreateModal,
 		handleCloseFormModal

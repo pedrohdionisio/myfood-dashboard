@@ -141,7 +141,6 @@ export function useProductsController() {
 		isLoadingProducts,
 		productsErrorMessage: productsError ? getApiErrorMessage(productsError) : null,
 		isEmpty: !isLoadingProducts && !productsError && products.length === 0,
-		canManageProducts: selectedRestaurant?.role === 'OWNER',
 		canReorder: !isLoadingProducts && !productsError && products.length > 1,
 		isFormModalOpen,
 		editingProduct,

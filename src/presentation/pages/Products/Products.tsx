@@ -28,7 +28,6 @@ export function Products() {
 		isLoadingProducts,
 		productsErrorMessage,
 		isEmpty,
-		canManageProducts,
 		canReorder,
 		isFormModalOpen,
 		editingProduct,
@@ -62,7 +61,7 @@ export function Products() {
 					</p>
 				</div>
 
-				{canManageProducts && hasMenuCategories && !isReorderMode ? (
+				{hasMenuCategories && !isReorderMode ? (
 					<div className="flex items-center gap-2">
 						<Button
 							type="button"
@@ -81,7 +80,7 @@ export function Products() {
 					</div>
 				) : null}
 
-				{canManageProducts && isReorderMode ? (
+				{isReorderMode ? (
 					<div className="flex items-center gap-2">
 						<Button
 							type="button"
@@ -153,7 +152,7 @@ export function Products() {
 				</Alert>
 			) : null}
 
-			<DataTable.Root columnCount={canManageProducts ? 4 : 3}>
+			<DataTable.Root columnCount={4}>
 				<DataTable.Header>
 					{isReorderMode ? (
 						<DataTable.Head className="w-12">
@@ -167,9 +166,7 @@ export function Products() {
 
 					{!isReorderMode ? <DataTable.Head>Disponível</DataTable.Head> : null}
 
-					{canManageProducts && !isReorderMode ? (
-						<DataTable.Head align="right">Ações</DataTable.Head>
-					) : null}
+					{!isReorderMode ? <DataTable.Head align="right">Ações</DataTable.Head> : null}
 				</DataTable.Header>
 
 				{isReorderMode ? (
@@ -221,37 +218,35 @@ export function Products() {
 								<DataTable.Cell>
 									<Switch
 										checked={product.isAvailable}
-										disabled={!canManageProducts || togglingProductId === product.id}
+										disabled={togglingProductId === product.id}
 										aria-label={`Disponibilidade de ${product.name}`}
 										onCheckedChange={() => handleToggleAvailability(product)}
 									/>
 								</DataTable.Cell>
 
-								{canManageProducts ? (
-									<DataTable.Cell align="right">
-										<div className="flex items-center justify-end gap-2">
-											<Button
-												type="button"
-												variant="outline"
-												size="icon-sm"
-												onClick={() => handleOpenEditModal(product)}
-											>
-												<PencilIcon aria-hidden="true" />
-												<span className="sr-only">Editar {product.name}</span>
-											</Button>
+								<DataTable.Cell align="right">
+									<div className="flex items-center justify-end gap-2">
+										<Button
+											type="button"
+											variant="outline"
+											size="icon-sm"
+											onClick={() => handleOpenEditModal(product)}
+										>
+											<PencilIcon aria-hidden="true" />
+											<span className="sr-only">Editar {product.name}</span>
+										</Button>
 
-											<Button
-												type="button"
-												variant="destructive"
-												size="icon-sm"
-												onClick={() => handleOpenArchiveModal(product)}
-											>
-												<Trash2Icon aria-hidden="true" />
-												<span className="sr-only">Arquivar {product.name}</span>
-											</Button>
-										</div>
-									</DataTable.Cell>
-								) : null}
+										<Button
+											type="button"
+											variant="destructive"
+											size="icon-sm"
+											onClick={() => handleOpenArchiveModal(product)}
+										>
+											<Trash2Icon aria-hidden="true" />
+											<span className="sr-only">Arquivar {product.name}</span>
+										</Button>
+									</div>
+								</DataTable.Cell>
 							</DataTable.Row>
 						))}
 					</DataTable.Body>

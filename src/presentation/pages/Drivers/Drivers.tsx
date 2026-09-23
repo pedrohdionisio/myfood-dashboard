@@ -12,7 +12,6 @@ export function Drivers() {
 		isLoadingDrivers,
 		driversErrorMessage,
 		isEmpty,
-		canManageDrivers,
 		isFormModalOpen,
 		handleOpenCreateModal,
 		handleCloseFormModal
@@ -29,12 +28,10 @@ export function Drivers() {
 					</p>
 				</div>
 
-				{canManageDrivers ? (
-					<Button type="button" onClick={handleOpenCreateModal}>
-						<PlusIcon aria-hidden="true" />
-						Novo entregador
-					</Button>
-				) : null}
+				<Button type="button" onClick={handleOpenCreateModal}>
+					<PlusIcon aria-hidden="true" />
+					Novo entregador
+				</Button>
 			</header>
 
 			<DataTable.Root columnCount={4}>

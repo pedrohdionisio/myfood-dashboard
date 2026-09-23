@@ -15,9 +15,7 @@ export function Settings() {
 		isLoadingOpeningHours,
 		openingHoursError,
 		isLoadingRestaurant,
-		restaurantErrorMessage,
-		canManageOpeningHours,
-		isOwner
+		restaurantErrorMessage
 	} = useSettingsController();
 
 	return (
@@ -40,7 +38,7 @@ export function Settings() {
 				</Alert>
 			) : null}
 
-			{isOwner && isLoadingRestaurant ? (
+			{isLoadingRestaurant ? (
 				<>
 					<Skeleton className="h-28 w-full rounded-xl" />
 
@@ -70,11 +68,7 @@ export function Settings() {
 			) : null}
 
 			{!isLoadingOpeningHours && !openingHoursError && restaurantId ? (
-				<OpeningHoursForm
-					restaurantId={restaurantId}
-					openingHours={openingHours}
-					canManage={canManageOpeningHours}
-				/>
+				<OpeningHoursForm restaurantId={restaurantId} openingHours={openingHours} />
 			) : null}
 		</div>
 	);

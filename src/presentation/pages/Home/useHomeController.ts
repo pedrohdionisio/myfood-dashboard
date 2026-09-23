@@ -15,11 +15,11 @@ const PERIOD_OPTIONS = [
 
 export function useHomeController() {
 	const { user } = useAuth();
-	const { restaurantId, isOwner, restaurantGate } = useRestaurantGate();
+	const { restaurantId, restaurantGate } = useRestaurantGate();
 
 	const [periodInDays, setPeriodInDays] = useState(30);
 
-	const canSeeAnalytics = isOwner && restaurantGate === 'OPERATING';
+	const canSeeAnalytics = restaurantGate === 'OPERATING';
 
 	const ranges = useMemo(() => resolveAnalyticsRanges(periodInDays), [periodInDays]);
 
@@ -41,7 +41,6 @@ export function useHomeController() {
 		restaurantId,
 		restaurantGate,
 		canSeeAnalytics,
-		isAnalyticsBlockedByRole: !isOwner && restaurantGate === 'OPERATING',
 		periodOptions: PERIOD_OPTIONS,
 		selectedPeriod: String(periodInDays),
 		statCards: analytics ? toStatCards(analytics.totals, previousAnalytics?.totals ?? null) : [],

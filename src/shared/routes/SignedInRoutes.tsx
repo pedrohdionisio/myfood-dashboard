@@ -1,5 +1,6 @@
 import { useSelectedRestaurant } from 'data/contexts/SelectedRestaurantProvider/SelectedRestaurantProvider';
 import { useMyRestaurants } from 'data/modules/restaurants/useCases/listMyRestaurants/useMyRestaurants';
+import { DriverAccessNotice } from 'presentation/pages/DriverAccessNotice/DriverAccessNotice';
 import { Drivers } from 'presentation/pages/Drivers/Drivers';
 import { Home } from 'presentation/pages/Home/Home';
 import { MenuCategories } from 'presentation/pages/MenuCategories/MenuCategories';
@@ -15,11 +16,20 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { APP_ROUTES } from './appRoutes';
 
 export function SignedInRoutes() {
-	const { myRestaurants, isLoadingMyRestaurants, myRestaurantsError } = useMyRestaurants();
+	const { myRestaurants, isDriverOnly, isLoadingMyRestaurants, myRestaurantsError } =
+		useMyRestaurants();
 	const { selectedRestaurant } = useSelectedRestaurant();
 
 	if (isLoadingMyRestaurants) {
 		return null;
+	}
+
+	if (isDriverOnly) {
+		return (
+			<Routes>
+				<Route path="*" element={<DriverAccessNotice />} />
+			</Routes>
+		);
 	}
 
 	const isOnboardingPending = !myRestaurantsError && myRestaurants.length === 0;

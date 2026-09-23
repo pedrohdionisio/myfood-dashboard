@@ -14,7 +14,6 @@ export type OpeningHoursFormControl = Control<
 export interface IOpeningHoursFormProps {
 	restaurantId: string;
 	openingHours: IOpeningHour[];
-	canManage: boolean;
 }
 
 export interface IUseOpeningHoursFormControllerParams {

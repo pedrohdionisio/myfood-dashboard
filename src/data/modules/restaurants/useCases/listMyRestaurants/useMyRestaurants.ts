@@ -8,8 +8,12 @@ export function useMyRestaurants() {
 		queryFn: RestaurantsService.listMine
 	});
 
+	const memberships = data ?? [];
+	const ownedRestaurants = memberships.filter(({ role }) => role === 'OWNER');
+
 	return {
-		myRestaurants: data ?? [],
+		myRestaurants: ownedRestaurants,
+		isDriverOnly: memberships.length > 0 && ownedRestaurants.length === 0,
 		isLoadingMyRestaurants: isLoading,
 		isRefetchingMyRestaurants: isRefetching,
 		myRestaurantsError: error,

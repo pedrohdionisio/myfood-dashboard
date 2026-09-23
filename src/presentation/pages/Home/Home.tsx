@@ -22,7 +22,6 @@ export function Home() {
 		restaurantId,
 		restaurantGate,
 		canSeeAnalytics,
-		isAnalyticsBlockedByRole,
 		periodOptions,
 		selectedPeriod,
 		statCards,
@@ -67,12 +66,6 @@ export function Home() {
 
 			{restaurantId ? (
 				<RestaurantGateNotice gate={restaurantGate} restaurantId={restaurantId} />
-			) : null}
-
-			{isAnalyticsBlockedByRole ? (
-				<p className="text-body-sm text-muted-foreground">
-					Os números do restaurante aparecem para quem é dono dele.
-				</p>
 			) : null}
 
 			{analyticsErrorMessage ? (

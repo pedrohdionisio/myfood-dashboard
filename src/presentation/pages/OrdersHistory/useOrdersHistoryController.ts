@@ -32,13 +32,13 @@ const PAYMENT_METHOD_LABELS = {
 };
 
 export function useOrdersHistoryController() {
-	const { restaurantId, isOwner, restaurantGate } = useRestaurantGate();
+	const { restaurantId, restaurantGate } = useRestaurantGate();
 
 	const [selectedStatus, setSelectedStatus] = useState<string>(ALL_STATUSES_VALUE);
 	const [perPage, setPerPage] = useState(20);
 	const [page, setPage] = useState(1);
 
-	const canSeeHistory = isOwner && restaurantGate === 'OPERATING';
+	const canSeeHistory = restaurantGate === 'OPERATING';
 
 	const { orders, hasMoreOrders, isLoadingOrders, isFetchingOrders, ordersError } = useOrders(
 		canSeeHistory ? restaurantId : null,
@@ -71,7 +71,6 @@ export function useOrdersHistoryController() {
 		restaurantId,
 		restaurantGate,
 		canSeeHistory,
-		isBlockedByRole: !isOwner && restaurantGate === 'OPERATING',
 		orders: orders.map((order) => ({
 			id: order.id,
 			displayNumber: order.displayNumber,

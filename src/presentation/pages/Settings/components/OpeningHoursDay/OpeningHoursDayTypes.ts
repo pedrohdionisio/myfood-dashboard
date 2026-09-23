@@ -7,5 +7,4 @@ export interface IOpeningHoursDayProps {
 	register: UseFormRegister<OpeningHoursFormType>;
 	dayOfWeek: number;
 	label: string;
-	isDisabled: boolean;
 }

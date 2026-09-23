@@ -23,8 +23,6 @@ export function useMenuCategoriesController() {
 	const [isReorderMode, setIsReorderMode] = useState(false);
 	const [reorderedMenuCategories, setReorderedMenuCategories] = useState<IMenuCategory[]>([]);
 
-	const canManageMenuCategories = selectedRestaurant?.role === 'OWNER';
-
 	function handleOpenCreateModal() {
 		setEditingMenuCategory(null);
 		setIsFormModalOpen(true);
@@ -102,7 +100,6 @@ export function useMenuCategoriesController() {
 			? getApiErrorMessage(menuCategoriesError)
 			: null,
 		isEmpty: !isLoadingMenuCategories && !menuCategoriesError && menuCategories.length === 0,
-		canManageMenuCategories,
 		canReorder: !isLoadingMenuCategories && !menuCategoriesError && menuCategories.length > 1,
 		isFormModalOpen,
 		editingMenuCategory,

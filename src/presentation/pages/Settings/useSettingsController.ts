@@ -4,12 +4,10 @@ import { useRestaurant } from 'data/modules/restaurants/useCases/getRestaurant/u
 import { useRestaurantGate } from 'shared/hooks/useRestaurantGate';
 
 export function useSettingsController() {
-	const { restaurantId, isOwner } = useRestaurantGate();
+	const { restaurantId } = useRestaurantGate();
 
 	const { openingHours, isLoadingOpeningHours, openingHoursError } = useOpeningHours(restaurantId);
-	const { restaurant, isLoadingRestaurant, restaurantError } = useRestaurant(
-		isOwner ? restaurantId : null
-	);
+	const { restaurant, isLoadingRestaurant, restaurantError } = useRestaurant(restaurantId);
 
 	return {
 		restaurantId,
@@ -18,8 +16,6 @@ export function useSettingsController() {
 		isLoadingOpeningHours,
 		openingHoursError,
 		isLoadingRestaurant,
-		restaurantErrorMessage: restaurantError ? getApiErrorMessage(restaurantError) : null,
-		canManageOpeningHours: isOwner,
-		isOwner
+		restaurantErrorMessage: restaurantError ? getApiErrorMessage(restaurantError) : null
 	};
 }

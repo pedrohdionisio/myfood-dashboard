@@ -7,11 +7,11 @@ import { useRestaurantGate } from 'shared/hooks/useRestaurantGate';
 const REVIEWS_PER_PAGE = 10;
 
 export function useReviewsController() {
-	const { restaurantId, isOwner, restaurantGate } = useRestaurantGate();
+	const { restaurantId, restaurantGate } = useRestaurantGate();
 
 	const [page, setPage] = useState(1);
 
-	const canSeeReviews = isOwner && restaurantGate === 'OPERATING';
+	const canSeeReviews = restaurantGate === 'OPERATING';
 	const scopedRestaurantId = canSeeReviews ? restaurantId : null;
 
 	const { reviews, hasMoreReviews, isLoadingReviews, isFetchingReviews, reviewsError } = useReviews(
@@ -32,7 +32,6 @@ export function useReviewsController() {
 		restaurantId,
 		restaurantGate,
 		canSeeReviews,
-		isBlockedByRole: !isOwner && restaurantGate === 'OPERATING',
 		reviews,
 		ratingAvg: restaurant?.ratingAvg ?? 0,
 		ratingCount: restaurant?.ratingCount ?? 0,

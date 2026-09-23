@@ -1,13 +1,7 @@
 import { cn } from 'cn';
 import { ChevronRightIcon } from 'lucide-react';
 import type { RestaurantStatus } from 'shared/entities/IRestaurant';
-import type { MemberRole } from 'shared/entities/IRestaurantMembership';
 import type { IRestaurantOptionProps } from './RestaurantOptionTypes';
-
-const MEMBER_ROLE_LABELS: Record<MemberRole, string> = {
-	OWNER: 'Dono',
-	DRIVER: 'Entregador'
-};
 
 const RESTAURANT_STATUS_LABELS: Record<RestaurantStatus, string> = {
 	DRAFT: 'Rascunho',
@@ -22,7 +16,7 @@ const RESTAURANT_STATUS_STYLES: Record<RestaurantStatus, string> = {
 };
 
 export function RestaurantOption({ restaurant, onSelect }: IRestaurantOptionProps) {
-	const { restaurantId, tradeName, role, restaurantStatus } = restaurant;
+	const { restaurantId, tradeName, restaurantStatus } = restaurant;
 
 	return (
 		<button
@@ -30,10 +24,7 @@ export function RestaurantOption({ restaurant, onSelect }: IRestaurantOptionProp
 			onClick={() => onSelect(restaurantId)}
 			className="flex w-full items-center justify-between gap-4 rounded-lg border bg-card p-4 text-left outline-none transition-colors hover:border-brand hover:bg-accent focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
 		>
-			<span className="flex flex-col gap-1">
-				<span className="text-title-sm text-card-foreground">{tradeName}</span>
-				<span className="text-body-sm text-muted-foreground">{MEMBER_ROLE_LABELS[role]}</span>
-			</span>
+			<span className="text-title-sm text-card-foreground">{tradeName}</span>
 
 			<span className="flex items-center gap-3">
 				<span

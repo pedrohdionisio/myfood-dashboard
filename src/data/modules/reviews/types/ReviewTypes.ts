@@ -11,3 +11,12 @@ export interface IReviewsPage {
 	perPage: number;
 	hasMore: boolean;
 }
+
+export interface IReplyToReviewPayload {
+	reply: string;
+}
+
+export interface IReplyToReviewVariables extends IReplyToReviewPayload {
+	restaurantId: string;
+	reviewId: string;
+}

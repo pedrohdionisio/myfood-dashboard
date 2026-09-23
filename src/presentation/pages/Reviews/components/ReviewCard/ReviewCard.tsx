@@ -1,12 +1,26 @@
 import { cn } from 'cn';
 import { StarIcon } from 'lucide-react';
+import { Button } from 'presentation/components/Button/Button';
 import { Card, CardContent, CardHeader } from 'presentation/components/Card/Card';
+import { TextareaInput } from 'presentation/components/TextareaInput/TextareaInput';
 import type { IReviewCardProps } from './ReviewCardTypes';
+import { useReviewCardController } from './useReviewCardController';
 import { formatReviewDate } from './utils/formatReviewDate';
 
 const RATING_STARS = [1, 2, 3, 4, 5];
 
-export function ReviewCard({ review }: IReviewCardProps) {
+export function ReviewCard({ restaurantId, review }: IReviewCardProps) {
+	const {
+		register,
+		replyError,
+		isSubmitting,
+		canReply,
+		isReplying,
+		handleStartReply,
+		handleCancelReply,
+		handleSubmit
+	} = useReviewCardController({ restaurantId, review });
+
 	return (
 		<Card className="gap-4 py-5">
 			<CardHeader className="gap-2 px-5">
@@ -54,6 +68,46 @@ export function ReviewCard({ review }: IReviewCardProps) {
 
 						<p className="text-body-sm whitespace-pre-line">{review.reply}</p>
 					</div>
+				) : null}
+
+				{canReply && !isReplying ? (
+					<div>
+						<Button type="button" variant="outline" size="sm" onClick={handleStartReply}>
+							Responder
+						</Button>
+					</div>
+				) : null}
+
+				{canReply && isReplying ? (
+					<form onSubmit={handleSubmit} noValidate className="flex flex-col gap-3">
+						<TextareaInput
+							label="Sua resposta"
+							placeholder="Agradeça, explique o que aconteceu ou conte o que vai mudar."
+							rows={3}
+							maxLength={1000}
+							error={replyError}
+							{...register('reply')}
+						/>
+
+						<p className="text-body-sm text-muted-foreground">
+							A resposta aparece para todos no app e não pode ser editada depois.
+						</p>
+
+						<div className="flex justify-end gap-2">
+							<Button
+								type="button"
+								variant="outline"
+								disabled={isSubmitting}
+								onClick={handleCancelReply}
+							>
+								Cancelar
+							</Button>
+
+							<Button type="submit" isLoading={isSubmitting}>
+								Publicar resposta
+							</Button>
+						</div>
+					</form>
 				) : null}
 			</CardContent>
 		</Card>

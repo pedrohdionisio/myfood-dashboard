@@ -92,9 +92,11 @@ export function Reviews() {
 					data-fetching={isFetchingReviews || undefined}
 					className="flex flex-col gap-4 data-fetching:opacity-60"
 				>
-					{reviews.map((review) => (
-						<ReviewCard key={review.id} review={review} />
-					))}
+					{restaurantId
+						? reviews.map((review) => (
+								<ReviewCard key={review.id} restaurantId={restaurantId} review={review} />
+							))
+						: null}
 				</div>
 			) : null}
 

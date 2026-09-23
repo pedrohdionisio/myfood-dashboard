@@ -1,7 +1,6 @@
 import { useSelectedRestaurant } from 'data/contexts/SelectedRestaurantProvider/SelectedRestaurantProvider';
 import { useMyRestaurants } from 'data/modules/restaurants/useCases/listMyRestaurants/useMyRestaurants';
 import { DriverAccessNotice } from 'presentation/pages/DriverAccessNotice/DriverAccessNotice';
-import { Drivers } from 'presentation/pages/Drivers/Drivers';
 import { Home } from 'presentation/pages/Home/Home';
 import { MenuCategories } from 'presentation/pages/MenuCategories/MenuCategories';
 import { Orders } from 'presentation/pages/Orders/Orders';
@@ -11,6 +10,7 @@ import { RestaurantOnboarding } from 'presentation/pages/RestaurantOnboarding/Re
 import { RestaurantSelection } from 'presentation/pages/RestaurantSelection/RestaurantSelection';
 import { Reviews } from 'presentation/pages/Reviews/Reviews';
 import { Settings } from 'presentation/pages/Settings/Settings';
+import { Team } from 'presentation/pages/Team/Team';
 import { DashboardTemplate } from 'presentation/templates/DashboardTemplate/DashboardTemplate';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { APP_ROUTES } from './appRoutes';
@@ -61,7 +61,7 @@ export function SignedInRoutes() {
 				<Route path={APP_ROUTES.reviews} element={<Reviews />} />
 				<Route path={APP_ROUTES.menuCategories} element={<MenuCategories />} />
 				<Route path={APP_ROUTES.products} element={<Products />} />
-				<Route path={APP_ROUTES.drivers} element={<Drivers />} />
+				<Route path={APP_ROUTES.team} element={<Team />} />
 				<Route path={APP_ROUTES.settings} element={<Settings />} />
 			</Route>
 

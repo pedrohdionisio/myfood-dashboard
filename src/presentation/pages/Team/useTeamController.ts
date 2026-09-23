@@ -1,4 +1,5 @@
 import { getApiErrorMessage } from 'data/config/apiError';
+import { useAuth } from 'data/contexts/AuthProvider/AuthProvider';
 import { useSelectedRestaurant } from 'data/contexts/SelectedRestaurantProvider/SelectedRestaurantProvider';
 import type { IUpdateMemberPayload } from 'data/modules/members/types/MemberTypes';
 import { useMembers } from 'data/modules/members/useCases/listMembers/useMembers';
@@ -6,20 +7,23 @@ import { useUpdateMember } from 'data/modules/members/useCases/updateMember/useU
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import type { IRestaurantMember } from 'shared/entities/IRestaurantMember';
-import type { ConfirmableDriverAction, IPendingDriverAction } from './DriversTypes';
-import { toDriverActionCopy } from './utils/toDriverActionCopy';
+import type { ConfirmableMemberAction, IPendingMemberAction, ITeamRow } from './TeamTypes';
+import { toMemberActionCopy } from './utils/toMemberActionCopy';
 
-const PAYLOAD_BY_ACTION: Record<ConfirmableDriverAction, IUpdateMemberPayload> = {
+const PAYLOAD_BY_ACTION: Record<ConfirmableMemberAction, IUpdateMemberPayload> = {
 	DEACTIVATE: { active: false },
-	PROMOTE: { role: 'OWNER' }
+	PROMOTE: { role: 'OWNER' },
+	DEMOTE: { role: 'DRIVER' }
 };
 
-const SUCCESS_MESSAGE_BY_ACTION: Record<ConfirmableDriverAction, string> = {
-	DEACTIVATE: 'Entregador desativado.',
-	PROMOTE: 'Agora essa pessoa é dona do restaurante.'
+const SUCCESS_MESSAGE_BY_ACTION: Record<ConfirmableMemberAction, string> = {
+	DEACTIVATE: 'Acesso desativado.',
+	PROMOTE: 'Agora essa pessoa é dona do restaurante.',
+	DEMOTE: 'Agora essa pessoa é entregadora.'
 };
 
-export function useDriversController() {
+export function useTeamController() {
+	const { user } = useAuth();
 	const { selectedRestaurant } = useSelectedRestaurant();
 	const restaurantId = selectedRestaurant?.restaurantId ?? null;
 
@@ -27,10 +31,13 @@ export function useDriversController() {
 	const { updateMember, isUpdatingMember } = useUpdateMember();
 
 	const [isFormModalOpen, setIsFormModalOpen] = useState(false);
-	const [pendingAction, setPendingAction] = useState<IPendingDriverAction | null>(null);
-	const [activatingDriverId, setActivatingDriverId] = useState<string | null>(null);
+	const [pendingAction, setPendingAction] = useState<IPendingMemberAction | null>(null);
+	const [activatingMemberId, setActivatingMemberId] = useState<string | null>(null);
 
-	const drivers = members.filter((member) => member.role === 'DRIVER');
+	const rows: ITeamRow[] = members.map((member) => ({
+		member,
+		isSelf: member.userId === user?.id
+	}));
 
 	function handleOpenCreateModal() {
 		setIsFormModalOpen(true);
@@ -40,8 +47,8 @@ export function useDriversController() {
 		setIsFormModalOpen(false);
 	}
 
-	function handleRequestAction(driver: IRestaurantMember, action: ConfirmableDriverAction) {
-		setPendingAction({ driver, action });
+	function handleRequestAction(member: IRestaurantMember, action: ConfirmableMemberAction) {
+		setPendingAction({ member, action });
 	}
 
 	function handleCloseActionModal() {
@@ -56,7 +63,7 @@ export function useDriversController() {
 		try {
 			await updateMember({
 				restaurantId,
-				memberId: pendingAction.driver.id,
+				memberId: pendingAction.member.id,
 				...PAYLOAD_BY_ACTION[pendingAction.action]
 			});
 
@@ -67,34 +74,34 @@ export function useDriversController() {
 		}
 	}
 
-	async function handleActivate(driver: IRestaurantMember) {
+	async function handleActivate(member: IRestaurantMember) {
 		if (!restaurantId) {
 			return;
 		}
 
-		setActivatingDriverId(driver.id);
+		setActivatingMemberId(member.id);
 
 		try {
-			await updateMember({ restaurantId, memberId: driver.id, active: true });
+			await updateMember({ restaurantId, memberId: member.id, active: true });
 
-			toast.success('Entregador reativado.');
+			toast.success('Acesso reativado.');
 		} catch (error) {
 			toast.error(getApiErrorMessage(error));
 		} finally {
-			setActivatingDriverId(null);
+			setActivatingMemberId(null);
 		}
 	}
 
 	return {
 		restaurantId,
-		drivers,
-		isLoadingDrivers: isLoadingMembers,
-		driversErrorMessage: membersError ? getApiErrorMessage(membersError) : null,
-		isEmpty: !isLoadingMembers && !membersError && drivers.length === 0,
+		rows,
+		isLoadingMembers,
+		membersErrorMessage: membersError ? getApiErrorMessage(membersError) : null,
+		isEmpty: !isLoadingMembers && !membersError && members.length === 0,
 		isFormModalOpen,
-		pendingActionCopy: pendingAction ? toDriverActionCopy(pendingAction) : null,
+		pendingActionCopy: pendingAction ? toMemberActionCopy(pendingAction) : null,
 		isConfirmingAction: isUpdatingMember && !!pendingAction,
-		activatingDriverId,
+		activatingMemberId,
 		handleOpenCreateModal,
 		handleCloseFormModal,
 		handleRequestAction,

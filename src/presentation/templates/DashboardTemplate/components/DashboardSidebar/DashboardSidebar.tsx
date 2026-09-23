@@ -1,11 +1,11 @@
 import {
-	BikeIcon,
 	ClipboardListIcon,
 	HistoryIcon,
 	LayersIcon,
 	LayoutDashboardIcon,
 	SettingsIcon,
 	StarIcon,
+	UsersIcon,
 	UtensilsCrossedIcon
 } from 'lucide-react';
 import {
@@ -54,7 +54,7 @@ const DASHBOARD_MENU_GROUPS = [
 	{
 		id: 'team',
 		label: 'Equipe',
-		items: [{ label: 'Entregadores', to: APP_ROUTES.drivers, icon: BikeIcon }]
+		items: [{ label: 'Membros', to: APP_ROUTES.team, icon: UsersIcon }]
 	},
 	{
 		id: 'settings',

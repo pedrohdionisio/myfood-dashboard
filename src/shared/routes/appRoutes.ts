@@ -9,7 +9,7 @@ export const APP_ROUTES = {
 	orders: '/pedidos',
 	ordersHistory: '/pedidos/historico',
 	reviews: '/avaliacoes',
-	drivers: '/entregadores',
+	team: '/equipe',
 	menuCategories: '/cardapio/categorias',
 	products: '/cardapio/produtos',
 	settings: '/configuracoes'

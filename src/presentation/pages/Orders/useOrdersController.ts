@@ -1,46 +1,23 @@
-import { getApiErrorMessage } from 'data/config/apiError';
-import { useOrdersByStatus } from 'data/modules/orders/useCases/listOrders/useOrdersByStatus';
 import { useState } from 'react';
-import type { IOrder } from 'shared/entities/IOrder';
+import type { IOrder, OrderStatus } from 'shared/entities/IOrder';
 import { useRestaurantGate } from 'shared/hooks/useRestaurantGate';
-
-const BOARD_STATUSES = [
-	'PENDING',
-	'CONFIRMED',
-	'PREPARING',
-	'READY',
-	'OUT_FOR_DELIVERY',
-	'DELIVERED'
-] as const;
-
-type OrderBoardStatus = (typeof BOARD_STATUSES)[number];
-
-const ORDER_COLUMN_LABELS: Record<OrderBoardStatus, string> = {
-	PENDING: 'Novos',
-	CONFIRMED: 'Aceitos',
-	PREPARING: 'Em preparo',
-	READY: 'Prontos',
-	OUT_FOR_DELIVERY: 'Saiu para entrega',
-	DELIVERED: 'Entregues'
-};
 
 export function useOrdersController() {
 	const { restaurantId, restaurantGate } = useRestaurantGate();
 
 	const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
 
-	const isBoardVisible = restaurantGate === 'OPERATING';
+	const startOfToday = new Date();
+	startOfToday.setHours(0, 0, 0, 0);
 
-	const columns = useOrdersByStatus(isBoardVisible ? restaurantId : null, BOARD_STATUSES).map(
-		(column) => ({
-			status: column.status,
-			label: ORDER_COLUMN_LABELS[column.status],
-			orders: column.orders,
-			hasMoreOrders: column.hasMoreOrders,
-			isLoadingOrders: column.isLoadingOrders,
-			ordersErrorMessage: column.ordersError ? getApiErrorMessage(column.ordersError) : null
-		})
-	);
+	const columns: { status: OrderStatus; label: string; createdSince?: string }[] = [
+		{ status: 'PENDING', label: 'Novos' },
+		{ status: 'CONFIRMED', label: 'Aceitos' },
+		{ status: 'PREPARING', label: 'Em preparo' },
+		{ status: 'READY', label: 'Prontos' },
+		{ status: 'OUT_FOR_DELIVERY', label: 'Saiu para entrega' },
+		{ status: 'DELIVERED', label: 'Entregues hoje', createdSince: startOfToday.toISOString() }
+	];
 
 	function handleSelectOrder(order: IOrder) {
 		setSelectedOrder(order);
@@ -53,11 +30,10 @@ export function useOrdersController() {
 	return {
 		restaurantId,
 		restaurantGate,
-		isBoardVisible,
+		isBoardVisible: restaurantGate === 'OPERATING',
 		selectedOrder,
 		handleSelectOrder,
 		handleCloseDetailsModal,
-		columns,
-		hasTruncatedColumn: columns.some((column) => column.hasMoreOrders)
+		columns
 	};
 }

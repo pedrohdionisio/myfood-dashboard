@@ -1,9 +1,9 @@
-import type { IOrder } from 'shared/entities/IOrder';
+import type { IOrder, OrderStatus } from 'shared/entities/IOrder';
 
 export interface IOrderBoardColumnProps {
+	restaurantId: string;
+	status: OrderStatus;
 	label: string;
-	orders: IOrder[];
-	isLoadingOrders: boolean;
-	ordersErrorMessage: string | null;
+	createdSince?: string;
 	onSelectOrder: (order: IOrder) => void;
 }

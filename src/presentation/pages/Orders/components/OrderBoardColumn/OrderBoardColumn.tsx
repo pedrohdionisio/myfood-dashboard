@@ -2,17 +2,26 @@ import { TriangleAlertIcon } from 'lucide-react';
 import { Skeleton } from 'presentation/components/Skeleton/Skeleton';
 import { OrderCard } from '../OrderCard/OrderCard';
 import type { IOrderBoardColumnProps } from './OrderBoardColumnTypes';
+import { useOrderBoardColumnController } from './useOrderBoardColumnController';
 
 const SKELETON_KEYS = ['first', 'second'];
 
 export function OrderBoardColumn({
+	restaurantId,
+	status,
 	label,
-	orders,
-	isLoadingOrders,
-	ordersErrorMessage,
+	createdSince,
 	onSelectOrder
 }: IOrderBoardColumnProps) {
-	const isEmpty = !isLoadingOrders && !ordersErrorMessage && orders.length === 0;
+	const {
+		orders,
+		hasMoreOrders,
+		isLoadingOrders,
+		isFetchingMoreOrders,
+		ordersErrorMessage,
+		isEmpty,
+		loadMoreRef
+	} = useOrderBoardColumnController({ restaurantId, status, createdSince });
 
 	return (
 		<section className="flex min-w-72 flex-1 flex-col gap-3 rounded-xl bg-muted/40 p-3">
@@ -20,14 +29,14 @@ export function OrderBoardColumn({
 				<h2 className="text-label">{label}</h2>
 
 				<span className="rounded-md bg-background px-2 py-0.5 text-body-sm text-muted-foreground tabular-nums">
-					{orders.length}
+					{hasMoreOrders ? `${orders.length}+` : orders.length}
 				</span>
 			</header>
 
-			<div className="flex flex-col gap-3">
+			<div className="flex max-h-[70svh] flex-col gap-3 overflow-y-auto">
 				{isLoadingOrders
 					? SKELETON_KEYS.map((skeletonKey) => (
-							<Skeleton key={skeletonKey} className="h-28 w-full rounded-xl" />
+							<Skeleton key={skeletonKey} className="h-28 w-full shrink-0 rounded-xl" />
 						))
 					: null}
 
@@ -48,6 +57,10 @@ export function OrderBoardColumn({
 				{orders.map((order) => (
 					<OrderCard key={order.id} order={order} onSelect={onSelectOrder} />
 				))}
+
+				{isFetchingMoreOrders ? <Skeleton className="h-28 w-full shrink-0 rounded-xl" /> : null}
+
+				{hasMoreOrders ? <div ref={loadMoreRef} className="h-px shrink-0" /> : null}
 			</div>
 		</section>
 	);

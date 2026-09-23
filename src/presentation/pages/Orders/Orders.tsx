@@ -1,5 +1,3 @@
-import { InfoIcon } from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from 'presentation/components/Alert/Alert';
 import { RestaurantGateNotice } from 'presentation/components/RestaurantGateNotice/RestaurantGateNotice';
 import { OrderBoardColumn } from './components/OrderBoardColumn/OrderBoardColumn';
 import { OrderDetailsModal } from './components/OrderDetailsModal/OrderDetailsModal';
@@ -12,7 +10,6 @@ export function Orders() {
 		isBoardVisible,
 		selectedOrder,
 		columns,
-		hasTruncatedColumn,
 		handleSelectOrder,
 		handleCloseDetailsModal
 	} = useOrdersController();
@@ -31,27 +28,15 @@ export function Orders() {
 				<RestaurantGateNotice gate={restaurantGate} restaurantId={restaurantId} />
 			) : null}
 
-			{hasTruncatedColumn ? (
-				<Alert>
-					<InfoIcon aria-hidden="true" />
-
-					<AlertTitle>Há mais pedidos do que cabe no quadro</AlertTitle>
-
-					<AlertDescription>
-						Alguma coluna passou de 20 pedidos e mostra só os mais recentes.
-					</AlertDescription>
-				</Alert>
-			) : null}
-
-			{isBoardVisible ? (
+			{restaurantId && isBoardVisible ? (
 				<div className="flex gap-4 overflow-x-auto pb-2">
 					{columns.map((column) => (
 						<OrderBoardColumn
 							key={column.status}
+							restaurantId={restaurantId}
+							status={column.status}
 							label={column.label}
-							orders={column.orders}
-							isLoadingOrders={column.isLoadingOrders}
-							ordersErrorMessage={column.ordersErrorMessage}
+							createdSince={column.createdSince}
 							onSelectOrder={handleSelectOrder}
 						/>
 					))}

@@ -1,6 +1,8 @@
 import { Button } from 'presentation/components/Button/Button';
 import { PasswordInput } from 'presentation/components/PasswordInput/PasswordInput';
 import { TextInput } from 'presentation/components/TextInput/TextInput';
+import { Link } from 'react-router-dom';
+import { APP_ROUTES } from 'shared/routes/appRoutes';
 import { useLoginFormController } from './useLoginFormController';
 
 export function LoginForm() {
@@ -26,6 +28,13 @@ export function LoginForm() {
 				error={errors.password?.message}
 				{...register('password')}
 			/>
+
+			<Link
+				to={APP_ROUTES.forgotPassword}
+				className="-mt-3 self-end text-body-sm font-medium text-primary underline-offset-4 hover:underline"
+			>
+				Esqueci minha senha
+			</Link>
 
 			<Button type="submit" size="lg" className="mt-2 w-full" isLoading={isSubmitting}>
 				Fazer Login

@@ -33,3 +33,17 @@ export interface IRefreshTokenResponse {
 	idToken: string;
 	expiresIn: number;
 }
+
+export interface IForgotPasswordPayload {
+	email: string;
+}
+
+export interface IResetPasswordPayload {
+	email: string;
+	code: string;
+	password: string;
+}
+
+export interface IPasswordRecoveryResponse {
+	message: string;
+}

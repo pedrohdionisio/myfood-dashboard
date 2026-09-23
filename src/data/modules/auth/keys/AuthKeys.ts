@@ -1,4 +1,6 @@
 export enum AuthMutationKeys {
 	LOGIN = 'LOGIN',
-	SIGN_UP = 'SIGN_UP'
+	SIGN_UP = 'SIGN_UP',
+	FORGOT_PASSWORD = 'FORGOT_PASSWORD',
+	RESET_PASSWORD = 'RESET_PASSWORD'
 }

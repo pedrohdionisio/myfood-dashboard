@@ -3,5 +3,6 @@ export enum MemberQueryKeys {
 }
 
 export enum MemberMutationKeys {
-	CREATE_MEMBER = 'CREATE_MEMBER'
+	CREATE_MEMBER = 'CREATE_MEMBER',
+	UPDATE_MEMBER = 'UPDATE_MEMBER'
 }

@@ -1,4 +1,5 @@
 import { PlusIcon } from 'lucide-react';
+import { ActionModal } from 'presentation/components/ActionModal/ActionModal';
 import { Button } from 'presentation/components/Button/Button';
 import { DataTable } from 'presentation/components/DataTable/DataTable';
 import { Mask } from 'shared/utils/Mask';
@@ -13,8 +14,15 @@ export function Drivers() {
 		driversErrorMessage,
 		isEmpty,
 		isFormModalOpen,
+		pendingActionCopy,
+		isConfirmingAction,
+		activatingDriverId,
 		handleOpenCreateModal,
-		handleCloseFormModal
+		handleCloseFormModal,
+		handleRequestAction,
+		handleCloseActionModal,
+		handleConfirmAction,
+		handleActivate
 	} = useDriversController();
 
 	return (
@@ -34,7 +42,7 @@ export function Drivers() {
 				</Button>
 			</header>
 
-			<DataTable.Root columnCount={4}>
+			<DataTable.Root columnCount={5}>
 				<DataTable.Header>
 					<DataTable.Head>Nome</DataTable.Head>
 
@@ -43,6 +51,8 @@ export function Drivers() {
 					<DataTable.Head>Telefone</DataTable.Head>
 
 					<DataTable.Head>Situação</DataTable.Head>
+
+					<DataTable.Head align="right">Ações</DataTable.Head>
 				</DataTable.Header>
 
 				<DataTable.Body>
@@ -69,10 +79,57 @@ export function Drivers() {
 							</DataTable.Cell>
 
 							<DataTable.Cell>{driver.active ? 'Ativo' : 'Inativo'}</DataTable.Cell>
+
+							<DataTable.Cell align="right">
+								<div className="flex items-center justify-end gap-2">
+									{driver.active ? (
+										<>
+											<Button
+												type="button"
+												variant="outline"
+												size="sm"
+												onClick={() => handleRequestAction(driver, 'PROMOTE')}
+											>
+												Tornar dono
+											</Button>
+
+											<Button
+												type="button"
+												variant="outline"
+												size="sm"
+												onClick={() => handleRequestAction(driver, 'DEACTIVATE')}
+											>
+												Desativar
+											</Button>
+										</>
+									) : (
+										<Button
+											type="button"
+											variant="outline"
+											size="sm"
+											isLoading={activatingDriverId === driver.id}
+											onClick={() => handleActivate(driver)}
+										>
+											Reativar
+										</Button>
+									)}
+								</div>
+							</DataTable.Cell>
 						</DataTable.Row>
 					))}
 				</DataTable.Body>
 			</DataTable.Root>
+
+			<ActionModal
+				isOpen={!!pendingActionCopy}
+				title={pendingActionCopy?.title ?? ''}
+				description={pendingActionCopy?.description ?? ''}
+				confirmLabel={pendingActionCopy?.confirmLabel ?? ''}
+				variant="destructive"
+				isConfirming={isConfirmingAction}
+				onConfirm={handleConfirmAction}
+				onClose={handleCloseActionModal}
+			/>
 
 			{restaurantId ? (
 				<DriverFormModal

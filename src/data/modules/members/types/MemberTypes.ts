@@ -12,6 +12,16 @@ export interface ICreateMemberVariables extends IMemberPayload {
 	restaurantId: string;
 }
 
+export interface IUpdateMemberPayload {
+	role?: MemberRole;
+	active?: boolean;
+}
+
+export interface IUpdateMemberVariables extends IUpdateMemberPayload {
+	restaurantId: string;
+	memberId: string;
+}
+
 export interface ICreatedMember {
 	membership: {
 		id: string;

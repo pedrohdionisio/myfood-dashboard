@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { buildMembership, buildRestaurant } from '../tests/fixtures/restaurants';
 import { mockApi, seedSession } from './support/mockApi';
 
-test('builds the menu, sets opening hours and publishes the restaurant', async ({ page }) => {
+test('should build the menu, set opening hours and publish the restaurant', async ({ page }) => {
 	const state = await mockApi(page, {
 		memberships: [buildMembership({ restaurantStatus: 'DRAFT' })],
 		restaurant: buildRestaurant({ status: 'DRAFT' })

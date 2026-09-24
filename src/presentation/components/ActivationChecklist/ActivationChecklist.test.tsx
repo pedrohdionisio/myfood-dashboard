@@ -8,7 +8,7 @@ import { describe, expect, it } from 'vitest';
 import { ActivationChecklist } from './ActivationChecklist';
 
 describe('ActivationChecklist', () => {
-	it('links to what is missing and blocks publishing', async () => {
+	it('should link to what is missing and block publishing', async () => {
 		renderSignedIn(<ActivationChecklist restaurantId={RESTAURANT_ID} />);
 
 		expect(await screen.findByRole('link', { name: 'Ir para Produtos' })).toHaveAttribute(
@@ -19,7 +19,7 @@ describe('ActivationChecklist', () => {
 		expect(screen.getByRole('button', { name: 'Publicar restaurante' })).toBeDisabled();
 	});
 
-	it('publishes the restaurant when every requirement is met', async () => {
+	it('should publish the restaurant when every requirement is met', async () => {
 		let restaurantStatus: 'DRAFT' | 'ACTIVE' = 'DRAFT';
 		server.use(
 			http.get(restaurantUrl('/activation-checklist'), () =>

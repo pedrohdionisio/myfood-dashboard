@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { toFormValues } from './toFormValues';
 
 describe('toFormValues', () => {
-	it('builds all seven days, sorting shifts and defaulting closed days', () => {
+	it('should build all seven days, sorting shifts and defaulting closed days', () => {
 		const { days } = toFormValues([
 			{ id: '2', dayOfWeek: 1, opensAt: '18:00', closesAt: '23:00' },
 			{ id: '1', dayOfWeek: 1, opensAt: '11:00', closesAt: '15:00' }

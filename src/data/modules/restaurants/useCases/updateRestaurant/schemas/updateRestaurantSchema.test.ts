@@ -20,7 +20,7 @@ const validForm: UpdateRestaurantFormType = {
 };
 
 describe('updateRestaurantSchema', () => {
-	it('converts money to cents and omits an empty email', () => {
+	it('should convert money to cents and omit an empty email', () => {
 		const payload = updateRestaurantSchema.parse(validForm);
 
 		expect(payload).toMatchObject({
@@ -33,7 +33,7 @@ describe('updateRestaurantSchema', () => {
 		expect(payload).not.toHaveProperty('email');
 	});
 
-	it('limits the preparation time between 1 and 240 minutes', () => {
+	it('should limit the preparation time between 1 and 240 minutes', () => {
 		const result = updateRestaurantSchema.safeParse({ ...validForm, avgPrepTimeMin: '241' });
 
 		expect(result.error?.issues[0]?.path).toEqual(['avgPrepTimeMin']);

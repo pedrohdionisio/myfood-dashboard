@@ -45,7 +45,7 @@ function rowOf(name: string) {
 }
 
 describe('Team', () => {
-	it('does not offer actions on the signed in member', async () => {
+	it('should not offer actions on the signed in member', async () => {
 		renderSignedIn(<Team />);
 
 		expect(await screen.findByText('(você)')).toBeInTheDocument();
@@ -53,7 +53,7 @@ describe('Team', () => {
 		expect(rowOf('João').getByRole('button', { name: 'Desativar' })).toBeInTheDocument();
 	});
 
-	it('adds a driver', async () => {
+	it('should add a driver', async () => {
 		let payload: unknown;
 		server.use(
 			http.post(restaurantUrl('/members'), async ({ request }) => {
@@ -80,7 +80,7 @@ describe('Team', () => {
 		});
 	});
 
-	it('deactivates a member after confirmation', async () => {
+	it('should deactivate a member after confirmation', async () => {
 		let payload: unknown;
 		server.use(
 			http.patch(restaurantUrl('/members/member-driver'), async ({ request }) => {

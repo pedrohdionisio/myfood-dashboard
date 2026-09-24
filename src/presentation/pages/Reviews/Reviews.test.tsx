@@ -23,7 +23,7 @@ function buildReview(overrides: Partial<IRestaurantReview> = {}): IRestaurantRev
 }
 
 describe('Reviews', () => {
-	it('replies to a review', async () => {
+	it('should reply to a review', async () => {
 		let review = buildReview();
 		let payload: unknown;
 		server.use(
@@ -50,7 +50,7 @@ describe('Reviews', () => {
 		expect(screen.queryByRole('button', { name: 'Responder' })).not.toBeInTheDocument();
 	});
 
-	it('pages through the reviews', async () => {
+	it('should page through the reviews', async () => {
 		const requestedPages: string[] = [];
 		server.use(
 			http.get(restaurantUrl('/reviews'), ({ request }) => {

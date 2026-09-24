@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { toDailySeries } from './toDailySeries';
 
 describe('toDailySeries', () => {
-	it('fills days without stats with zeros and averages the preparation time', () => {
+	it('should fill days without stats with zeros and average the preparation time', () => {
 		const stat: IDailyStat = {
 			date: '2026-03-02',
 			ordersCount: 4,

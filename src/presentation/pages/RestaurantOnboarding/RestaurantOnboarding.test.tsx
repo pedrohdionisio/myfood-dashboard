@@ -8,7 +8,7 @@ import { describe, expect, it } from 'vitest';
 import { RestaurantOnboarding } from './RestaurantOnboarding';
 
 describe('RestaurantOnboarding', () => {
-	it('fills the address from the zip code and creates the restaurant', async () => {
+	it('should fill the address from the zip code and create the restaurant', async () => {
 		let payload: unknown;
 		server.use(
 			http.get('https://viacep.com.br/ws/:zipCode/json/', () =>
@@ -57,7 +57,7 @@ describe('RestaurantOnboarding', () => {
 		});
 	});
 
-	it('warns about an unknown zip code', async () => {
+	it('should warn about an unknown zip code', async () => {
 		server.use(
 			http.get('https://viacep.com.br/ws/:zipCode/json/', () => HttpResponse.json({ erro: 'true' }))
 		);
@@ -68,7 +68,7 @@ describe('RestaurantOnboarding', () => {
 		expect(await screen.findByText('CEP não encontrado')).toBeInTheDocument();
 	});
 
-	it('rejects an invalid cnpj', async () => {
+	it('should reject an invalid cnpj', async () => {
 		const { user } = renderSignedIn(<RestaurantOnboarding />);
 
 		await user.type(await screen.findByLabelText('CNPJ'), '11222333000182');

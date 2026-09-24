@@ -61,7 +61,7 @@ async function openOrder(user: ReturnType<typeof renderOrders>['user'], displayN
 }
 
 describe('Orders', () => {
-	it('places each order in the column of its status', async () => {
+	it('should place each order in the column of its status', async () => {
 		orders = [buildOrder(), buildOrder({ id: 'order-2', displayNumber: 102, status: 'READY' })];
 		renderOrders();
 
@@ -72,7 +72,7 @@ describe('Orders', () => {
 		).toBeInTheDocument();
 	});
 
-	it('accepts a new order', async () => {
+	it('should accept a new order', async () => {
 		server.use(
 			http.post(restaurantUrl('/orders/order-1/confirm'), () => {
 				setOrderStatus('order-1', 'CONFIRMED');
@@ -90,7 +90,7 @@ describe('Orders', () => {
 		expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 	});
 
-	it('asks for confirmation and sends the reason when rejecting', async () => {
+	it('should ask for confirmation and send the reason when rejecting', async () => {
 		let sentReason: unknown;
 		server.use(
 			http.post(restaurantUrl('/orders/order-1/reject'), async ({ request }) => {
@@ -118,7 +118,7 @@ describe('Orders', () => {
 		expect(await (await findColumn('Novos')).findByText('Nenhum pedido aqui.')).toBeInTheDocument();
 	});
 
-	it('dispatches a ready order to an active driver', async () => {
+	it('should dispatch a ready order to an active driver', async () => {
 		orders = [buildOrder({ status: 'READY' })];
 		let sentDriver: unknown;
 		server.use(
@@ -167,7 +167,7 @@ describe('Orders', () => {
 		expect(await (await findColumn('Saiu para entrega')).findByText('#101')).toBeInTheDocument();
 	});
 
-	it('announces orders placed while the board is open', async () => {
+	it('should announce orders placed while the board is open', async () => {
 		renderOrders();
 
 		await (await findColumn('Novos')).findByText('#101');
@@ -186,7 +186,7 @@ describe('Orders', () => {
 		expect(await (await findColumn('Novos')).findByText('#102')).toBeInTheDocument();
 	});
 
-	it('keeps the open order in sync when its status changes elsewhere', async () => {
+	it('should keep the open order in sync when its status changes elsewhere', async () => {
 		const { user } = renderOrders();
 
 		const dialog = await openOrder(user, 101);

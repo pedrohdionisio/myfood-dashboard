@@ -15,25 +15,25 @@ function responseError(data: unknown) {
 }
 
 describe('getApiErrorMessage', () => {
-	it('returns the message sent by the api', () => {
+	it('should return the message sent by the api', () => {
 		expect(getApiErrorMessage(responseError({ message: 'CNPJ já cadastrado' }))).toBe(
 			'CNPJ já cadastrado'
 		);
 	});
 
-	it('falls back when the api sends no message', () => {
+	it('should fall back when the api sends no message', () => {
 		expect(getApiErrorMessage(responseError({}))).toBe(
 			'Não foi possível concluir a ação. Tente novamente.'
 		);
 	});
 
-	it('explains network failures', () => {
+	it('should explain network failures', () => {
 		expect(getApiErrorMessage(new AxiosError('Network Error', 'ERR_NETWORK'))).toBe(
 			'Não foi possível falar com o servidor. Verifique sua conexão.'
 		);
 	});
 
-	it('falls back for errors outside axios', () => {
+	it('should fall back for errors outside axios', () => {
 		expect(getApiErrorMessage(new Error('boom'))).toBe(
 			'Não foi possível concluir a ação. Tente novamente.'
 		);

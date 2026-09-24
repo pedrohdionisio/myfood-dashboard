@@ -10,7 +10,7 @@ const validForm = {
 };
 
 describe('productSchema', () => {
-	it('converts the price to cents and trims the description', () => {
+	it('should convert the price to cents and trim the description', () => {
 		expect(productSchema.parse(validForm)).toEqual({
 			menuCategoryId: validForm.menuCategoryId,
 			name: 'Lasanha',
@@ -20,7 +20,7 @@ describe('productSchema', () => {
 		});
 	});
 
-	it('requires a price and a category', () => {
+	it('should require a price and a category', () => {
 		const result = productSchema.safeParse({ ...validForm, price: '', menuCategoryId: '' });
 
 		expect(result.error?.issues.map((issue) => issue.path[0])).toEqual(['menuCategoryId', 'price']);

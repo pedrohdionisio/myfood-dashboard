@@ -8,7 +8,7 @@ import { describe, expect, it } from 'vitest';
 import { OrdersHistory } from './OrdersHistory';
 
 describe('OrdersHistory', () => {
-	it('filters by status and restarts on the first page', async () => {
+	it('should filter by status and restart on the first page', async () => {
 		const requests: string[] = [];
 		server.use(
 			http.get(restaurantUrl('/orders'), ({ request }) => {

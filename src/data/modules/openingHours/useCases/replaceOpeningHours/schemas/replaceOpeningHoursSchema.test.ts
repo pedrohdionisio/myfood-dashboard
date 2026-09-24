@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { replaceOpeningHoursSchema } from './replaceOpeningHoursSchema';
 
 describe('replaceOpeningHoursSchema', () => {
-	it('flattens open days into shifts and skips closed ones', () => {
+	it('should flatten open days into shifts and skip closed ones', () => {
 		expect(
 			replaceOpeningHoursSchema.parse({
 				days: [
@@ -25,7 +25,7 @@ describe('replaceOpeningHoursSchema', () => {
 		});
 	});
 
-	it('ignores invalid times on closed days', () => {
+	it('should ignore invalid times on closed days', () => {
 		expect(
 			replaceOpeningHoursSchema.safeParse({
 				days: [{ dayOfWeek: 0, isOpen: false, shifts: [{ opensAt: '', closesAt: '' }] }]
@@ -33,7 +33,7 @@ describe('replaceOpeningHoursSchema', () => {
 		).toBe(true);
 	});
 
-	it('rejects missing times and a shift that opens and closes at once', () => {
+	it('should reject missing times and a shift that opens and closes at once', () => {
 		const result = replaceOpeningHoursSchema.safeParse({
 			days: [
 				{

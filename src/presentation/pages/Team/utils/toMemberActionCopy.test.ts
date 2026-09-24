@@ -13,13 +13,13 @@ const driver: IRestaurantMember = {
 };
 
 describe('toMemberActionCopy', () => {
-	it('warns about routes in progress when deactivating a driver', () => {
+	it('should warn about routes in progress when deactivating a driver', () => {
 		expect(toMemberActionCopy({ member: driver, action: 'DEACTIVATE' }).description).toContain(
 			'entrega frustrada'
 		);
 	});
 
-	it('uses the matching confirmation label', () => {
+	it('should use the matching confirmation label', () => {
 		expect(toMemberActionCopy({ member: driver, action: 'PROMOTE' }).confirmLabel).toBe(
 			'Tornar dono'
 		);

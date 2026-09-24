@@ -42,7 +42,7 @@ afterEach(() => {
 });
 
 describe('openEventStream', () => {
-	it('parses messages split across chunks, joining data lines and skipping comments', async () => {
+	it('should parse messages split across chunks, joining data lines and skipping comments', async () => {
 		const fetchMock = vi
 			.fn()
 			.mockResolvedValueOnce(
@@ -70,7 +70,7 @@ describe('openEventStream', () => {
 		close();
 	});
 
-	it('renews the authorization once after a 401 and reconnects with the new token', async () => {
+	it('should renew the authorization once after a 401 and reconnect with the new token', async () => {
 		const fetchMock = vi
 			.fn()
 			.mockResolvedValueOnce(new Response(null, { status: 401 }))
@@ -88,7 +88,7 @@ describe('openEventStream', () => {
 		close();
 	});
 
-	it('gives up on a permanent client error', async () => {
+	it('should give up on a permanent client error', async () => {
 		const fetchMock = vi.fn().mockResolvedValue(new Response(null, { status: 403 }));
 
 		const { close } = openStream(fetchMock);
@@ -101,7 +101,7 @@ describe('openEventStream', () => {
 		close();
 	});
 
-	it('retries with backoff after a server error and stops when closed', async () => {
+	it('should retry with backoff after a server error and stop when closed', async () => {
 		vi.useFakeTimers();
 
 		const fetchMock = vi.fn().mockResolvedValue(new Response(null, { status: 503 }));

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { resetPasswordSchema } from './resetPasswordSchema';
 
 describe('resetPasswordSchema', () => {
-	it('drops the confirmation from the payload', () => {
+	it('should drop the confirmation from the payload', () => {
 		expect(
 			resetPasswordSchema.parse({
 				code: ' 123456 ',
@@ -12,7 +12,7 @@ describe('resetPasswordSchema', () => {
 		).toEqual({ code: '123456', password: 'Senha123' });
 	});
 
-	it('flags a confirmation that does not match', () => {
+	it('should flag a confirmation that does not match', () => {
 		const result = resetPasswordSchema.safeParse({
 			code: '123456',
 			password: 'Senha123',

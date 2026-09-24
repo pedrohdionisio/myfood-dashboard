@@ -33,7 +33,7 @@ beforeEach(() => {
 });
 
 describe('Settings', () => {
-	it('keeps the saved address and focus when the page opens', async () => {
+	it('should keep the saved address and focus when the page opens', async () => {
 		renderSignedIn(<Settings />, '/configuracoes');
 
 		expect(await screen.findByLabelText('Rua')).toHaveValue('Avenida Paulista');
@@ -45,7 +45,7 @@ describe('Settings', () => {
 		expect(screen.getByRole('button', { name: 'Salvar cadastro' })).toBeDisabled();
 	});
 
-	it('fills the address when the user types a new zip code', async () => {
+	it('should fill the address when the user types a new zip code', async () => {
 		const { user } = renderSignedIn(<Settings />, '/configuracoes');
 
 		const zipCode = await screen.findByLabelText('CEP');
@@ -59,7 +59,7 @@ describe('Settings', () => {
 		expect(screen.getByLabelText('Número')).toHaveFocus();
 	});
 
-	it('keeps unsaved profile edits when the store is paused', async () => {
+	it('should keep unsaved profile edits when the store is paused', async () => {
 		server.use(
 			http.patch(restaurantUrl('/accepting-orders'), () => {
 				restaurant = { ...restaurant, isAcceptingOrders: false };
@@ -78,7 +78,7 @@ describe('Settings', () => {
 		expect(screen.getByLabelText('Nome fantasia')).toHaveValue('Cantina Nova');
 	});
 
-	it('saves the profile with values converted for the api', async () => {
+	it('should save the profile with values converted for the api', async () => {
 		let payload: unknown;
 		server.use(
 			http.patch(restaurantUrl(), async ({ request }) => {
@@ -105,7 +105,7 @@ describe('Settings', () => {
 		expect(screen.getByRole('button', { name: 'Salvar cadastro' })).toBeDisabled();
 	});
 
-	it('saves the opening hours of the days marked as open', async () => {
+	it('should save the opening hours of the days marked as open', async () => {
 		let payload: unknown;
 		server.use(
 			http.put(restaurantUrl('/opening-hours'), async ({ request }) => {

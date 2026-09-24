@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { buildOrder } from '../tests/fixtures/orders';
 import { mockApi, seedSession } from './support/mockApi';
 
-test('moves an order from new to preparing', async ({ page }) => {
+test('should move an order from new to preparing', async ({ page }) => {
 	await mockApi(page, { orders: [buildOrder()] });
 	await seedSession(page);
 
@@ -24,7 +24,7 @@ test('moves an order from new to preparing', async ({ page }) => {
 	await expect(newColumn.getByText('Nenhum pedido aqui.')).toBeVisible();
 });
 
-test('announces an order placed while the board is open', async ({ page }) => {
+test('should announce an order placed while the board is open', async ({ page }) => {
 	const state = await mockApi(page);
 	await seedSession(page);
 

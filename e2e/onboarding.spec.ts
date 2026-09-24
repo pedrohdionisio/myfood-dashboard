@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { mockApi } from './support/mockApi';
 
-test('creates an account and registers the restaurant', async ({ page }) => {
+test('should create an account and register the restaurant', async ({ page }) => {
 	await mockApi(page);
 	await page.route('https://viacep.com.br/**', (route) =>
 		route.fulfill({

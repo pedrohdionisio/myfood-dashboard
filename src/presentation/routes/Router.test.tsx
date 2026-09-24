@@ -31,7 +31,7 @@ async function signIn(user: ReturnType<typeof renderApp>['user']) {
 }
 
 describe('Router', () => {
-	it('signs in and lands on the dashboard, saving the tokens', async () => {
+	it('should sign in and land on the dashboard, saving the tokens', async () => {
 		mockSignIn();
 		const { user } = renderApp('/login');
 
@@ -44,7 +44,7 @@ describe('Router', () => {
 		});
 	});
 
-	it('shows the api message when the credentials are wrong', async () => {
+	it('should show the api message when the credentials are wrong', async () => {
 		server.use(
 			http.post(apiUrl('/auth/restaurant-users/sign-in'), () =>
 				HttpResponse.json({ message: 'E-mail ou senha inválidos' }, { status: 401 })
@@ -58,7 +58,7 @@ describe('Router', () => {
 		expect(localStorage.getItem(AUTH_TOKENS_STORAGE_KEY)).toBeNull();
 	});
 
-	it('validates the form before calling the api', async () => {
+	it('should validate the form before calling the api', async () => {
 		const { user } = renderApp('/login');
 
 		await user.click(await screen.findByRole('button', { name: 'Fazer Login' }));
@@ -67,7 +67,7 @@ describe('Router', () => {
 		expect(screen.getByText('Informe sua senha')).toBeInTheDocument();
 	});
 
-	it('returns to the requested page after signing in', async () => {
+	it('should return to the requested page after signing in', async () => {
 		mockSignIn();
 		const { user } = renderApp('/pedidos');
 
@@ -77,14 +77,14 @@ describe('Router', () => {
 		expect(window.location.pathname).toBe('/pedidos');
 	});
 
-	it('restores a stored session', async () => {
+	it('should restore a stored session', async () => {
 		seedSession();
 		renderApp('/');
 
 		expect(await screen.findByRole('heading', { name: 'Olá, Pedro' })).toBeInTheDocument();
 	});
 
-	it('renews an expired access token and retries the request', async () => {
+	it('should renew an expired access token and retry the request', async () => {
 		seedSession();
 		let meCalls = 0;
 		server.use(
@@ -110,7 +110,7 @@ describe('Router', () => {
 		);
 	});
 
-	it('signs out when the refresh token is rejected', async () => {
+	it('should sign out when the refresh token is rejected', async () => {
 		seedSession();
 		server.use(
 			http.get(apiUrl('/restaurant-users/me'), () => new HttpResponse(null, { status: 401 })),
@@ -124,7 +124,7 @@ describe('Router', () => {
 		expect(localStorage.getItem(AUTH_TOKENS_STORAGE_KEY)).toBeNull();
 	});
 
-	it('sends an owner without restaurants to the onboarding', async () => {
+	it('should send an owner without restaurants to the onboarding', async () => {
 		seedSession();
 		server.use(http.get(apiUrl('/restaurant-users/me/restaurants'), () => HttpResponse.json([])));
 		renderApp('/');
@@ -135,7 +135,7 @@ describe('Router', () => {
 		expect(window.location.pathname).toBe('/cadastro/restaurante');
 	});
 
-	it('tells a driver to use the app instead of the dashboard', async () => {
+	it('should tell a driver to use the app instead of the dashboard', async () => {
 		seedSession();
 		server.use(
 			http.get(apiUrl('/restaurant-users/me/restaurants'), () =>
@@ -147,7 +147,7 @@ describe('Router', () => {
 		expect(await screen.findByText(/Suas entregas ficam no app MyFood/)).toBeInTheDocument();
 	});
 
-	it('asks which restaurant to manage and remembers the choice', async () => {
+	it('should ask which restaurant to manage and remember the choice', async () => {
 		seedSession();
 		server.use(
 			http.get(apiUrl('/restaurant-users/me/restaurants'), () =>
@@ -165,7 +165,7 @@ describe('Router', () => {
 		expect(localStorage.getItem('@myfood:selected-restaurant')).toBe('restaurant-1');
 	});
 
-	it('signs out from the restaurant selection', async () => {
+	it('should sign out from the restaurant selection', async () => {
 		seedSession();
 		server.use(
 			http.get(apiUrl('/restaurant-users/me/restaurants'), () =>

@@ -27,7 +27,7 @@ beforeEach(() => {
 });
 
 describe('Products', () => {
-	it('asks for a category before any product', async () => {
+	it('should ask for a category before any product', async () => {
 		server.use(http.get(restaurantUrl('/menu-categories'), () => HttpResponse.json([])));
 		renderSignedIn(<Products />);
 
@@ -35,7 +35,7 @@ describe('Products', () => {
 		expect(screen.queryByRole('button', { name: /Novo produto/ })).not.toBeInTheDocument();
 	});
 
-	it('lists the products of the first category', async () => {
+	it('should list the products of the first category', async () => {
 		renderSignedIn(<Products />);
 
 		const row = (await screen.findByText('Lasanha')).closest('tr');
@@ -44,7 +44,7 @@ describe('Products', () => {
 		expect(within(row as HTMLElement).getByText('R$ 39,90')).toBeInTheDocument();
 	});
 
-	it('creates a product in the selected category', async () => {
+	it('should create a product in the selected category', async () => {
 		let payload: unknown;
 		server.use(
 			http.post(restaurantUrl('/products'), async ({ request }) => {
@@ -72,7 +72,7 @@ describe('Products', () => {
 		expect(await screen.findByText('Nhoque')).toBeInTheDocument();
 	});
 
-	it('validates the product form', async () => {
+	it('should validate the product form', async () => {
 		const { user } = renderSignedIn(<Products />);
 
 		await user.click(await screen.findByRole('button', { name: /Novo produto/ }));
@@ -83,7 +83,7 @@ describe('Products', () => {
 		expect(dialog.getByText('Informe o preço do produto')).toBeInTheDocument();
 	});
 
-	it('edits a product keeping its description', async () => {
+	it('should edit a product keeping its description', async () => {
 		let payload: unknown;
 		server.use(
 			http.patch(restaurantUrl('/products/product-1'), async ({ request }) => {
@@ -112,7 +112,7 @@ describe('Products', () => {
 		});
 	});
 
-	it('toggles the availability of a product', async () => {
+	it('should toggle the availability of a product', async () => {
 		let payload: unknown;
 		server.use(
 			http.patch(restaurantUrl('/products/product-1/availability'), async ({ request }) => {
@@ -131,7 +131,7 @@ describe('Products', () => {
 		expect(payload).toEqual({ isAvailable: false });
 	});
 
-	it('archives a product after confirmation', async () => {
+	it('should archive a product after confirmation', async () => {
 		server.use(
 			http.delete(restaurantUrl('/products/product-1'), () => {
 				const [archived] = products;

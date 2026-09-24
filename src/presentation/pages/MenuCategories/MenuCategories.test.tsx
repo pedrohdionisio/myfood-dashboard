@@ -9,7 +9,7 @@ import { describe, expect, it } from 'vitest';
 import { MenuCategories } from './MenuCategories';
 
 describe('MenuCategories', () => {
-	it('creates a category', async () => {
+	it('should create a category', async () => {
 		let categories: IMenuCategory[] = [];
 		let payload: unknown;
 		server.use(

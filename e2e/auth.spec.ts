@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { mockApi } from './support/mockApi';
 
-test('signs in and returns to the page that was requested', async ({ page }) => {
+test('should sign in and return to the page that was requested', async ({ page }) => {
 	await mockApi(page);
 
 	await page.goto('/pedidos');

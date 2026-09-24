@@ -21,7 +21,7 @@ function issuePaths(form: CreateRestaurantFormType) {
 }
 
 describe('createRestaurantSchema', () => {
-	it('sends digits only, uppercases the state and drops empty optionals', () => {
+	it('should send digits only, uppercase the state and drop empty optionals', () => {
 		expect(createRestaurantSchema.parse(validForm)).toEqual({
 			tradeName: 'Cantina da Nonna',
 			legalName: 'Cantina da Nonna LTDA',
@@ -38,11 +38,11 @@ describe('createRestaurantSchema', () => {
 		});
 	});
 
-	it('rejects an invalid cnpj', () => {
+	it('should reject an invalid cnpj', () => {
 		expect(issuePaths({ ...validForm, cnpj: '11.222.333/0001-82' })).toEqual(['cnpj']);
 	});
 
-	it('validates the shared profile fields', () => {
+	it('should validate the shared profile fields', () => {
 		expect(
 			issuePaths({
 				...validForm,

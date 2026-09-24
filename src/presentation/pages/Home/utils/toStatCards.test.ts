@@ -13,7 +13,7 @@ const totals: IAnalyticsTotals = {
 };
 
 describe('toStatCards', () => {
-	it('shows a dash for averages when nothing was delivered', () => {
+	it('should show a dash for averages when nothing was delivered', () => {
 		const cards = toStatCards(totals, null);
 
 		expect(cards.find((card) => card.id === 'avgTicket')?.value).toBe('—');
@@ -21,7 +21,7 @@ describe('toStatCards', () => {
 		expect(cards.find((card) => card.id === 'grossRevenue')?.value).toBe('R$ 500,00');
 	});
 
-	it('compares with the previous period when there is one', () => {
+	it('should compare with the previous period when there is one', () => {
 		const cards = toStatCards(totals, { ...totals, ordersCount: 5, canceledCount: 4 });
 
 		expect(cards.find((card) => card.id === 'ordersCount')?.delta).toBe(100);

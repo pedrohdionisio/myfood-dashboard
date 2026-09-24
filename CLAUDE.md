@@ -58,6 +58,15 @@ Ao mexer em alias, lembre que ele vive em **três arquivos que precisam ficar em
 o bundle) e uma cópia dos `paths` no `tsconfig.json` — essa terceira é inerte para o build e
 existe só porque o CLI do shadcn lê os paths do `tsconfig.json`.
 
+### Rotas
+
+As rotas ficam em `presentation/routes/routes.tsx`, num data router (`createBrowserRouter`). Página
+nova entra ali com `lazy`, para virar um chunk próprio:
+`lazy: () => import('presentation/pages/X/X').then(({ X }) => ({ Component: X }))`. O acesso é
+decidido pelos guards de layout: `SignedOutGuard` (login, cadastro e recuperação),
+`SignedInGuard` e o `RestaurantGuard` (entregador, onboarding e seleção de restaurante). Endereço
+desconhecido cai no `NotFound`, e erro de render ou de chunk sobe para o `AppError` da rota raiz.
+
 ### Função de uso local sai do arquivo
 
 Função utilitária ou hook que só aquele componente/página usa não fica no meio do arquivo: vai

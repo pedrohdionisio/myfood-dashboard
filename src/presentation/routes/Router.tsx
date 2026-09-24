@@ -1,21 +1,9 @@
-import { useAuth } from 'data/contexts/AuthProvider/AuthProvider';
-import { SelectedRestaurantProvider } from 'data/contexts/SelectedRestaurantProvider/SelectedRestaurantProvider';
-import { BrowserRouter } from 'react-router-dom';
-import { SignedInRoutes } from './SignedInRoutes';
-import { SignedOutRoutes } from './SignedOutRoutes';
+import { useState } from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { routes } from './routes';
 
 export function Router() {
-	const { signedIn } = useAuth();
+	const [router] = useState(() => createBrowserRouter(routes));
 
-	return (
-		<BrowserRouter>
-			{signedIn ? (
-				<SelectedRestaurantProvider>
-					<SignedInRoutes />
-				</SelectedRestaurantProvider>
-			) : (
-				<SignedOutRoutes />
-			)}
-		</BrowserRouter>
-	);
+	return <RouterProvider router={router} />;
 }

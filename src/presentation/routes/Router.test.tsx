@@ -182,4 +182,30 @@ describe('Router', () => {
 		await waitFor(() => expect(localStorage.getItem(AUTH_TOKENS_STORAGE_KEY)).toBeNull());
 		expect(await screen.findByRole('button', { name: 'Fazer Login' })).toBeInTheDocument();
 	});
+
+	it('should show the not found page for an unknown address when signed out', async () => {
+		renderApp('/endereco-que-nao-existe');
+
+		expect(
+			await screen.findByRole('heading', { name: 'Página não encontrada' })
+		).toBeInTheDocument();
+		expect(screen.getByRole('link', { name: 'Voltar ao início' })).toHaveAttribute('href', '/');
+	});
+
+	it('should show the not found page for an unknown address when signed in', async () => {
+		seedSession();
+		const { user } = renderApp('/cardapio/inexistente');
+
+		await user.click(await screen.findByRole('link', { name: 'Voltar ao início' }));
+
+		expect(await screen.findByRole('heading', { name: 'Olá, Pedro' })).toBeInTheDocument();
+	});
+
+	it('should send a signed in user away from the sign in page', async () => {
+		seedSession();
+		renderApp('/login');
+
+		expect(await screen.findByRole('heading', { name: 'Olá, Pedro' })).toBeInTheDocument();
+		expect(window.location.pathname).toBe('/');
+	});
 });

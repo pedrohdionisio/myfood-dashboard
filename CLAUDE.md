@@ -130,6 +130,10 @@ A regra é do método do service. O hook do use case continua com o nome inteiro
 - **E2E** fica em `e2e/`, com a API mockada por `page.route` em `e2e/support/mockApi.ts`, rodando
   em Chromium e WebKit. As fixtures de `tests/fixtures/` servem aos dois.
 - Selecione pelo que o usuário vê: `getByRole`, `getByLabelText`, texto. Nada de `data-testid`.
+- Tela nova ganha uma entrada em `e2e/accessibility.spec.ts`, que roda o axe (WCAG 2.1 AA) em
+  cada página.
+- O CI (`.github/workflows/ci.yml`) roda typecheck, lint com warnings como erro, testes com
+  cobertura, build e E2E a cada push e PR.
 - Título de teste começa com `should` e segue com o verbo no infinitivo, inclusive os coordenados:
   `it('should sign in and return to the requested page')`. Vale para `it` e para o `test` do
   Playwright.

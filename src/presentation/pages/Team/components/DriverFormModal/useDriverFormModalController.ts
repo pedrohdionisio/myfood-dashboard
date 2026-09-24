@@ -4,7 +4,7 @@ import {
 	type DriverFormType,
 	type DriverPayloadType,
 	driverSchema
-} from 'data/modules/members/schemas/driverSchema';
+} from 'data/modules/members/useCases/createMember/schemas/driverSchema';
 import { useCreateMember } from 'data/modules/members/useCases/createMember/useCreateMember';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';

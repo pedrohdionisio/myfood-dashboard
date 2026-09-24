@@ -78,6 +78,11 @@ menor que o esperado e borra. Acima, o sharp joga o excedente fora e o byte extr
 upload. Mudou `IMAGE_VARIANTS` na API, mude o `outputWidth` em
 `presentation/pages/Products/components/ProductFormModal/ProductFormModal.tsx`.
 
+### Onde mora o schema
+
+Schema de um use case só fica em `data/modules/<modulo>/useCases/<useCase>/schemas/`. Quando mais de
+um use case usa — criar e editar produto, por exemplo —, ele sobe para `data/modules/<modulo>/schemas/`.
+
 ### Método de service não repete o nome do service
 
 O objeto já diz de que entidade se trata, então o método só carrega o verbo:

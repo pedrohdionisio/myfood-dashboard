@@ -1,3 +1,4 @@
+import { passwordSchema } from 'data/modules/auth/schemas/passwordSchema';
 import type { IMemberPayload } from 'data/modules/members/types/MemberTypes';
 import { Mask } from 'shared/utils/Mask';
 import { z } from 'zod';
@@ -10,14 +11,7 @@ const driverFormSchema = z.object({
 		.max(120, 'O nome deve ter no máximo 120 caracteres'),
 	email: z.email('Formato de e-mail inválido').max(254, 'O e-mail é muito longo'),
 	phone: z.string(),
-	password: z
-		.string()
-		.min(8, 'A senha deve ter no mínimo 8 caracteres')
-		.max(128, 'A senha deve ter no máximo 128 caracteres')
-		.regex(
-			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-			'A senha precisa de letra maiúscula, letra minúscula e número'
-		)
+	password: passwordSchema
 });
 
 export const driverSchema = driverFormSchema

@@ -1,6 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getApiErrorMessage } from 'data/config/apiError';
-import { type ReplyFormType, replySchema } from 'data/modules/reviews/schemas/replySchema';
+import {
+	type ReplyFormType,
+	replySchema
+} from 'data/modules/reviews/useCases/replyToReview/schemas/replySchema';
 import { useReplyToReview } from 'data/modules/reviews/useCases/replyToReview/useReplyToReview';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';

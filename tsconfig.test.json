@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.test.tsbuildinfo",
+    "types": ["vite/client", "node", "@testing-library/jest-dom/vitest"],
+    "paths": {
+      "data/*": ["./src/data/*"],
+      "presentation/*": ["./src/presentation/*"],
+      "shared/*": ["./src/shared/*"],
+      "tests/*": ["./tests/*"]
+    }
+  },
+  "include": ["src", "tests", "e2e"],
+  "exclude": []
+}

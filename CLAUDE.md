@@ -23,13 +23,16 @@ para provar algo, pergunte em vez de rodar.
 
 ## Comandos
 
-| Comando          | O que faz                                 |
-| ---------------- | ----------------------------------------- |
-| `pnpm typecheck` | Só o TypeScript (`tsc -b`)                |
-| `pnpm lint`      | `biome check`                             |
-| `pnpm format`    | `biome check --write` (corrige e formata)  |
-| `pnpm dev`       | Dev server — **só se pedido**             |
-| `pnpm build`     | `tsc -b` + produção — **só se pedido**    |
+| Comando              | O que faz                                           |
+| -------------------- | --------------------------------------------------- |
+| `pnpm typecheck`     | Só o TypeScript (`tsc -b`)                          |
+| `pnpm lint`          | `biome check`                                       |
+| `pnpm format`        | `biome check --write` (corrige e formata)           |
+| `pnpm dev`           | Dev server — **só se pedido**                       |
+| `pnpm build`         | `tsc -b` + produção — **só se pedido**              |
+| `pnpm test`          | Vitest: unitários e de feature                      |
+| `pnpm test:coverage` | Vitest com cobertura e mínimo exigido               |
+| `pnpm test:e2e`      | Playwright — sobe build + preview, **só se pedido** |
 
 Husky + lint-staged rodam `biome check --error-on-warnings` e `tsc -b` no pre-commit — código
 que não passa nesses dois não entra. Warning barra o commit igual a error.
@@ -106,6 +109,18 @@ Verbo que não repete o nome do service já está certo e não muda: `AuthServic
 
 A regra é do método do service. O hook do use case continua com o nome inteiro
 (`useCreateProduct`), porque ele é importado solto e `useCreate` não diria nada.
+
+## Testes
+
+- **Unitário** é `*.test.ts` ao lado do arquivo testado e roda em node: função pura, schema,
+  parser.
+- **Feature** é `*.test.tsx` ao lado da página ou do componente e roda em jsdom, com a API mockada
+  pelo MSW. Renderize com `renderSignedIn` (página com sessão e restaurante) ou `renderApp` (app
+  inteiro, pelo router) de `tests/render.tsx`. Os handlers padrão ficam em `tests/handlers.ts`; o
+  teste sobrescreve só o que importa com `server.use`. Request sem handler quebra o teste.
+- **E2E** fica em `e2e/`, com a API mockada por `page.route` em `e2e/support/mockApi.ts`, rodando
+  em Chromium e WebKit. As fixtures de `tests/fixtures/` servem aos dois.
+- Selecione pelo que o usuário vê: `getByRole`, `getByLabelText`, texto. Nada de `data-testid`.
 
 ## Regras por contexto
 

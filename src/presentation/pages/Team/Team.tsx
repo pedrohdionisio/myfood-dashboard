@@ -48,7 +48,7 @@ export function Team() {
 				</Button>
 			</header>
 
-			<DataTable.Root columnCount={6}>
+			<DataTable.Root columnCount={6} data-clarity-mask="True">
 				<DataTable.Header>
 					<DataTable.Head>Nome</DataTable.Head>
 

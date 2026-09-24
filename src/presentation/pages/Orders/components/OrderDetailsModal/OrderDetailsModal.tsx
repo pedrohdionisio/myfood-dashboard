@@ -52,7 +52,7 @@ export function OrderDetailsModal({
 
 	return (
 		<Modal.Root open={isOpen} onOpenChange={onClose}>
-			<Modal.Content size="lg">
+			<Modal.Content size="lg" data-clarity-mask="True">
 				{order ? (
 					<>
 						<Modal.Header>

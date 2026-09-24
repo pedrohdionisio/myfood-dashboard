@@ -116,7 +116,7 @@ export function OrdersHistory() {
 						data-fetching={isFetchingOrders || undefined}
 						className="flex flex-col gap-4 data-fetching:opacity-60"
 					>
-						<DataTable.Root columnCount={7}>
+						<DataTable.Root columnCount={7} data-clarity-mask="True">
 							<DataTable.Header>
 								<DataTable.Head>Pedido</DataTable.Head>
 

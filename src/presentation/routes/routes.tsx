@@ -1,14 +1,14 @@
 import { PageLoader } from 'presentation/components/PageLoader/PageLoader';
-import { AppError } from 'presentation/pages/AppError/AppError';
 import { NotFound } from 'presentation/pages/NotFound/NotFound';
 import type { RouteObject } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/routes/appRoutes';
+import { RouteErrorBoundary } from './RouteErrorBoundary';
 import { SignedInGuard } from './SignedInGuard';
 import { SignedOutGuard } from './SignedOutGuard';
 
 export const routes: RouteObject[] = [
 	{
-		ErrorBoundary: AppError,
+		ErrorBoundary: RouteErrorBoundary,
 		HydrateFallback: PageLoader,
 		children: [
 			{

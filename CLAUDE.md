@@ -149,3 +149,7 @@ Se algo só se entende com comentário, o código é que precisa mudar.
 
 Código, nomes de arquivo e identificadores em **inglês**. Texto de UI e mensagens de commit em
 **português**.
+
+Erro lançado com `throw` segue a mesma divisão: se a mensagem chega à tela (o `cropImage` vira
+aviso no `ImageInput`), português; se é invariante interna (hook fora do provider, env faltando),
+inglês.

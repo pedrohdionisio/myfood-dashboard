@@ -5,17 +5,17 @@ Gerenciador de pacotes é **pnpm**.
 
 ## Verificação — regra que não se negocia
 
-**Depois de qualquer alteração, rode apenas estes dois:**
+**Depois de qualquer alteração, rode apenas estes três:**
 
 ```bash
-pnpm typecheck && pnpm lint
+pnpm typecheck && pnpm lint && pnpm test
 ```
 
 **NUNCA rode `pnpm build` nem suba o dev server (`pnpm dev`, `vite`, `pnpm preview`) sem o
 Pedro pedir explicitamente.** Não é "preferência": build e servidor só rodam quando pedidos,
-por mais que pareçam a forma óbvia de confirmar que algo funciona. `typecheck` + `lint` é o
-fechamento padrão — é o mesmo par que o pre-commit roda, então passar neles é o que define
-"pronto".
+por mais que pareçam a forma óbvia de confirmar que algo funciona. O `pnpm test:e2e` entra na
+mesma regra, porque sobe build + preview. `typecheck` + `lint` + `test` é o fechamento padrão —
+passar nos três é o que define "pronto".
 
 Pedido explícito é o Pedro escrevendo que quer (`roda o build`, `sobe o servidor`,
 `quer ver no browser`). Achar que seria útil não conta; se você julga que o build é necessário

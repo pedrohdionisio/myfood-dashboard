@@ -123,8 +123,7 @@ as duas remoções e devolver o `valueFormatter`.
 
 ## Fechamento
 
-`pnpm typecheck && pnpm lint` — é o mesmo par que o pre-commit roda. Nunca `pnpm build` nem
-`pnpm dev`; ver `CLAUDE.md`.
+`pnpm typecheck && pnpm lint && pnpm test`. Nunca `pnpm build` nem `pnpm dev`; ver `CLAUDE.md`.
 
 O `Button` já normalizado é a referência viva: `src/presentation/components/Button/`. Para o
 caso em que o lint obrigou a mexer na função, é o `Chart/`.

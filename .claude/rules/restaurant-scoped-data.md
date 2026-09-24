@@ -94,4 +94,4 @@ resolveu. Com `enabled: !!restaurantId` o TypeScript continua vendo `string | nu
 
 ## Fechamento
 
-`pnpm typecheck && pnpm lint`; ver `CLAUDE.md`.
+`pnpm typecheck && pnpm lint && pnpm test`; ver `CLAUDE.md`.

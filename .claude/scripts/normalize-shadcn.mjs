@@ -79,7 +79,7 @@ const output = {
 			'Falta a parte que depende de ler o código. Leia `.claude/rules/shadcn.md` e aplique ' +
 			'nos arquivos acima antes de seguir: props em `I<Nome>Props` no `<Nome>Types.ts`, cva ' +
 			'em `<nome>Variants.ts`, `export function <Nome>` com props desestruturadas. ' +
-			'Feche com `pnpm typecheck && pnpm lint` — nunca com build ou dev server.' +
+			'Feche com `pnpm typecheck && pnpm lint && pnpm test` — nunca com build ou dev server.' +
 			reinstallWarning
 	}
 };

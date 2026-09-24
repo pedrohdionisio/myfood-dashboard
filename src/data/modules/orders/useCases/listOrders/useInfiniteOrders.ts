@@ -29,7 +29,7 @@ export function useInfiniteOrders(
 
 	const { data, isLoading, error, hasNextPage, isFetchingNextPage, fetchNextPage } =
 		useInfiniteQuery({
-			queryKey: [OrderQueryKeys.ORDERS, restaurantId, status, 'infinite', createdSince],
+			queryKey: [OrderQueryKeys.ORDERS, restaurantId, 'infinite', status, createdSince],
 			queryFn: restaurantId
 				? ({ pageParam }) => OrdersService.list(restaurantId, { status, page: pageParam })
 				: skipToken,

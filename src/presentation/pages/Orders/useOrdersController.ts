@@ -1,3 +1,4 @@
+import { useBoardOrder } from 'data/modules/orders/useCases/findBoardOrder/useBoardOrder';
 import { useState } from 'react';
 import type { IOrder, OrderStatus } from 'shared/entities/IOrder';
 import { useRestaurantGate } from 'shared/hooks/useRestaurantGate';
@@ -5,7 +6,8 @@ import { useRestaurantGate } from 'shared/hooks/useRestaurantGate';
 export function useOrdersController() {
 	const { restaurantId, restaurantGate } = useRestaurantGate();
 
-	const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
+	const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+	const { boardOrder } = useBoardOrder(restaurantId, selectedOrderId);
 
 	const startOfToday = new Date();
 	startOfToday.setHours(0, 0, 0, 0);
@@ -20,18 +22,18 @@ export function useOrdersController() {
 	];
 
 	function handleSelectOrder(order: IOrder) {
-		setSelectedOrder(order);
+		setSelectedOrderId(order.id);
 	}
 
 	function handleCloseDetailsModal() {
-		setSelectedOrder(null);
+		setSelectedOrderId(null);
 	}
 
 	return {
 		restaurantId,
 		restaurantGate,
 		isBoardVisible: restaurantGate === 'OPERATING',
-		selectedOrder,
+		selectedOrder: boardOrder,
 		handleSelectOrder,
 		handleCloseDetailsModal,
 		columns

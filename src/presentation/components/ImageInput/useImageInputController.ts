@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import type { Area, MediaSize, Point } from 'react-easy-crop';
 import type { IUseImageInputControllerParams } from './ImageInputTypes';
-import { cropToWebp } from './utils/cropToWebp';
+import { cropImage } from './utils/cropImage';
 
 export function useImageInputController({
 	previewUrl,
@@ -97,7 +97,7 @@ export function useImageInputController({
 		setIsPreparing(true);
 
 		try {
-			const file = await cropToWebp(sourceUrl, croppedAreaPixels, outputWidth);
+			const file = await cropImage(sourceUrl, croppedAreaPixels, outputWidth);
 
 			closeCropper();
 			onSelect(file);

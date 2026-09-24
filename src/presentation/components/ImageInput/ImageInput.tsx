@@ -38,7 +38,13 @@ export function ImageInput({
 		handleCropComplete,
 		handleConfirmCrop,
 		handleCancelCrop
-	} = useImageInputController({ previewUrl, outputWidth, disabled, onSelect, onCroppingChange });
+	} = useImageInputController({
+		previewUrl,
+		outputWidth,
+		disabled: disabled || isUploading,
+		onSelect,
+		onCroppingChange
+	});
 
 	return (
 		<div data-slot="image-input" className="flex w-full flex-col gap-2">

@@ -64,8 +64,8 @@ aquela função, e aí desce junto com ela.
 
 ### Imagem de produto: o 4:3 e o 1280 vêm da API
 
-O `ImageInput` exporta a foto do produto em **1280×960 WebP**, e nenhum dos dois números é
-escolha de layout. `1280` é a largura da variante `lg` em `IMAGE_VARIANTS`
+O `ImageInput` exporta a foto do produto em **1280×960 WebP** (JPEG no navegador que não codifica
+WebP no canvas, como o Safari), e nenhum dos dois números é escolha de layout. `1280` é a largura da variante `lg` em `IMAGE_VARIANTS`
 (`myfood-api/src/domain/images.ts`). O 4:3 é nosso, mas vira contrato porque o sharp lá
 redimensiona **só por largura** (`resize({ width, withoutEnlargement: true })`) e nunca corta —
 a proporção que sobe é a proporção que o cliente vê no cardápio.

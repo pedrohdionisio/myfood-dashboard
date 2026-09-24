@@ -1,5 +1,5 @@
 import { cn } from 'cn';
-import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from 'lucide-react';
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { buttonVariants } from 'presentation/components/Button/buttonVariants';
 import type { ComponentProps } from 'react';
 import type { IPaginationLinkProps } from './PaginationTypes';
@@ -29,12 +29,7 @@ export function PaginationItem({ ...props }: ComponentProps<'li'>) {
 	return <li data-slot="pagination-item" {...props} />;
 }
 
-export function PaginationLink({
-	className,
-	isActive,
-	size = 'icon',
-	...props
-}: IPaginationLinkProps) {
+function PaginationLink({ className, isActive, size = 'icon', ...props }: IPaginationLinkProps) {
 	return (
 		<button
 			type="button"
@@ -72,19 +67,5 @@ export function PaginationNext({ className, ...props }: IPaginationLinkProps) {
 			<span className="hidden sm:block">Próxima</span>
 			<ChevronRightIcon />
 		</PaginationLink>
-	);
-}
-
-export function PaginationEllipsis({ className, ...props }: ComponentProps<'span'>) {
-	return (
-		<span
-			aria-hidden
-			data-slot="pagination-ellipsis"
-			className={cn('flex size-9 items-center justify-center', className)}
-			{...props}
-		>
-			<MoreHorizontalIcon className="size-4" />
-			<span className="sr-only">Mais páginas</span>
-		</span>
 	);
 }

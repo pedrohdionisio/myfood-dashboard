@@ -36,7 +36,7 @@ export interface IDispatchOrderVariables {
 
 export const ORDER_STREAM_EVENT_TYPES = ['ORDER_PLACED', 'ORDER_STATUS_CHANGED'] as const;
 
-export type OrderStreamEventType = (typeof ORDER_STREAM_EVENT_TYPES)[number];
+type OrderStreamEventType = (typeof ORDER_STREAM_EVENT_TYPES)[number];
 
 export interface IOrderStreamEvent {
 	type: OrderStreamEventType;

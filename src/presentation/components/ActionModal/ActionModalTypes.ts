@@ -1,4 +1,4 @@
-export type ActionModalVariant = 'default' | 'destructive';
+type ActionModalVariant = 'default' | 'destructive';
 
 export interface IActionModalProps {
 	isOpen: boolean;

@@ -12,7 +12,7 @@ export interface ISignUpPayload {
 	phone?: string;
 }
 
-export interface IAuthSession {
+interface IAuthSession {
 	accessToken: string;
 	idToken: string;
 	refreshToken: string;

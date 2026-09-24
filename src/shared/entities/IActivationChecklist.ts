@@ -1,8 +1,8 @@
-export const ACTIVATION_REQUIREMENTS = ['OPENING_HOURS', 'AVAILABLE_PRODUCT'] as const;
+const ACTIVATION_REQUIREMENTS = ['OPENING_HOURS', 'AVAILABLE_PRODUCT'] as const;
 
 export type ActivationRequirement = (typeof ACTIVATION_REQUIREMENTS)[number];
 
-export interface IActivationRequirementState {
+interface IActivationRequirementState {
 	code: ActivationRequirement;
 	isMet: boolean;
 }

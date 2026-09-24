@@ -14,7 +14,7 @@ export type PaymentMethod = 'ONLINE' | 'CASH' | 'CARD_ON_DELIVERY';
 
 export type PaymentStatus = 'PENDING' | 'PAID' | 'FAILED' | 'REFUNDED';
 
-export interface IOrderItem {
+interface IOrderItem {
 	id: string;
 	productId: string;
 	productName: string;
@@ -24,7 +24,7 @@ export interface IOrderItem {
 	notes: string | null;
 }
 
-export interface IOrderCustomer {
+interface IOrderCustomer {
 	name: string;
 	phone: string | null;
 }

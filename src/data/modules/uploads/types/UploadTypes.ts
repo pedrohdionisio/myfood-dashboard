@@ -2,7 +2,7 @@ export type ImageKind = 'RESTAURANT_LOGO' | 'RESTAURANT_BANNER' | 'PRODUCT_IMAGE
 
 export const IMAGE_CONTENT_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
 
-export type ImageContentType = (typeof IMAGE_CONTENT_TYPES)[number];
+type ImageContentType = (typeof IMAGE_CONTENT_TYPES)[number];
 
 export interface IImageUploadPayload {
 	kind: ImageKind;

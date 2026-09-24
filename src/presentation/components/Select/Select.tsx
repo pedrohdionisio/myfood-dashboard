@@ -8,10 +8,6 @@ export function Select({ ...props }: ComponentProps<typeof SelectPrimitive.Root>
 	return <SelectPrimitive.Root data-slot="select" {...props} />;
 }
 
-export function SelectGroup({ ...props }: ComponentProps<typeof SelectPrimitive.Group>) {
-	return <SelectPrimitive.Group data-slot="select-group" {...props} />;
-}
-
 export function SelectValue({ ...props }: ComponentProps<typeof SelectPrimitive.Value>) {
 	return <SelectPrimitive.Value data-slot="select-value" {...props} />;
 }
@@ -77,16 +73,6 @@ export function SelectContent({
 	);
 }
 
-export function SelectLabel({ className, ...props }: ComponentProps<typeof SelectPrimitive.Label>) {
-	return (
-		<SelectPrimitive.Label
-			data-slot="select-label"
-			className={cn('px-2 py-1.5 text-xs text-muted-foreground', className)}
-			{...props}
-		/>
-	);
-}
-
 export function SelectItem({
 	className,
 	children,
@@ -111,19 +97,6 @@ export function SelectItem({
 			</span>
 			<SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
 		</SelectPrimitive.Item>
-	);
-}
-
-export function SelectSeparator({
-	className,
-	...props
-}: ComponentProps<typeof SelectPrimitive.Separator>) {
-	return (
-		<SelectPrimitive.Separator
-			data-slot="select-separator"
-			className={cn('pointer-events-none -mx-1 my-1 h-px bg-border', className)}
-			{...props}
-		/>
 	);
 }
 

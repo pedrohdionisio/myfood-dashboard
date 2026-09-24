@@ -29,29 +29,10 @@ export interface ISidebarGroupLabelProps extends ComponentProps<'div'> {
 	asChild?: boolean;
 }
 
-export interface ISidebarGroupActionProps extends ComponentProps<'button'> {
-	asChild?: boolean;
-}
-
 export interface ISidebarMenuButtonProps
 	extends ComponentProps<'button'>,
 		VariantProps<typeof sidebarMenuButtonVariants> {
 	asChild?: boolean;
 	isActive?: boolean;
 	tooltip?: string | ComponentProps<typeof TooltipContent>;
-}
-
-export interface ISidebarMenuActionProps extends ComponentProps<'button'> {
-	asChild?: boolean;
-	showOnHover?: boolean;
-}
-
-export interface ISidebarMenuSkeletonProps extends ComponentProps<'div'> {
-	showIcon?: boolean;
-}
-
-export interface ISidebarMenuSubButtonProps extends ComponentProps<'a'> {
-	asChild?: boolean;
-	size?: 'sm' | 'md';
-	isActive?: boolean;
 }

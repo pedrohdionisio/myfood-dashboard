@@ -1,8 +1,6 @@
 import { cn } from 'cn';
 import { PanelLeftIcon } from 'lucide-react';
 import { Button } from 'presentation/components/Button/Button';
-import { Input } from 'presentation/components/Input/Input';
-import { Separator } from 'presentation/components/Separator/Separator';
 import {
 	Sheet,
 	SheetContent,
@@ -10,7 +8,6 @@ import {
 	SheetHeader,
 	SheetTitle
 } from 'presentation/components/Sheet/Sheet';
-import { Skeleton } from 'presentation/components/Skeleton/Skeleton';
 import {
 	Tooltip,
 	TooltipContent,
@@ -32,12 +29,8 @@ import { SIDEBAR_OPEN_STORAGE_KEY } from 'shared/constants/storage';
 import { useIsMobile } from 'shared/hooks/useIsMobile';
 import type {
 	ISidebarContextValue,
-	ISidebarGroupActionProps,
 	ISidebarGroupLabelProps,
-	ISidebarMenuActionProps,
 	ISidebarMenuButtonProps,
-	ISidebarMenuSkeletonProps,
-	ISidebarMenuSubButtonProps,
 	ISidebarProps,
 	ISidebarProviderProps
 } from './SidebarTypes';
@@ -56,7 +49,7 @@ function loadStoredOpen(defaultOpen: boolean) {
 	return stored === null ? defaultOpen : stored === 'true';
 }
 
-export function useSidebar() {
+function useSidebar() {
 	const context = use(SidebarContext);
 
 	if (!context) {
@@ -312,45 +305,12 @@ export function SidebarInset({ className, ...props }: ComponentProps<'main'>) {
 	);
 }
 
-export function SidebarInput({ className, ...props }: ComponentProps<typeof Input>) {
-	return (
-		<Input
-			data-slot="sidebar-input"
-			data-sidebar="input"
-			className={cn('h-8 w-full bg-background shadow-none', className)}
-			{...props}
-		/>
-	);
-}
-
 export function SidebarHeader({ className, ...props }: ComponentProps<'div'>) {
 	return (
 		<div
 			data-slot="sidebar-header"
 			data-sidebar="header"
 			className={cn('flex flex-col gap-2 p-2', className)}
-			{...props}
-		/>
-	);
-}
-
-export function SidebarFooter({ className, ...props }: ComponentProps<'div'>) {
-	return (
-		<div
-			data-slot="sidebar-footer"
-			data-sidebar="footer"
-			className={cn('flex flex-col gap-2 p-2', className)}
-			{...props}
-		/>
-	);
-}
-
-export function SidebarSeparator({ className, ...props }: ComponentProps<typeof Separator>) {
-	return (
-		<Separator
-			data-slot="sidebar-separator"
-			data-sidebar="separator"
-			className={cn('mx-2 w-auto bg-sidebar-border', className)}
 			{...props}
 		/>
 	);
@@ -395,28 +355,6 @@ export function SidebarGroupLabel({
 			className={cn(
 				'flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
 				'group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0',
-				className
-			)}
-			{...props}
-		/>
-	);
-}
-
-export function SidebarGroupAction({
-	className,
-	asChild = false,
-	...props
-}: ISidebarGroupActionProps) {
-	const Comp = asChild ? Slot.Root : 'button';
-
-	return (
-		<Comp
-			data-slot="sidebar-group-action"
-			data-sidebar="group-action"
-			className={cn(
-				'absolute top-3.5 right-3 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground ring-sidebar-ring outline-hidden transition-transform hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
-				'after:absolute after:-inset-2 md:after:hidden',
-				'group-data-[collapsible=icon]:hidden',
 				className
 			)}
 			{...props}
@@ -497,135 +435,5 @@ export function SidebarMenuButton({
 				{...tooltipProps}
 			/>
 		</Tooltip>
-	);
-}
-
-export function SidebarMenuAction({
-	className,
-	asChild = false,
-	showOnHover = false,
-	...props
-}: ISidebarMenuActionProps) {
-	const Comp = asChild ? Slot.Root : 'button';
-
-	return (
-		<Comp
-			data-slot="sidebar-menu-action"
-			data-sidebar="menu-action"
-			className={cn(
-				'absolute top-1.5 right-1 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground ring-sidebar-ring outline-hidden transition-transform peer-hover/menu-button:text-sidebar-accent-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
-				'after:absolute after:-inset-2 md:after:hidden',
-				'peer-data-[size=sm]/menu-button:top-1',
-				'peer-data-[size=default]/menu-button:top-1.5',
-				'peer-data-[size=lg]/menu-button:top-2.5',
-				'group-data-[collapsible=icon]:hidden',
-				showOnHover &&
-					'group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground data-[state=open]:opacity-100 md:opacity-0',
-				className
-			)}
-			{...props}
-		/>
-	);
-}
-
-export function SidebarMenuBadge({ className, ...props }: ComponentProps<'div'>) {
-	return (
-		<div
-			data-slot="sidebar-menu-badge"
-			data-sidebar="menu-badge"
-			className={cn(
-				'pointer-events-none absolute right-1 flex h-5 min-w-5 items-center justify-center rounded-md px-1 text-xs font-medium text-sidebar-foreground tabular-nums select-none',
-				'peer-hover/menu-button:text-sidebar-accent-foreground peer-data-[active=true]/menu-button:text-sidebar-accent-foreground',
-				'peer-data-[size=sm]/menu-button:top-1',
-				'peer-data-[size=default]/menu-button:top-1.5',
-				'peer-data-[size=lg]/menu-button:top-2.5',
-				'group-data-[collapsible=icon]:hidden',
-				className
-			)}
-			{...props}
-		/>
-	);
-}
-
-export function SidebarMenuSkeleton({
-	className,
-	showIcon = false,
-	...props
-}: ISidebarMenuSkeletonProps) {
-	const width = useMemo(() => `${Math.floor(Math.random() * 40) + 50}%`, []);
-
-	return (
-		<div
-			data-slot="sidebar-menu-skeleton"
-			data-sidebar="menu-skeleton"
-			className={cn('flex h-8 items-center gap-2 rounded-md px-2', className)}
-			{...props}
-		>
-			{showIcon && <Skeleton className="size-4 rounded-md" data-sidebar="menu-skeleton-icon" />}
-
-			<Skeleton
-				className="h-4 max-w-(--skeleton-width) flex-1"
-				data-sidebar="menu-skeleton-text"
-				style={
-					{
-						'--skeleton-width': width
-					} as CSSProperties
-				}
-			/>
-		</div>
-	);
-}
-
-export function SidebarMenuSub({ className, ...props }: ComponentProps<'ul'>) {
-	return (
-		<ul
-			data-slot="sidebar-menu-sub"
-			data-sidebar="menu-sub"
-			className={cn(
-				'mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border px-2.5 py-0.5',
-				'group-data-[collapsible=icon]:hidden',
-				className
-			)}
-			{...props}
-		/>
-	);
-}
-
-export function SidebarMenuSubItem({ className, ...props }: ComponentProps<'li'>) {
-	return (
-		<li
-			data-slot="sidebar-menu-sub-item"
-			data-sidebar="menu-sub-item"
-			className={cn('group/menu-sub-item relative', className)}
-			{...props}
-		/>
-	);
-}
-
-export function SidebarMenuSubButton({
-	asChild = false,
-	size = 'md',
-	isActive = false,
-	className,
-	...props
-}: ISidebarMenuSubButtonProps) {
-	const Comp = asChild ? Slot.Root : 'a';
-
-	return (
-		<Comp
-			data-slot="sidebar-menu-sub-button"
-			data-sidebar="menu-sub-button"
-			data-size={size}
-			data-active={isActive}
-			className={cn(
-				'flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-sidebar-foreground ring-sidebar-ring outline-hidden hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground',
-				'data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground',
-				size === 'sm' && 'text-xs',
-				size === 'md' && 'text-sm',
-				'group-data-[collapsible=icon]:hidden',
-				className
-			)}
-			{...props}
-		/>
 	);
 }

@@ -1,4 +1,4 @@
-export interface IEventStreamMessage {
+interface IEventStreamMessage {
 	event: string;
 	data: string;
 }

@@ -1,4 +1,4 @@
-export const RESTAURANT_STATUSES = ['DRAFT', 'ACTIVE', 'SUSPENDED'] as const;
+const RESTAURANT_STATUSES = ['DRAFT', 'ACTIVE', 'SUSPENDED'] as const;
 
 export interface IImageUrls {
 	sm: string;

@@ -1,7 +1,9 @@
-import type { IAppErrorProps } from './AppErrorTypes';
+import { useRouteError } from 'react-router-dom';
 import { isChunkLoadError } from './utils/isChunkLoadError';
 
-export function useAppErrorController({ error }: IAppErrorProps) {
+export function useAppErrorController() {
+	const error = useRouteError();
+
 	function handleReload() {
 		window.location.reload();
 	}

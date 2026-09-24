@@ -6,8 +6,6 @@ import {
 	setSessionHandlers
 } from 'data/config/api';
 import { AuthTokensManager, type IAuthTokens } from 'data/libs/AuthTokensManager';
-import { Monitoring } from 'data/libs/Monitoring';
-import { SessionRecording } from 'data/libs/SessionRecording';
 import { AuthService } from 'data/modules/auth/services/AuthService';
 import type { IAuthSessionResponse } from 'data/modules/auth/types/AuthTypes';
 import {
@@ -102,11 +100,6 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
 		restoreSession();
 	}, [activateSession]);
-
-	useEffect(() => {
-		Monitoring.identify(user?.id ?? null);
-		SessionRecording.identify(user?.id ?? null);
-	}, [user]);
 
 	if (isRestoringSession) {
 		return null;

@@ -10,7 +10,6 @@ export function OrderCard({ order, onSelect }: IOrderCardProps) {
 	return (
 		<button
 			type="button"
-			data-clarity-mask="True"
 			onClick={() => onSelect(order)}
 			className="flex w-full flex-col gap-3 rounded-xl border border-border bg-background p-4 text-left shadow-xs transition-colors hover:border-ring hover:bg-accent/40 focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
 		>

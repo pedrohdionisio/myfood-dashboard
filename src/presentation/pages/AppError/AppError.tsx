@@ -1,11 +1,10 @@
 import { Button } from 'presentation/components/Button/Button';
 import logo from 'shared/assets/black-red-logo.svg';
 import { APP_ROUTES } from 'shared/routes/appRoutes';
-import type { IAppErrorProps } from './AppErrorTypes';
 import { useAppErrorController } from './useAppErrorController';
 
-export function AppError({ error }: IAppErrorProps) {
-	const { isOutdated, handleReload } = useAppErrorController({ error });
+export function AppError() {
+	const { isOutdated, handleReload } = useAppErrorController();
 
 	return (
 		<main className="flex min-h-svh items-center justify-center bg-background px-4">

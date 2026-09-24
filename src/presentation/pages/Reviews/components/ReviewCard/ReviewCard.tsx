@@ -22,7 +22,7 @@ export function ReviewCard({ restaurantId, review }: IReviewCardProps) {
 	} = useReviewCardController({ restaurantId, review });
 
 	return (
-		<Card className="gap-4 py-5" data-clarity-mask="True">
+		<Card className="gap-4 py-5">
 			<CardHeader className="gap-2 px-5">
 				<div className="flex flex-wrap items-center gap-x-3 gap-y-1">
 					<span

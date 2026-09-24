@@ -9,7 +9,7 @@ import {
 	TimerIcon
 } from 'lucide-react';
 import type { IAnalyticsTotals } from 'shared/entities/IAnalytics';
-import { Mask } from 'shared/utils/Mask';
+import { formatCurrency } from 'shared/utils/formatCurrency';
 import { formatPrepTime } from './formatPrepTime';
 import { toStatDelta } from './toStatDelta';
 
@@ -32,7 +32,7 @@ export function toStatCards(
 		{
 			id: 'grossRevenue',
 			label: 'Receita bruta',
-			value: `R$ ${Mask.currency(String(totals.grossRevenueCents))}`,
+			value: formatCurrency(totals.grossRevenueCents),
 			icon: BanknoteIcon,
 			delta: previousTotals
 				? toStatDelta(totals.grossRevenueCents, previousTotals.grossRevenueCents)
@@ -70,7 +70,7 @@ export function toStatCards(
 		{
 			id: 'avgTicket',
 			label: 'Ticket médio',
-			value: hasDeliveries ? `R$ ${Mask.currency(String(totals.avgTicketCents))}` : '—',
+			value: hasDeliveries ? formatCurrency(totals.avgTicketCents) : '—',
 			icon: ReceiptIcon,
 			delta:
 				hasDeliveries && previousTotals
@@ -92,7 +92,7 @@ export function toStatCards(
 		{
 			id: 'deliveryFeeRevenue',
 			label: 'Taxas de entrega',
-			value: `R$ ${Mask.currency(String(totals.deliveryFeeRevenueCents))}`,
+			value: formatCurrency(totals.deliveryFeeRevenueCents),
 			icon: BikeIcon,
 			delta: previousTotals
 				? toStatDelta(totals.deliveryFeeRevenueCents, previousTotals.deliveryFeeRevenueCents)

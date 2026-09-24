@@ -1,14 +1,8 @@
 import { ClockIcon } from 'lucide-react';
 import { formatOrderTime } from 'presentation/pages/Orders/utils/formatOrderTime';
-import type { PaymentMethod } from 'shared/entities/IOrder';
-import { Mask } from 'shared/utils/Mask';
+import { PAYMENT_METHOD_LABELS } from 'shared/constants/orderLabels';
+import { formatCurrency } from 'shared/utils/formatCurrency';
 import type { IOrderCardProps } from './OrderCardTypes';
-
-const PAYMENT_METHOD_LABELS: Record<PaymentMethod, string> = {
-	ONLINE: 'Pix',
-	CASH: 'Dinheiro',
-	CARD_ON_DELIVERY: 'Cartão na entrega'
-};
 
 export function OrderCard({ order, onSelect }: IOrderCardProps) {
 	const itemCount = order.items.reduce((total, item) => total + item.quantity, 0);
@@ -37,7 +31,7 @@ export function OrderCard({ order, onSelect }: IOrderCardProps) {
 			</div>
 
 			<footer className="flex items-center justify-between gap-2">
-				<span className="font-medium">R$ {Mask.currency(String(order.totalCents))}</span>
+				<span className="font-medium">{formatCurrency(order.totalCents)}</span>
 
 				<span className="rounded-md bg-muted px-2 py-0.5 text-body-sm text-muted-foreground">
 					{PAYMENT_METHOD_LABELS[order.paymentMethod]}

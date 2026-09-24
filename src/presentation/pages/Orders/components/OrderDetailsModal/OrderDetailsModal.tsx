@@ -9,31 +9,14 @@ import {
 } from 'presentation/components/Select/Select';
 import { TextareaInput } from 'presentation/components/TextareaInput/TextareaInput';
 import { formatOrderTime } from 'presentation/pages/Orders/utils/formatOrderTime';
-import type { OrderStatus } from 'shared/entities/IOrder';
+import { ORDER_STATUS_LABELS, PAYMENT_METHOD_LABELS } from 'shared/constants/orderLabels';
+import type { PaymentStatus } from 'shared/entities/IOrder';
+import { formatCurrency } from 'shared/utils/formatCurrency';
 import { Mask } from 'shared/utils/Mask';
 import type { IOrderDetailsModalProps } from './OrderDetailsModalTypes';
 import { useOrderDetailsModalController } from './useOrderDetailsModalController';
 
-const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
-	PENDING_PAYMENT: 'Aguardando pagamento',
-	PENDING: 'Novo',
-	CONFIRMED: 'Aceito',
-	PREPARING: 'Em preparo',
-	READY: 'Pronto',
-	OUT_FOR_DELIVERY: 'Saiu para entrega',
-	DELIVERED: 'Entregue',
-	DELIVERY_FAILED: 'Entrega frustrada',
-	REJECTED: 'Recusado',
-	CANCELED: 'Cancelado'
-};
-
-const PAYMENT_METHOD_LABELS = {
-	ONLINE: 'Pix',
-	CASH: 'Dinheiro',
-	CARD_ON_DELIVERY: 'Cartão na entrega'
-};
-
-const PAYMENT_STATUS_LABELS = {
+const PAYMENT_STATUS_LABELS: Record<PaymentStatus, string> = {
 	PENDING: 'Aguardando',
 	PAID: 'Pago',
 	FAILED: 'Falhou',
@@ -197,7 +180,7 @@ export function OrderDetailsModal({
 												</div>
 
 												<span className="shrink-0 text-body-sm tabular-nums">
-													R$ {Mask.currency(String(item.totalCents))}
+													{formatCurrency(item.totalCents)}
 												</span>
 											</li>
 										))}
@@ -206,32 +189,24 @@ export function OrderDetailsModal({
 									<div className="flex flex-col gap-1 border-t border-border pt-3">
 										<div className="flex items-center justify-between gap-4 text-body-sm text-muted-foreground">
 											<span>Subtotal</span>
-											<span className="tabular-nums">
-												R$ {Mask.currency(String(order.subtotalCents))}
-											</span>
+											<span className="tabular-nums">{formatCurrency(order.subtotalCents)}</span>
 										</div>
 
 										<div className="flex items-center justify-between gap-4 text-body-sm text-muted-foreground">
 											<span>Entrega</span>
-											<span className="tabular-nums">
-												R$ {Mask.currency(String(order.deliveryFeeCents))}
-											</span>
+											<span className="tabular-nums">{formatCurrency(order.deliveryFeeCents)}</span>
 										</div>
 
 										{order.discountCents > 0 ? (
 											<div className="flex items-center justify-between gap-4 text-body-sm text-muted-foreground">
 												<span>Desconto</span>
-												<span className="tabular-nums">
-													−R$ {Mask.currency(String(order.discountCents))}
-												</span>
+												<span className="tabular-nums">−{formatCurrency(order.discountCents)}</span>
 											</div>
 										) : null}
 
 										<div className="flex items-center justify-between gap-4 font-medium">
 											<span>Total</span>
-											<span className="tabular-nums">
-												R$ {Mask.currency(String(order.totalCents))}
-											</span>
+											<span className="tabular-nums">{formatCurrency(order.totalCents)}</span>
 										</div>
 									</div>
 								</section>
@@ -246,7 +221,7 @@ export function OrderDetailsModal({
 
 									{order.changeForCents ? (
 										<p className="text-body-sm text-muted-foreground">
-											Levar troco para R$ {Mask.currency(String(order.changeForCents))}
+											Levar troco para {formatCurrency(order.changeForCents)}
 										</p>
 									) : null}
 								</section>

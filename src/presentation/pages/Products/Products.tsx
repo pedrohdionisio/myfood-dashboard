@@ -13,7 +13,7 @@ import {
 import { Switch } from 'presentation/components/Switch/Switch';
 import { Link } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/routes/appRoutes';
-import { Mask } from 'shared/utils/Mask';
+import { formatCurrency } from 'shared/utils/formatCurrency';
 import { ProductFormModal } from './components/ProductFormModal/ProductFormModal';
 import { useProductsController } from './useProductsController';
 
@@ -179,9 +179,7 @@ export function Products() {
 
 								<DataTable.Cell className="font-medium">{product.name}</DataTable.Cell>
 
-								<DataTable.Cell align="right">
-									R$ {Mask.currency(String(product.priceCents))}
-								</DataTable.Cell>
+								<DataTable.Cell align="right">{formatCurrency(product.priceCents)}</DataTable.Cell>
 							</DataTable.SortableRow>
 						))}
 					</DataTable.SortableBody>
@@ -211,9 +209,7 @@ export function Products() {
 									</div>
 								</DataTable.Cell>
 
-								<DataTable.Cell align="right">
-									R$ {Mask.currency(String(product.priceCents))}
-								</DataTable.Cell>
+								<DataTable.Cell align="right">{formatCurrency(product.priceCents)}</DataTable.Cell>
 
 								<DataTable.Cell>
 									<Switch

@@ -15,7 +15,7 @@ import {
 import type { ChartConfig } from 'presentation/components/Chart/ChartTypes';
 import { formatCompactCurrency } from 'presentation/pages/Home/utils/formatCompactCurrency';
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts';
-import { Mask } from 'shared/utils/Mask';
+import { formatCurrency } from 'shared/utils/formatCurrency';
 import type { IRevenueChartProps } from './RevenueChartTypes';
 
 const REVENUE_CHART_CONFIG = {
@@ -91,7 +91,7 @@ export function RevenueChart({ series }: IRevenueChartProps) {
 							content={
 								<ChartTooltipContent
 									indicator="dot"
-									valueFormatter={(cents) => `R$ ${Mask.currency(String(cents))}`}
+									valueFormatter={(cents) => formatCurrency(cents)}
 								/>
 							}
 						/>

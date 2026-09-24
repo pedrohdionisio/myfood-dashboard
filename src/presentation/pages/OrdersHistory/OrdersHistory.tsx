@@ -17,7 +17,7 @@ import {
 	SelectTrigger,
 	SelectValue
 } from 'presentation/components/Select/Select';
-import { Mask } from 'shared/utils/Mask';
+import { formatCurrency } from 'shared/utils/formatCurrency';
 import { useOrdersHistoryController } from './useOrdersHistoryController';
 import { formatOrderDateTime } from './utils/formatOrderDateTime';
 import { toStatusTone } from './utils/toStatusTone';
@@ -153,7 +153,7 @@ export function OrdersHistory() {
 										<DataTable.Cell align="right">{order.itemCount}</DataTable.Cell>
 
 										<DataTable.Cell align="right" className="font-medium">
-											R$ {Mask.currency(String(order.totalCents))}
+											{formatCurrency(order.totalCents)}
 										</DataTable.Cell>
 
 										<DataTable.Cell className="text-muted-foreground">

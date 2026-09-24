@@ -2,6 +2,7 @@ import { getApiErrorMessage } from 'data/config/apiError';
 import { useSelectedRestaurant } from 'data/contexts/SelectedRestaurantProvider/SelectedRestaurantProvider';
 import { useOrders } from 'data/modules/orders/useCases/listOrders/useOrders';
 import { useState } from 'react';
+import { ORDER_STATUS_LABELS, PAYMENT_METHOD_LABELS } from 'shared/constants/orderLabels';
 import type { OrderStatus } from 'shared/entities/IOrder';
 
 const ALL_STATUSES_VALUE = 'ALL';
@@ -11,25 +12,6 @@ const PER_PAGE_OPTIONS = [
 	{ value: '20', label: '20 por página' },
 	{ value: '50', label: '50 por página' }
 ];
-
-const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
-	PENDING_PAYMENT: 'Aguardando pagamento',
-	PENDING: 'Pendente',
-	CONFIRMED: 'Aceito',
-	PREPARING: 'Em preparo',
-	READY: 'Pronto',
-	OUT_FOR_DELIVERY: 'Saiu para entrega',
-	DELIVERED: 'Entregue',
-	DELIVERY_FAILED: 'Entrega frustrada',
-	REJECTED: 'Recusado',
-	CANCELED: 'Cancelado'
-};
-
-const PAYMENT_METHOD_LABELS = {
-	ONLINE: 'Pix',
-	CASH: 'Dinheiro',
-	CARD_ON_DELIVERY: 'Cartão na entrega'
-};
 
 export function useOrdersHistoryController() {
 	const { restaurantId, restaurantGate } = useSelectedRestaurant();

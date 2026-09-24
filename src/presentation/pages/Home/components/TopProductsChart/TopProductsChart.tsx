@@ -13,7 +13,7 @@ import {
 import type { ChartConfig } from 'presentation/components/Chart/ChartTypes';
 import { formatCompactCurrency } from 'presentation/pages/Home/utils/formatCompactCurrency';
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts';
-import { Mask } from 'shared/utils/Mask';
+import { formatCurrency } from 'shared/utils/formatCurrency';
 import type { ITopProductsChartProps } from './TopProductsChartTypes';
 import { truncateProductName } from './utils/truncateProductName';
 
@@ -67,11 +67,7 @@ export function TopProductsChart({ products }: ITopProductsChartProps) {
 
 							<ChartTooltip
 								cursor={false}
-								content={
-									<ChartTooltipContent
-										valueFormatter={(cents) => `R$ ${Mask.currency(String(cents))}`}
-									/>
-								}
+								content={<ChartTooltipContent valueFormatter={(cents) => formatCurrency(cents)} />}
 							/>
 
 							<Bar

@@ -4,6 +4,6 @@ export interface IOrderBoardColumnProps {
 	restaurantId: string;
 	status: OrderStatus;
 	label: string;
-	createdSince?: string;
+	deliveredSince?: string;
 	onSelectOrder: (order: IOrder) => void;
 }

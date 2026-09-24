@@ -6,15 +6,18 @@ import type { IOrder, OrderStatus } from 'shared/entities/IOrder';
 
 export interface IUseInfiniteOrdersParams {
 	status: OrderStatus;
-	createdSince?: string;
+	deliveredSince?: string;
 }
 
 export function useInfiniteOrders(
 	restaurantId: string | null,
-	{ status, createdSince }: IUseInfiniteOrdersParams
+	{ status, deliveredSince }: IUseInfiniteOrdersParams
 ) {
 	function isInRange(order: IOrder) {
-		return !createdSince || Date.parse(order.createdAt) >= Date.parse(createdSince);
+		return (
+			!deliveredSince ||
+			Date.parse(order.deliveredAt ?? order.createdAt) >= Date.parse(deliveredSince)
+		);
 	}
 
 	function getNextPageParam(lastPage: IOrdersPage) {
@@ -29,7 +32,7 @@ export function useInfiniteOrders(
 
 	const { data, isLoading, error, hasNextPage, isFetchingNextPage, fetchNextPage } =
 		useInfiniteQuery({
-			queryKey: [OrderQueryKeys.ORDERS, restaurantId, 'infinite', status, createdSince],
+			queryKey: [OrderQueryKeys.ORDERS, restaurantId, 'infinite', status, deliveredSince],
 			queryFn: restaurantId
 				? ({ pageParam }) => OrdersService.list(restaurantId, { status, page: pageParam })
 				: skipToken,

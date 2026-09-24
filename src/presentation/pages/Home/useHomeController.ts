@@ -2,6 +2,7 @@ import { getApiErrorMessage } from 'data/config/apiError';
 import { useAuth } from 'data/contexts/AuthProvider/AuthProvider';
 import { useAnalytics } from 'data/modules/analytics/useCases/getAnalytics/useAnalytics';
 import { useMemo, useState } from 'react';
+import { useBusinessDate } from 'shared/hooks/useBusinessDate';
 import { useRestaurantGate } from 'shared/hooks/useRestaurantGate';
 import { resolveAnalyticsRanges } from './utils/resolveAnalyticsRanges';
 import { toDailySeries } from './utils/toDailySeries';
@@ -17,11 +18,12 @@ export function useHomeController() {
 	const { user } = useAuth();
 	const { restaurantId, restaurantGate } = useRestaurantGate();
 
+	const today = useBusinessDate();
 	const [periodInDays, setPeriodInDays] = useState(30);
 
 	const canSeeAnalytics = restaurantGate === 'OPERATING';
 
-	const ranges = useMemo(() => resolveAnalyticsRanges(periodInDays), [periodInDays]);
+	const ranges = useMemo(() => resolveAnalyticsRanges(periodInDays, today), [periodInDays, today]);
 
 	const { analytics, isLoadingAnalytics, analyticsError } = useAnalytics(
 		canSeeAnalytics ? restaurantId : null,

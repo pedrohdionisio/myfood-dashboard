@@ -36,7 +36,7 @@ export function Orders() {
 							restaurantId={restaurantId}
 							status={column.status}
 							label={column.label}
-							createdSince={column.createdSince}
+							deliveredSince={column.deliveredSince}
 							onSelectOrder={handleSelectOrder}
 						/>
 					))}

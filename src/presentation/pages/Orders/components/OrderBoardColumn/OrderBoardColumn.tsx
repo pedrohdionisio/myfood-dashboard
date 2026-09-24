@@ -10,7 +10,7 @@ export function OrderBoardColumn({
 	restaurantId,
 	status,
 	label,
-	createdSince,
+	deliveredSince,
 	onSelectOrder
 }: IOrderBoardColumnProps) {
 	const {
@@ -21,7 +21,7 @@ export function OrderBoardColumn({
 		ordersErrorMessage,
 		isEmpty,
 		loadMoreRef
-	} = useOrderBoardColumnController({ restaurantId, status, createdSince });
+	} = useOrderBoardColumnController({ restaurantId, status, deliveredSince });
 
 	return (
 		<section className="flex min-w-72 flex-1 flex-col gap-3 rounded-xl bg-muted/40 p-3">

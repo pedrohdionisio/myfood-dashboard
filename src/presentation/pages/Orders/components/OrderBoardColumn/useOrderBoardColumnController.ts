@@ -6,8 +6,8 @@ import type { IOrderBoardColumnProps } from './OrderBoardColumnTypes';
 export function useOrderBoardColumnController({
 	restaurantId,
 	status,
-	createdSince
-}: Pick<IOrderBoardColumnProps, 'restaurantId' | 'status' | 'createdSince'>) {
+	deliveredSince
+}: Pick<IOrderBoardColumnProps, 'restaurantId' | 'status' | 'deliveredSince'>) {
 	const {
 		orders,
 		hasMoreOrders,
@@ -15,7 +15,7 @@ export function useOrderBoardColumnController({
 		isFetchingMoreOrders,
 		ordersError,
 		fetchMoreOrders
-	} = useInfiniteOrders(restaurantId, { status, createdSince });
+	} = useInfiniteOrders(restaurantId, { status, deliveredSince });
 
 	const loadMoreRef = useRef<HTMLDivElement>(null);
 

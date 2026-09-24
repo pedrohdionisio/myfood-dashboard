@@ -1,11 +1,19 @@
-const apiUrl: string | undefined = import.meta.env.VITE_API_URL;
+import { z } from 'zod';
 
-if (!apiUrl) {
+const envSchema = z.object({
+	VITE_API_URL: z.url()
+});
+
+const result = envSchema.safeParse(import.meta.env);
+
+if (!result.success) {
+	const invalidVariables = result.error.issues.map((issue) => issue.path.join('.')).join(', ');
+
 	throw new Error(
-		'VITE_API_URL is not set. Copy .env.example to .env and fill in the myfood-api URL.'
+		`Invalid environment variables: ${invalidVariables}. Copy .env.example to .env and fill them in.`
 	);
 }
 
 export const env = {
-	apiUrl
+	apiUrl: result.data.VITE_API_URL
 };

@@ -36,7 +36,13 @@ export default mergeConfig(
 			coverage: {
 				provider: 'v8',
 				include: ['src/**/*.{ts,tsx}'],
-				exclude: ['src/**/*.test.{ts,tsx}', 'src/main.tsx']
+				exclude: ['src/**/*.test.{ts,tsx}', 'src/main.tsx'],
+				thresholds: {
+					statements: 70,
+					branches: 60,
+					functions: 70,
+					lines: 70
+				}
 			}
 		}
 	})

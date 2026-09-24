@@ -147,8 +147,12 @@ Se algo só se entende com comentário, o código é que precisa mudar.
 
 ## Idioma
 
-Código, nomes de arquivo e identificadores em **inglês**. Texto de UI e mensagens de commit em
-**português**.
+Código, nomes de arquivo e identificadores em **inglês**. Texto de UI em **português**.
+
+Commit **sempre em inglês**, em Conventional Commits, numa linha só e com o verbo na terceira pessoa
+do presente: `feat: implements team management`, `fix: fixes zip code lookup on settings`,
+`chore: creates ci workflow`. Nada de imperativo (`implement`, `fix`) nem de corpo além do
+`Co-Authored-By`.
 
 Erro lançado com `throw` segue a mesma divisão: se a mensagem chega à tela (o `cropImage` vira
 aviso no `ImageInput`), português; se é invariante interna (hook fora do provider, env faltando),

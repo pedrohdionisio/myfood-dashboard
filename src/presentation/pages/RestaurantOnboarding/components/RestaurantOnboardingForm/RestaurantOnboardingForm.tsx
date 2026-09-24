@@ -5,7 +5,7 @@ import { Mask } from 'shared/utils/Mask';
 import { useRestaurantOnboardingFormController } from './useRestaurantOnboardingFormController';
 
 export function RestaurantOnboardingForm() {
-	const { register, errors, isLoadingAddress, isSubmitting, handleSubmit } =
+	const { register, errors, isLoadingAddress, isSubmitting, handleSignOut, handleSubmit } =
 		useRestaurantOnboardingFormController();
 
 	return (
@@ -150,6 +150,16 @@ export function RestaurantOnboardingForm() {
 
 			<Button type="submit" size="lg" className="w-full" isLoading={isSubmitting}>
 				Concluir cadastro
+			</Button>
+
+			<Button
+				type="button"
+				variant="ghost"
+				className="w-full"
+				disabled={isSubmitting}
+				onClick={handleSignOut}
+			>
+				Sair
 			</Button>
 		</form>
 	);

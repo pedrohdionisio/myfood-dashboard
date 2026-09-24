@@ -9,7 +9,8 @@ export function RestaurantSelection() {
 		isRefetchingMyRestaurants,
 		errorMessage,
 		handleSelectRestaurant,
-		handleRetry
+		handleRetry,
+		handleSignOut
 	} = useRestaurantSelectionController();
 
 	return (
@@ -44,6 +45,10 @@ export function RestaurantSelection() {
 						))}
 					</ul>
 				)}
+
+				<Button variant="ghost" className="self-center" onClick={handleSignOut}>
+					Sair
+				</Button>
 			</div>
 		</main>
 	);

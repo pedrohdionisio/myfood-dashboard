@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getApiErrorMessage } from 'data/config/apiError';
+import { useAuth } from 'data/contexts/AuthProvider/AuthProvider';
 import { useAddressByZipCode } from 'data/modules/address/useCases/findAddressByZipCode/useAddressByZipCode';
 import {
 	type CreateRestaurantFormType,
@@ -27,6 +28,7 @@ const CREATE_RESTAURANT_DEFAULT_VALUES: CreateRestaurantFormType = {
 };
 
 export function useRestaurantOnboardingFormController() {
+	const { signOut } = useAuth();
 	const { createRestaurant } = useCreateRestaurant();
 
 	const {
@@ -104,6 +106,7 @@ export function useRestaurantOnboardingFormController() {
 		errors,
 		isLoadingAddress,
 		isSubmitting,
+		handleSignOut: signOut,
 		handleSubmit: handleSubmit(onSubmit)
 	};
 }

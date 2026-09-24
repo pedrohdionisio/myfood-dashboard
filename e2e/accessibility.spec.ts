@@ -61,7 +61,11 @@ test('should have no accessibility violations on the order details', async ({ pa
 
 	await page.goto('/pedidos');
 	await page.getByRole('button', { name: /#101/ }).click();
-	await expect(page.getByRole('dialog')).toBeVisible();
+	const dialog = page.getByRole('dialog');
+	await expect(dialog).toBeVisible();
+	await dialog.evaluate((element) =>
+		Promise.all(element.getAnimations({ subtree: true }).map((animation) => animation.finished))
+	);
 
 	await expectNoViolations(page);
 });

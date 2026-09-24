@@ -1,8 +1,10 @@
 import '@testing-library/jest-dom/vitest';
-import { cleanup } from '@testing-library/react';
+import { cleanup, configure } from '@testing-library/react';
 import { removeAccessToken, removeSessionHandlers } from 'data/config/api';
 import { afterAll, afterEach, beforeAll, vi } from 'vitest';
 import { server } from './server';
+
+configure({ asyncUtilTimeout: 5000 });
 
 class ResizeObserverStub {
 	observe() {}

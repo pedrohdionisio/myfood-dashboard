@@ -17,7 +17,7 @@ function useChart() {
 	const context = use(ChartContext);
 
 	if (!context) {
-		throw new Error('As peças do Chart precisam estar dentro de ChartContainer.');
+		throw new Error('Chart parts must be used within ChartContainer');
 	}
 
 	return context;

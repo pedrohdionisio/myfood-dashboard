@@ -38,7 +38,7 @@ export function getAuthorizationHeader(): string | null {
 
 export function renewAccessToken(): Promise<void> {
 	if (!sessionHandlers) {
-		return Promise.reject(new Error('Não há sessão ativa para renovar'));
+		return Promise.reject(new Error('No active session to renew'));
 	}
 
 	if (!refreshPromise) {

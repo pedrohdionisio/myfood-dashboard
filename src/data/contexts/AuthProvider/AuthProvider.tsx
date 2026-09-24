@@ -40,7 +40,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 		if (!stored) {
 			signOut();
 
-			throw new Error('Não há refresh token para renovar a sessão');
+			throw new Error('No refresh token to renew the session');
 		}
 
 		try {
@@ -116,7 +116,7 @@ export function useAuth() {
 	const context = use(AuthContext);
 
 	if (!context) {
-		throw new Error('useAuth must be used whithin AuthProvider');
+		throw new Error('useAuth must be used within AuthProvider');
 	}
 
 	return context;

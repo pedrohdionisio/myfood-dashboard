@@ -13,7 +13,7 @@ export function useUploadImage() {
 			const contentType = IMAGE_CONTENT_TYPES.find((type) => type === file.type);
 
 			if (!contentType) {
-				throw new Error('Formato de imagem não suportado. Envie JPG, PNG ou WebP.');
+				throw new Error(`Unsupported image type: ${file.type}`);
 			}
 
 			const upload = await UploadsService.create(restaurantId, { kind, contentType });

@@ -50,7 +50,7 @@ function useDataTableContext() {
 	const context = use(DataTableContext);
 
 	if (!context) {
-		throw new Error('As peças da DataTable precisam estar dentro de DataTable.Root.');
+		throw new Error('DataTable parts must be used within DataTable.Root');
 	}
 
 	return context;
@@ -60,7 +60,7 @@ function useDataTableSortableRowContext() {
 	const context = use(DataTableSortableRowContext);
 
 	if (!context) {
-		throw new Error('DataTable.DragHandle precisa estar dentro de DataTable.SortableRow.');
+		throw new Error('DataTable.DragHandle must be used within DataTable.SortableRow');
 	}
 
 	return context;

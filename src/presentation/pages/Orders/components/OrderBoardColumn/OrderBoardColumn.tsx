@@ -1,6 +1,6 @@
 import { TriangleAlertIcon } from 'lucide-react';
 import { Skeleton } from 'presentation/components/Skeleton/Skeleton';
-import { OrderCard } from '../OrderCard/OrderCard';
+import { OrderCard } from 'presentation/pages/Orders/components/OrderCard/OrderCard';
 import type { IOrderBoardColumnProps } from './OrderBoardColumnTypes';
 import { useOrderBoardColumnController } from './useOrderBoardColumnController';
 

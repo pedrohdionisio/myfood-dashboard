@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
+import { AuthMutationKeys } from 'data/modules/auth/keys/AuthKeys';
 import { AuthService } from 'data/modules/auth/services/AuthService';
-import { AuthMutationKeys } from '../../keys/AuthKeys';
 
 export function useForgotPassword() {
 	const { mutateAsync, isPending } = useMutation({

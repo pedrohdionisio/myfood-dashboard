@@ -1,8 +1,8 @@
 import { ClockIcon } from 'lucide-react';
+import { formatOrderTime } from 'presentation/pages/Orders/utils/formatOrderTime';
 import type { PaymentMethod } from 'shared/entities/IOrder';
 import { Mask } from 'shared/utils/Mask';
 import type { IOrderCardProps } from './OrderCardTypes';
-import { formatOrderTime } from './utils/formatOrderTime';
 
 const PAYMENT_METHOD_LABELS: Record<PaymentMethod, string> = {
 	ONLINE: 'Pix',

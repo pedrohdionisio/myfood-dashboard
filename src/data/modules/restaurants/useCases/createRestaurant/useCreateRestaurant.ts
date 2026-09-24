@@ -1,6 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+	RestaurantMutationKeys,
+	RestaurantQueryKeys
+} from 'data/modules/restaurants/keys/RestaurantKeys';
 import { RestaurantsService } from 'data/modules/restaurants/services/RestaurantsService';
-import { RestaurantMutationKeys, RestaurantQueryKeys } from '../../keys/RestaurantKeys';
 
 export function useCreateRestaurant() {
 	const queryClient = useQueryClient();

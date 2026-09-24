@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
+import { CuisineQueryKeys } from 'data/modules/cuisines/keys/CuisineKeys';
 import { CuisinesService } from 'data/modules/cuisines/services/CuisinesService';
-import { CuisineQueryKeys } from '../../keys/CuisineKeys';
 
 const CATALOG_STALE_TIME_MS = 60 * 60 * 1000;
 

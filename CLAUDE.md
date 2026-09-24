@@ -45,8 +45,10 @@ Três camadas no topo de `src/`, cada uma com alias próprio:
 | `shared/`       | `shared/*`       | Utilitários, paths de rota, constantes, modelos e hooks compartilhados |
 
 `shared/` é a base: não importa de `data/` nem de `presentation/`. Entre camadas ou pastas
-diferentes, use o alias (`import { x } from 'shared/x'`). Dentro da mesma pasta, caminho relativo
-(`./ExampleTypes`).
+diferentes, use o alias (`import { x } from 'shared/x'`). Dentro da pasta do próprio componente —
+incluindo o `utils/` e o `hooks/` dele —, caminho relativo (`./ExampleTypes`, `../ExampleTypes`).
+Componente irmão já é outra pasta: `presentation/pages/Orders/components/OrderCard/OrderCard`, não
+`../OrderCard/OrderCard`.
 
 Ao mexer em alias, lembre que ele vive em **três arquivos que precisam ficar em sincronia**:
 `paths` no `tsconfig.app.json` (resolve os tipos), `resolve.alias` no `vite.config.ts` (resolve

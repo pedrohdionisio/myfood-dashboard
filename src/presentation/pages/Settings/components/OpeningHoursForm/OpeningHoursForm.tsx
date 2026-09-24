@@ -1,6 +1,6 @@
 import { Button } from 'presentation/components/Button/Button';
+import { OpeningHoursDay } from 'presentation/pages/Settings/components/OpeningHoursDay/OpeningHoursDay';
 import { WEEK_DAY_LABELS } from 'shared/constants/weekDays';
-import { OpeningHoursDay } from '../OpeningHoursDay/OpeningHoursDay';
 import type { IOpeningHoursFormProps } from './OpeningHoursFormTypes';
 import { useOpeningHoursFormController } from './useOpeningHoursFormController';
 

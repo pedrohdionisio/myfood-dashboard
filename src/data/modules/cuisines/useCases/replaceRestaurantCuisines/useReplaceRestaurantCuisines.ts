@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { CuisineMutationKeys, CuisineQueryKeys } from 'data/modules/cuisines/keys/CuisineKeys';
 import { CuisinesService } from 'data/modules/cuisines/services/CuisinesService';
 import type { IReplaceRestaurantCuisinesVariables } from 'data/modules/cuisines/types/CuisineTypes';
-import { CuisineMutationKeys, CuisineQueryKeys } from '../../keys/CuisineKeys';
 
 export function useReplaceRestaurantCuisines() {
 	const queryClient = useQueryClient();

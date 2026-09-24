@@ -8,9 +8,9 @@ import {
 	SelectValue
 } from 'presentation/components/Select/Select';
 import { TextareaInput } from 'presentation/components/TextareaInput/TextareaInput';
+import { formatOrderTime } from 'presentation/pages/Orders/utils/formatOrderTime';
 import type { OrderStatus } from 'shared/entities/IOrder';
 import { Mask } from 'shared/utils/Mask';
-import { formatOrderTime } from '../OrderCard/utils/formatOrderTime';
 import type { IOrderDetailsModalProps } from './OrderDetailsModalTypes';
 import { useOrderDetailsModalController } from './useOrderDetailsModalController';
 

@@ -1,6 +1,6 @@
 import { skipToken, useQuery } from '@tanstack/react-query';
+import { CuisineQueryKeys } from 'data/modules/cuisines/keys/CuisineKeys';
 import { CuisinesService } from 'data/modules/cuisines/services/CuisinesService';
-import { CuisineQueryKeys } from '../../keys/CuisineKeys';
 
 export function useRestaurantCuisines(restaurantId: string | null) {
 	const { data, isLoading, error } = useQuery({

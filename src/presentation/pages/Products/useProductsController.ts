@@ -11,8 +11,7 @@ import type { IProduct } from 'shared/entities/IProduct';
 import { sortByIds } from 'shared/utils/sortByIds';
 
 export function useProductsController() {
-	const { selectedRestaurant } = useSelectedRestaurant();
-	const restaurantId = selectedRestaurant?.restaurantId ?? null;
+	const { restaurantId } = useSelectedRestaurant();
 
 	const { menuCategories, isLoadingMenuCategories } = useMenuCategories(restaurantId);
 

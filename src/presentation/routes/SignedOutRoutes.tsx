@@ -3,7 +3,7 @@ import { Login } from 'presentation/pages/Login/Login';
 import { ResetPassword } from 'presentation/pages/ResetPassword/ResetPassword';
 import { SignUp } from 'presentation/pages/SignUp/SignUp';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { APP_ROUTES } from './appRoutes';
+import { APP_ROUTES } from 'shared/routes/appRoutes';
 
 export function SignedOutRoutes() {
 	return (

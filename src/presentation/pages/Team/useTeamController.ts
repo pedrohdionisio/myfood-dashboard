@@ -24,8 +24,7 @@ const SUCCESS_MESSAGE_BY_ACTION: Record<ConfirmableMemberAction, string> = {
 
 export function useTeamController() {
 	const { user } = useAuth();
-	const { selectedRestaurant } = useSelectedRestaurant();
-	const restaurantId = selectedRestaurant?.restaurantId ?? null;
+	const { restaurantId } = useSelectedRestaurant();
 
 	const { members, isLoadingMembers, membersError } = useMembers(restaurantId);
 	const { updateMember, isUpdatingMember } = useUpdateMember();

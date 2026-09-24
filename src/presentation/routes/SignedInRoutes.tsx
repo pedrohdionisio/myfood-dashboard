@@ -13,7 +13,7 @@ import { Settings } from 'presentation/pages/Settings/Settings';
 import { Team } from 'presentation/pages/Team/Team';
 import { DashboardTemplate } from 'presentation/templates/DashboardTemplate/DashboardTemplate';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { APP_ROUTES } from './appRoutes';
+import { APP_ROUTES } from 'shared/routes/appRoutes';
 
 export function SignedInRoutes() {
 	const { myRestaurants, isDriverOnly, isLoadingMyRestaurants, myRestaurantsError } =

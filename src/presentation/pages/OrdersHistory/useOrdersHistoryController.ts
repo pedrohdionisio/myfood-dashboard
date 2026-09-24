@@ -1,8 +1,8 @@
 import { getApiErrorMessage } from 'data/config/apiError';
+import { useSelectedRestaurant } from 'data/contexts/SelectedRestaurantProvider/SelectedRestaurantProvider';
 import { useOrders } from 'data/modules/orders/useCases/listOrders/useOrders';
 import { useState } from 'react';
 import type { OrderStatus } from 'shared/entities/IOrder';
-import { useRestaurantGate } from 'shared/hooks/useRestaurantGate';
 
 const ALL_STATUSES_VALUE = 'ALL';
 
@@ -32,7 +32,7 @@ const PAYMENT_METHOD_LABELS = {
 };
 
 export function useOrdersHistoryController() {
-	const { restaurantId, restaurantGate } = useRestaurantGate();
+	const { restaurantId, restaurantGate } = useSelectedRestaurant();
 
 	const [selectedStatus, setSelectedStatus] = useState<string>(ALL_STATUSES_VALUE);
 	const [perPage, setPerPage] = useState(20);

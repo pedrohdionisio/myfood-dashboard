@@ -9,8 +9,7 @@ import type { IMenuCategory } from 'shared/entities/IMenuCategory';
 import { sortByIds } from 'shared/utils/sortByIds';
 
 export function useMenuCategoriesController() {
-	const { selectedRestaurant } = useSelectedRestaurant();
-	const restaurantId = selectedRestaurant?.restaurantId ?? null;
+	const { restaurantId } = useSelectedRestaurant();
 
 	const { menuCategories, isLoadingMenuCategories, menuCategoriesError } =
 		useMenuCategories(restaurantId);

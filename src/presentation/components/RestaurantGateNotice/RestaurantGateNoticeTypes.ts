@@ -1,4 +1,4 @@
-import type { RestaurantGate } from 'shared/utils/resolveRestaurantGate';
+import type { RestaurantGate } from 'data/contexts/SelectedRestaurantProvider/SelectedRestaurantProviderTypes';
 
 export interface IRestaurantGateNoticeProps {
 	gate: RestaurantGate;

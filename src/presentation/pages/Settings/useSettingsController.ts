@@ -1,12 +1,12 @@
 import { getApiErrorMessage } from 'data/config/apiError';
+import { useSelectedRestaurant } from 'data/contexts/SelectedRestaurantProvider/SelectedRestaurantProvider';
 import { useCuisineCatalog } from 'data/modules/cuisines/useCases/listCuisineCatalog/useCuisineCatalog';
 import { useRestaurantCuisines } from 'data/modules/cuisines/useCases/listRestaurantCuisines/useRestaurantCuisines';
 import { useOpeningHours } from 'data/modules/openingHours/useCases/listOpeningHours/useOpeningHours';
 import { useRestaurant } from 'data/modules/restaurants/useCases/getRestaurant/useRestaurant';
-import { useRestaurantGate } from 'shared/hooks/useRestaurantGate';
 
 export function useSettingsController() {
-	const { restaurantId } = useRestaurantGate();
+	const { restaurantId } = useSelectedRestaurant();
 
 	const { openingHours, isLoadingOpeningHours, openingHoursError } = useOpeningHours(restaurantId);
 	const { restaurant, isLoadingRestaurant, restaurantError } = useRestaurant(restaurantId);

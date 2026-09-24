@@ -3,7 +3,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { queryClient } from 'data/config/queryClient';
 import { AuthProvider } from 'data/contexts/AuthProvider/AuthProvider';
 import { Toaster } from 'presentation/components/Toaster/Toaster';
-import { Router } from 'shared/routes/Router';
+import { Router } from 'presentation/routes/Router';
 
 export function App() {
 	return (

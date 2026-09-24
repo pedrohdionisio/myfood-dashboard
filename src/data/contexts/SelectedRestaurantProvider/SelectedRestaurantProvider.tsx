@@ -2,6 +2,7 @@ import { useMyRestaurants } from 'data/modules/restaurants/useCases/listMyRestau
 import { createContext, type PropsWithChildren, use, useCallback, useState } from 'react';
 import { SELECTED_RESTAURANT_STORAGE_KEY } from 'shared/constants/storage';
 import type { ISelectedRestaurantContextValue } from './SelectedRestaurantProviderTypes';
+import { resolveRestaurantGate } from './utils/resolveRestaurantGate';
 import { resolveSelectedRestaurant } from './utils/resolveSelectedRestaurant';
 
 const SelectedRestaurantContext = createContext<ISelectedRestaurantContextValue | null>(null);
@@ -20,7 +21,14 @@ export function SelectedRestaurantProvider({ children }: PropsWithChildren) {
 	const selectedRestaurant = resolveSelectedRestaurant(myRestaurants, storedRestaurantId);
 
 	return (
-		<SelectedRestaurantContext.Provider value={{ selectedRestaurant, selectRestaurant }}>
+		<SelectedRestaurantContext.Provider
+			value={{
+				selectedRestaurant,
+				restaurantId: selectedRestaurant?.restaurantId ?? null,
+				restaurantGate: resolveRestaurantGate(selectedRestaurant?.restaurantStatus),
+				selectRestaurant
+			}}
+		>
 			{children}
 		</SelectedRestaurantContext.Provider>
 	);

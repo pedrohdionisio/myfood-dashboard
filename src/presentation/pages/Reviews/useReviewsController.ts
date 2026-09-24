@@ -1,13 +1,13 @@
 import { getApiErrorMessage } from 'data/config/apiError';
+import { useSelectedRestaurant } from 'data/contexts/SelectedRestaurantProvider/SelectedRestaurantProvider';
 import { useRestaurant } from 'data/modules/restaurants/useCases/getRestaurant/useRestaurant';
 import { useReviews } from 'data/modules/reviews/useCases/listReviews/useReviews';
 import { useState } from 'react';
-import { useRestaurantGate } from 'shared/hooks/useRestaurantGate';
 
 const REVIEWS_PER_PAGE = 10;
 
 export function useReviewsController() {
-	const { restaurantId, restaurantGate } = useRestaurantGate();
+	const { restaurantId, restaurantGate } = useSelectedRestaurant();
 
 	const [page, setPage] = useState(1);
 

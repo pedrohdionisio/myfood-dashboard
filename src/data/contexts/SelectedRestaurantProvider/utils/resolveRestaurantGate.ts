@@ -1,6 +1,5 @@
 import type { RestaurantStatus } from 'shared/entities/IRestaurant';
-
-export type RestaurantGate = 'OPERATING' | 'MUST_ACTIVATE' | 'SUSPENDED' | 'NO_RESTAURANT';
+import type { RestaurantGate } from '../SelectedRestaurantProviderTypes';
 
 export function resolveRestaurantGate(status: RestaurantStatus | undefined): RestaurantGate {
 	if (status === 'ACTIVE') {

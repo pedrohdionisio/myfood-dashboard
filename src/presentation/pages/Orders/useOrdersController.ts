@@ -1,11 +1,11 @@
+import { useSelectedRestaurant } from 'data/contexts/SelectedRestaurantProvider/SelectedRestaurantProvider';
 import { useBoardOrder } from 'data/modules/orders/useCases/findBoardOrder/useBoardOrder';
 import { useState } from 'react';
 import type { IOrder, OrderStatus } from 'shared/entities/IOrder';
 import { useBusinessDate } from 'shared/hooks/useBusinessDate';
-import { useRestaurantGate } from 'shared/hooks/useRestaurantGate';
 
 export function useOrdersController() {
-	const { restaurantId, restaurantGate } = useRestaurantGate();
+	const { restaurantId, restaurantGate } = useSelectedRestaurant();
 
 	const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
 	const { boardOrder } = useBoardOrder(restaurantId, selectedOrderId);

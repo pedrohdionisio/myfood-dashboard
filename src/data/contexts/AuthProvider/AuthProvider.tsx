@@ -87,6 +87,11 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
 				const restoredUser = await AuthService.getMe().catch(() => null);
 
+				if (!restoredUser) {
+					removeAccessToken();
+					removeSessionHandlers();
+				}
+
 				setUser(restoredUser);
 			}
 

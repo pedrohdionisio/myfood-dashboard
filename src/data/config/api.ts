@@ -1,5 +1,4 @@
-import axios, { type AxiosInstance, type InternalAxiosRequestConfig, isAxiosError } from 'axios';
-import { sleep } from 'shared/utils/sleep';
+import axios, { type InternalAxiosRequestConfig, isAxiosError } from 'axios';
 import { env } from './env';
 
 export const api = axios.create({
@@ -9,19 +8,6 @@ export const api = axios.create({
 export const publicApi = axios.create({
 	baseURL: env.apiUrl
 });
-
-function delayRequests(instance: AxiosInstance) {
-	instance.interceptors.request.use(async (config) => {
-		await sleep(500);
-
-		return config;
-	});
-}
-
-if (import.meta.env.DEV && 500 > 0) {
-	delayRequests(api);
-	delayRequests(publicApi);
-}
 
 interface IRetriableRequestConfig extends InternalAxiosRequestConfig {
 	_retry?: boolean;

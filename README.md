@@ -101,6 +101,19 @@ pnpm dev
 | `pnpm build` | Type-check and production build |
 | `pnpm typecheck` | `tsc -b` |
 | `pnpm lint` · `pnpm format` | Biome check, and check with fixes |
+| `pnpm test` · `pnpm test:coverage` | Vitest unit and feature tests, with coverage thresholds |
+| `pnpm test:e2e` | Playwright on Chromium and WebKit, against a production build and a mocked API |
+
+### Environment
+
+| Variable | Required | Purpose |
+|---|---|---|
+| `VITE_API_URL` | yes | myfood-api base URL |
+| `VITE_SENTRY_DSN` | no | Enables Sentry error and performance monitoring |
+| `VITE_CLARITY_PROJECT_ID` | no | Enables Microsoft Clarity session recordings, with customer data masked |
+| `SENTRY_ORG` · `SENTRY_PROJECT` · `SENTRY_AUTH_TOKEN` | no | Build time only: uploads source maps to Sentry and deletes them from `dist` |
+
+Without the optional variables, monitoring stays off, which is what development and tests use.
 
 The API's seed (`pnpm db:seed` in myfood-api) creates restaurants, owners and 60 days of order
 history, so the analytics have something to show.

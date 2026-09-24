@@ -12,13 +12,15 @@ import { Reviews } from 'presentation/pages/Reviews/Reviews';
 import { Settings } from 'presentation/pages/Settings/Settings';
 import { Team } from 'presentation/pages/Team/Team';
 import { DashboardTemplate } from 'presentation/templates/DashboardTemplate/DashboardTemplate';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/routes/appRoutes';
+import { readRedirectPath } from './utils/readRedirectPath';
 
 export function SignedInRoutes() {
 	const { myRestaurants, isDriverOnly, isLoadingMyRestaurants, myRestaurantsError } =
 		useMyRestaurants();
 	const { selectedRestaurant } = useSelectedRestaurant();
+	const location = useLocation();
 
 	if (isLoadingMyRestaurants) {
 		return null;
@@ -66,7 +68,10 @@ export function SignedInRoutes() {
 			</Route>
 
 			<Route path={APP_ROUTES.restaurantSelection} element={<RestaurantSelection />} />
-			<Route path="*" element={<Navigate to={APP_ROUTES.home} replace />} />
+			<Route
+				path="*"
+				element={<Navigate to={readRedirectPath(location.state) ?? APP_ROUTES.home} replace />}
+			/>
 		</Routes>
 	);
 }

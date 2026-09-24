@@ -1,8 +1,4 @@
-export interface IImageUrls {
-	sm: string;
-	md: string;
-	lg: string;
-}
+import type { IImageUrls } from './IImageUrls';
 
 export interface IProduct {
 	id: string;

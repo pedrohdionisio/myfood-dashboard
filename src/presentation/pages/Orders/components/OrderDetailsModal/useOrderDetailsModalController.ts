@@ -4,8 +4,8 @@ import { useChangeOrderStatus } from 'data/modules/orders/useCases/changeOrderSt
 import { useDispatchOrder } from 'data/modules/orders/useCases/dispatchOrder/useDispatchOrder';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import type { IOrderDetailsModalProps } from './OrderDetailsModalTypes';
-import { getOrderActions, type IOrderAction } from './utils/getOrderActions';
+import type { IOrderAction, IOrderDetailsModalProps } from './OrderDetailsModalTypes';
+import { getOrderActions } from './utils/getOrderActions';
 
 export function useOrderDetailsModalController({
 	isOpen,

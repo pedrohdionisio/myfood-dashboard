@@ -1,13 +1,5 @@
-import type { OrderTransition } from 'data/modules/orders/types/OrderTypes';
 import type { OrderStatus } from 'shared/entities/IOrder';
-
-export interface IOrderAction {
-	transition: OrderTransition;
-	label: string;
-	confirmTitle: string;
-	confirmDescription: string;
-	isDestructive: boolean;
-}
+import type { IOrderAction } from '../OrderDetailsModalTypes';
 
 const ORDER_ACTIONS: Record<OrderStatus, IOrderAction[]> = {
 	PENDING_PAYMENT: [],

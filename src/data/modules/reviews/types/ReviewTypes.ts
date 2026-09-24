@@ -1,4 +1,4 @@
-import type { IRestaurantReview } from 'shared/entities/IReview';
+import type { IRestaurantReview } from 'shared/entities/IRestaurantReview';
 
 export interface IListReviewsParams {
 	page?: number;

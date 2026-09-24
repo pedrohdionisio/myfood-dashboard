@@ -1,10 +1,5 @@
-import type { IAnalyticsRange } from 'data/modules/analytics/types/AnalyticsTypes';
+import type { IAnalyticsRanges } from 'presentation/pages/Home/HomeTypes';
 import { addDays } from './addDays';
-
-export interface IAnalyticsRanges {
-	current: IAnalyticsRange;
-	previous: IAnalyticsRange;
-}
 
 export function resolveAnalyticsRanges(periodInDays: number, today: string): IAnalyticsRanges {
 	const from = addDays(today, 1 - periodInDays);

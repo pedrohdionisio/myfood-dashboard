@@ -1,13 +1,11 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { OrderQueryKeys } from 'data/modules/orders/keys/OrderKeys';
 import { OrdersService } from 'data/modules/orders/services/OrdersService';
-import type { IOrderStreamEvent } from 'data/modules/orders/types/OrderTypes';
+import type {
+	IOrderStreamEvent,
+	IUseOrderStreamParams
+} from 'data/modules/orders/types/OrderTypes';
 import { useEffect, useEffectEvent } from 'react';
-
-export interface IUseOrderStreamParams {
-	restaurantId: string | null;
-	onOrderPlaced: (event: IOrderStreamEvent) => void;
-}
 
 export function useOrderStream({ restaurantId, onOrderPlaced }: IUseOrderStreamParams) {
 	const queryClient = useQueryClient();

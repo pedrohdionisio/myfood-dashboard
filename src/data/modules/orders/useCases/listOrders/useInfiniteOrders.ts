@@ -1,13 +1,8 @@
 import { skipToken, useInfiniteQuery } from '@tanstack/react-query';
 import { OrderQueryKeys } from 'data/modules/orders/keys/OrderKeys';
 import { OrdersService } from 'data/modules/orders/services/OrdersService';
-import type { IOrdersPage } from 'data/modules/orders/types/OrderTypes';
-import type { IOrder, OrderStatus } from 'shared/entities/IOrder';
-
-export interface IUseInfiniteOrdersParams {
-	status: OrderStatus;
-	deliveredSince?: string;
-}
+import type { IOrdersPage, IUseInfiniteOrdersParams } from 'data/modules/orders/types/OrderTypes';
+import type { IOrder } from 'shared/entities/IOrder';
 
 export function useInfiniteOrders(
 	restaurantId: string | null,

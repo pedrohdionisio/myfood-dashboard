@@ -45,3 +45,13 @@ export interface IOrderStreamEvent {
 	status: OrderStatus;
 	occurredAt: string;
 }
+
+export interface IUseInfiniteOrdersParams {
+	status: OrderStatus;
+	deliveredSince?: string;
+}
+
+export interface IUseOrderStreamParams {
+	restaurantId: string | null;
+	onOrderPlaced: (event: IOrderStreamEvent) => void;
+}

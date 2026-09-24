@@ -1,10 +1,6 @@
-const RESTAURANT_STATUSES = ['DRAFT', 'ACTIVE', 'SUSPENDED'] as const;
+import type { IImageUrls } from './IImageUrls';
 
-export interface IImageUrls {
-	sm: string;
-	md: string;
-	lg: string;
-}
+const RESTAURANT_STATUSES = ['DRAFT', 'ACTIVE', 'SUSPENDED'] as const;
 
 export type RestaurantStatus = (typeof RESTAURANT_STATUSES)[number];
 

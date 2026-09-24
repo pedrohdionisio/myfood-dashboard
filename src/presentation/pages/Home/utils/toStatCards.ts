@@ -4,23 +4,14 @@ import {
 	BikeIcon,
 	ClipboardCheckIcon,
 	ClipboardListIcon,
-	type LucideIcon,
 	ReceiptIcon,
 	TimerIcon
 } from 'lucide-react';
+import type { IStatCard } from 'presentation/pages/Home/HomeTypes';
 import type { IAnalyticsTotals } from 'shared/entities/IAnalytics';
 import { formatCurrency } from 'shared/utils/formatCurrency';
 import { formatPrepTime } from './formatPrepTime';
 import { toStatDelta } from './toStatDelta';
-
-export interface IStatCard {
-	id: string;
-	label: string;
-	value: string;
-	icon: LucideIcon;
-	delta: number | null;
-	isGrowthDesirable: boolean;
-}
 
 export function toStatCards(
 	totals: IAnalyticsTotals,

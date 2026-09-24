@@ -3,18 +3,22 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { queryClient } from 'data/config/queryClient';
 import { AuthProvider } from 'data/contexts/AuthProvider/AuthProvider';
 import { Toaster } from 'presentation/components/Toaster/Toaster';
+import { AppError } from 'presentation/pages/AppError/AppError';
 import { Router } from 'presentation/routes/Router';
+import { ErrorBoundary } from 'react-error-boundary';
 
 export function App() {
 	return (
-		<QueryClientProvider client={queryClient}>
-			<AuthProvider>
-				<Router />
-			</AuthProvider>
+		<ErrorBoundary FallbackComponent={AppError}>
+			<QueryClientProvider client={queryClient}>
+				<AuthProvider>
+					<Router />
+				</AuthProvider>
 
-			<Toaster />
+				<Toaster />
 
-			<ReactQueryDevtools buttonPosition="bottom-right" />
-		</QueryClientProvider>
+				<ReactQueryDevtools buttonPosition="bottom-right" />
+			</QueryClientProvider>
+		</ErrorBoundary>
 	);
 }

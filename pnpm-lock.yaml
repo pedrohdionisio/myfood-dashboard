@@ -53,6 +53,9 @@ importers:
       react-easy-crop:
         specifier: ^6.2.3
         version: 6.2.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      react-error-boundary:
+        specifier: ^6.1.6
+        version: 6.1.6(@types/react@19.3.0)(react@19.3.0)
       react-hook-form:
         specifier: ^7.88.0
         version: 7.88.0(react@19.3.0)
@@ -2410,6 +2413,15 @@ packages:
     peerDependencies:
       react: '>=16.4.0'
       react-dom: '>=16.4.0'
+
+  react-error-boundary@6.1.6:
+    resolution: {integrity: sha512-CDXPnXDGyFIbkwaaJ6u+xgsRmJhSi6YdgUDW1vnyKHfXp1a9pfAlM+ZET2CDu80/A+8iRcmXN0NSY9BCCoWP5A==}
+    peerDependencies:
+      '@types/react': ^18.0.0 || ^19.0.0
+      react: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   react-hook-form@7.88.0:
     resolution: {integrity: sha512-QRaLOWhX93YCnMiRfnOFRSwWXZNt8qhm2JTZwypoDvKpSffTJHmpzMXt8U6PV5UThvL3IiiLDUWe2nHMtz6Mmw==}
@@ -4943,6 +4955,12 @@ snapshots:
       normalize-wheel: 1.0.1
       react: 19.3.0
       react-dom: 19.3.0(react@19.3.0)
+
+  react-error-boundary@6.1.6(@types/react@19.3.0)(react@19.3.0):
+    dependencies:
+      react: 19.3.0
+    optionalDependencies:
+      '@types/react': 19.3.0
 
   react-hook-form@7.88.0(react@19.3.0):
     dependencies:

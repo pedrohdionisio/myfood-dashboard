@@ -10,6 +10,7 @@ import { useUpdateRestaurant } from 'data/modules/restaurants/useCases/updateRes
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { Mask } from 'shared/utils/Mask';
 import type { IRestaurantProfileFormProps } from './RestaurantProfileFormTypes';
 import { toFormValues } from './utils/toFormValues';
 
@@ -28,11 +29,14 @@ export function useRestaurantProfileFormController({ restaurant }: IRestaurantPr
 		formState: { errors, isDirty }
 	} = useForm<UpdateRestaurantFormType, unknown, UpdateRestaurantPayloadType>({
 		resolver: zodResolver(updateRestaurantSchema),
-		values: toFormValues(restaurant)
+		defaultValues: toFormValues(restaurant)
 	});
 
+	const zipCode = watch('zipCode');
+	const hasEditedZipCode = Mask.remove(zipCode) !== restaurant.zipCode;
+
 	const { address, isZipCodeNotFound, isLoadingAddress, addressError } = useAddressByZipCode(
-		watch('zipCode')
+		hasEditedZipCode ? zipCode : ''
 	);
 
 	useEffect(() => {

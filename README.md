@@ -1,5 +1,6 @@
 # MyFood Dashboard
 
+[![CI](https://github.com/pedrohdionisio/myfood-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/pedrohdionisio/myfood-dashboard/actions/workflows/ci.yml)
 ![React 19](https://img.shields.io/badge/react-19-61DAFB?logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/typescript-strict-3178C6?logo=typescript&logoColor=white)
 ![Vite](https://img.shields.io/badge/vite-8-646CFF?logo=vite&logoColor=white)
@@ -20,6 +21,7 @@ business, build the menu, run the order board in real time, manage their drivers
 - [Highlights](#highlights)
 - [Architecture](#architecture)
 - [Running locally](#running-locally)
+- [Testing](#testing)
 - [Project layout](#project-layout)
 - [Stack](#stack)
 
@@ -56,8 +58,14 @@ where to go instead of showing an empty screen.
   say the same thing.
 - **Images sized for the backend pipeline.** Product photos are exported at 1280×960 WebP — the
   width of the largest variant the API's image Lambda produces — so nothing is upscaled or wasted.
-- **Quality gate on every commit.** Husky and lint-staged run Biome with warnings as errors and the
-  TypeScript build; code that does not pass does not get committed.
+  Browsers that cannot encode WebP on a canvas, like Safari, fall back to JPEG.
+- **Route-level code splitting.** Every page is a lazy route of a data router, so the first load is
+  less than half of what the single bundle was (about 150 kB against 380 kB gzipped), and the
+  charts only download on the overview page. A stale chunk after a deploy shows a "new version"
+  page that reloads instead of a blank screen.
+- **Quality gate on every commit and push.** Husky and lint-staged run Biome with warnings as errors
+  and the TypeScript build before each commit; GitHub Actions runs type-checking, lint, the test
+  suites with coverage thresholds, the production build and the end-to-end tests on every push.
 
 ## Architecture
 
@@ -66,8 +74,8 @@ Three layers at the top of `src/`, each with its own import alias:
 | Layer | Responsibility |
 |---|---|
 | `data/` | Everything outside the browser: API services, React Query use cases, DTOs, storage, the SSE client |
-| `presentation/` | Pages, components and their controllers |
-| `shared/` | Routes, entities, constants, utilities and hooks used across the app |
+| `presentation/` | Pages, components, their controllers and the router |
+| `shared/` | Route paths, entities, constants, utilities and hooks used across the app; it imports from no other layer |
 
 Each API resource is a module under `data/modules/<resource>/` with the same shape: a `services/`
 file that only talks HTTP, `useCases/` hooks that wrap it in React Query, `keys/` for the query
@@ -87,7 +95,7 @@ flowchart LR
 
 ## Running locally
 
-Requirements: Node.js 22+, pnpm, and a running [myfood-api](https://github.com/pedrohdionisio/myfood-api).
+Requirements: Node.js 22+ (`.nvmrc` pins 24), pnpm, and a running [myfood-api](https://github.com/pedrohdionisio/myfood-api).
 
 ```bash
 pnpm install
@@ -107,12 +115,30 @@ pnpm dev
 The API's seed (`pnpm db:seed` in myfood-api) creates restaurants, owners and 60 days of order
 history, so the analytics have something to show.
 
+## Testing
+
+| Suite | Tool | What it covers |
+|---|---|---|
+| Unit | Vitest | Masks, validators, formatters, Zod schemas, the SSE parser and the analytics math |
+| Feature | Vitest, Testing Library, MSW | Pages rendered with the real providers against a mocked API: sign-in and token refresh, restaurant gates, the live order board, settings, menu and team |
+| End-to-end | Playwright, axe | Sign-up to publishing a restaurant, the order board over SSE and image upload, on Chromium and WebKit, plus WCAG 2.1 AA checks on every screen |
+
+```bash
+pnpm test                               # unit and feature
+pnpm test:coverage                      # same, failing below the coverage thresholds
+pnpm exec playwright install chromium webkit
+pnpm test:e2e                           # builds, serves the preview and runs Playwright
+```
+
+Tests select elements the way a user finds them — role, label and text — and the end-to-end suite
+never needs the API running: every request is answered by a mock of its contract.
+
 ## Project layout
 
 ```
 src/
   data/
-    config/        axios instance, React Query client, ViaCEP client, environment
+    config/        axios instance, React Query client, ViaCEP client, validated environment
     contexts/      authentication and the selected restaurant
     libs/          token storage and the SSE client
     modules/       one folder per API resource: services, useCases, keys, types
@@ -120,9 +146,12 @@ src/
     pages/         one folder per screen, with its controller and components
     components/    shared UI built on Radix and shadcn tokens
     templates/     dashboard and onboarding layouts
+    routes/        data router, lazy routes and access guards
   shared/
-    routes/        signed-in and signed-out routers
+    routes/        route paths
     entities/  constants/  hooks/  utils/
+tests/             Vitest setup, MSW handlers, fixtures and render helpers
+e2e/               Playwright specs and the mocked API
 ```
 
 The interface is in Portuguese, for the Brazilian market. Code, identifiers and documentation are in
@@ -132,7 +161,7 @@ English.
 
 React 19 · TypeScript · Vite 8 · Tailwind CSS 4 with shadcn tokens · Radix UI · React Router ·
 TanStack Query · axios · React Hook Form · Zod · Recharts · dnd-kit · react-easy-crop · Biome ·
-Husky + lint-staged
+Husky + lint-staged · Vitest · Testing Library · MSW · Playwright · axe · GitHub Actions
 
 ## Author
 

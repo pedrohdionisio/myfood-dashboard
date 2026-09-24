@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { OpeningHoursService } from 'data/modules/openingHours/services/OpeningHoursService';
 import type { IReplaceOpeningHoursVariables } from 'data/modules/openingHours/types/OpeningHoursTypes';
+import { RestaurantQueryKeys } from 'data/modules/restaurants/keys/RestaurantKeys';
 import { OpeningHoursMutationKeys, OpeningHoursQueryKeys } from '../../keys/OpeningHoursKeys';
 
 export function useReplaceOpeningHours() {
@@ -10,8 +11,12 @@ export function useReplaceOpeningHours() {
 		mutationKey: [OpeningHoursMutationKeys.REPLACE_OPENING_HOURS],
 		mutationFn: ({ restaurantId, ...payload }: IReplaceOpeningHoursVariables) =>
 			OpeningHoursService.replace(restaurantId, payload),
-		onSuccess(openingHours, { restaurantId }) {
+		async onSuccess(openingHours, { restaurantId }) {
 			queryClient.setQueryData([OpeningHoursQueryKeys.OPENING_HOURS, restaurantId], openingHours);
+
+			await queryClient.invalidateQueries({
+				queryKey: [RestaurantQueryKeys.ACTIVATION_CHECKLIST, restaurantId]
+			});
 		}
 	});
 

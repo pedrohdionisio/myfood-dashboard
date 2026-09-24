@@ -11,7 +11,9 @@ export function useActivateRestaurant() {
 	const { mutateAsync, isPending } = useMutation({
 		mutationKey: [RestaurantMutationKeys.ACTIVATE_RESTAURANT],
 		mutationFn: RestaurantsService.activate,
-		async onSuccess(_restaurant, restaurantId) {
+		async onSuccess(restaurant, restaurantId) {
+			queryClient.setQueryData([RestaurantQueryKeys.RESTAURANT, restaurantId], restaurant);
+
 			await Promise.all([
 				queryClient.invalidateQueries({ queryKey: [RestaurantQueryKeys.MY_RESTAURANTS] }),
 				queryClient.invalidateQueries({

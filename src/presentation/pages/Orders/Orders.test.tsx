@@ -4,15 +4,15 @@ import { DashboardTemplate } from 'presentation/templates/DashboardTemplate/Dash
 import { Route, Routes } from 'react-router-dom';
 import type { IOrder, OrderStatus } from 'shared/entities/IOrder';
 import { restaurantUrl } from 'tests/apiUrl';
-import { createEventStream } from 'tests/eventStream';
 import { buildOrder, buildOrdersPage } from 'tests/fixtures/orders';
+import { createRealtimeSocket } from 'tests/realtimeSocket';
 import { renderSignedIn } from 'tests/render';
 import { server } from 'tests/server';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { Orders } from './Orders';
 
 let orders: IOrder[];
-let eventStream: ReturnType<typeof createEventStream>;
+let realtime: ReturnType<typeof createRealtimeSocket>;
 
 function setOrderStatus(orderId: string, status: OrderStatus) {
 	orders = orders.map((order) => (order.id === orderId ? { ...order, status } : order));
@@ -20,7 +20,7 @@ function setOrderStatus(orderId: string, status: OrderStatus) {
 
 beforeEach(() => {
 	orders = [buildOrder()];
-	eventStream = createEventStream();
+	realtime = createRealtimeSocket();
 
 	server.use(
 		http.get(restaurantUrl('/orders'), ({ request }) => {
@@ -28,7 +28,7 @@ beforeEach(() => {
 
 			return HttpResponse.json(buildOrdersPage(orders.filter((order) => order.status === status)));
 		}),
-		http.get(restaurantUrl('/orders/stream'), () => eventStream.respond())
+		...realtime.handlers
 	);
 });
 
@@ -171,10 +171,10 @@ describe('Orders', () => {
 		renderOrders();
 
 		await (await findColumn('Novos')).findByText('#101');
-		await waitFor(() => expect(eventStream.isConnected()).toBe(true));
+		await waitFor(() => expect(realtime.isConnected()).toBe(true));
 
 		orders = [...orders, buildOrder({ id: 'order-2', displayNumber: 102 })];
-		eventStream.send({
+		realtime.send({
 			type: 'ORDER_PLACED',
 			orderId: 'order-2',
 			displayNumber: 102,
@@ -190,10 +190,10 @@ describe('Orders', () => {
 		const { user } = renderOrders();
 
 		const dialog = await openOrder(user, 101);
-		await waitFor(() => expect(eventStream.isConnected()).toBe(true));
+		await waitFor(() => expect(realtime.isConnected()).toBe(true));
 
 		setOrderStatus('order-1', 'CONFIRMED');
-		eventStream.send({
+		realtime.send({
 			type: 'ORDER_STATUS_CHANGED',
 			orderId: 'order-1',
 			displayNumber: 101,

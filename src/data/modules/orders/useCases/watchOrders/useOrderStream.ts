@@ -18,11 +18,15 @@ export function useOrderStream({ restaurantId, onOrderPlaced }: IUseOrderStreamP
 		}
 	});
 
+	const handleReconnect = useEffectEvent(() => {
+		queryClient.invalidateQueries({ queryKey: [OrderQueryKeys.ORDERS, restaurantId] });
+	});
+
 	useEffect(() => {
 		if (!restaurantId) {
 			return;
 		}
 
-		return OrdersService.subscribe(restaurantId, handleEvent);
+		return OrdersService.subscribe(restaurantId, handleEvent, handleReconnect);
 	}, [restaurantId]);
 }

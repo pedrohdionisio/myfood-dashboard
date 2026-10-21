@@ -1,6 +1,6 @@
-import { api, getAuthorizationHeader, renewAccessToken } from 'data/config/api';
-import { env } from 'data/config/env';
-import { openEventStream } from 'data/libs/openEventStream';
+import { isAxiosError } from 'axios';
+import { api } from 'data/config/api';
+import { type IRealtimeTicket, openRealtimeSocket } from 'data/libs/openRealtimeSocket';
 import {
 	type IListOrdersParams,
 	type IOrderStreamEvent,
@@ -68,12 +68,36 @@ function toOrderStreamEvent(data: string): IOrderStreamEvent | null {
 	}
 }
 
-function subscribe(restaurantId: string, onEvent: (event: IOrderStreamEvent) => void): () => void {
-	return openEventStream({
-		url: `${env.apiUrl}/restaurants/${restaurantId}/orders/stream`,
-		resolveAuthorization: getAuthorizationHeader,
-		renewAuthorization: renewAccessToken,
-		onMessage: ({ data }) => {
+// 401 já passou pela renovação do interceptor; 403 e 404 não mudam tentando de novo.
+function isPermanentFailure(status: number) {
+	return status >= 400 && status < 500 && status !== 408 && status !== 429;
+}
+
+async function requestStreamTicket(restaurantId: string): Promise<IRealtimeTicket | null> {
+	try {
+		const { data } = await api.post<IRealtimeTicket>(
+			`/restaurants/${restaurantId}/orders/stream-ticket`
+		);
+
+		return data;
+	} catch (error) {
+		if (isAxiosError(error) && error.response && isPermanentFailure(error.response.status)) {
+			return null;
+		}
+
+		throw error;
+	}
+}
+
+function subscribe(
+	restaurantId: string,
+	onEvent: (event: IOrderStreamEvent) => void,
+	onReconnect: () => void
+): () => void {
+	return openRealtimeSocket({
+		requestTicket: () => requestStreamTicket(restaurantId),
+		onReconnect,
+		onMessage: (data) => {
 			const orderEvent = toOrderStreamEvent(data);
 
 			if (orderEvent) {

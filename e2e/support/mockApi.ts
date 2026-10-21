@@ -28,6 +28,8 @@ export interface IMockApiState {
 	streamEvents: IOrderStreamEvent[];
 }
 
+const REALTIME_URL = 'wss://realtime.test/dev';
+
 const STATUS_BY_TRANSITION: Record<string, OrderStatus> = {
 	confirm: 'CONFIRMED',
 	reject: 'REJECTED',
@@ -73,6 +75,17 @@ export async function mockApi(page: Page, overrides: Partial<IMockApiState> = {}
 	};
 
 	const restaurantPath = `/restaurants/${RESTAURANT_ID}`;
+
+	// O teste só enfileira em state.streamEvents; a conexão aberta pelo dashboard os entrega.
+	await page.routeWebSocket(`${REALTIME_URL}**`, (socket) => {
+		const timer = setInterval(() => {
+			for (const event of state.streamEvents.splice(0)) {
+				socket.send(JSON.stringify(event));
+			}
+		}, 250);
+
+		socket.onClose(() => clearInterval(timer));
+	});
 
 	await page.route('https://storage.test/**', async (route) => {
 		const body = route.request().postDataBuffer()?.toString('latin1') ?? '';
@@ -145,14 +158,12 @@ export async function mockApi(page: Page, overrides: Partial<IMockApiState> = {}
 			return json(route, buildAnalytics());
 		}
 
-		if (method === 'GET' && path === `${restaurantPath}/orders/stream`) {
-			const events = state.streamEvents.splice(0);
-
-			return route.fulfill({
-				status: 200,
-				contentType: 'text/event-stream',
-				body: events.map((event) => `data: ${JSON.stringify(event)}\n\n`).join('')
-			});
+		if (method === 'POST' && path === `${restaurantPath}/orders/stream-ticket`) {
+			return json(
+				route,
+				{ url: REALTIME_URL, ticket: 'e2e-ticket', expiresAt: new Date().toISOString() },
+				201
+			);
 		}
 
 		if (method === 'GET' && path === `${restaurantPath}/orders`) {

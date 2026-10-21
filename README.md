@@ -47,10 +47,12 @@ where to go instead of showing an empty screen.
 
 ## Highlights
 
-- **Real-time order board over SSE.** `EventSource` cannot send an `Authorization` header, so the
-  stream runs on a fetch-based client (`data/libs/openEventStream.ts`) with the server's retry hint,
-  exponential backoff and token renewal. Each event only invalidates the React Query cache; the
-  order itself is always refetched from the REST route.
+- **Real-time order board over WebSocket.** A browser cannot send an `Authorization` header on a
+  WebSocket handshake, so the client (`data/libs/openRealtimeSocket.ts`) first trades the session
+  for a single-use ticket on an authenticated route, then connects with it. It pings to survive
+  the gateway's idle timeout, reconnects with a fresh ticket and backoff, and reloads the board
+  after every reconnect, since events sent while it was down are gone. Each event only invalidates
+  the React Query cache; the order itself is always refetched from the REST route.
 - **Silent session refresh.** An axios interceptor catches a `401`, refreshes the session once —
   concurrent requests wait on the same refresh instead of racing — and replays them.
 - **One source of truth for messages.** Forms validate with Zod before anything leaves the browser,
@@ -73,7 +75,7 @@ Three layers at the top of `src/`, each with its own import alias:
 
 | Layer | Responsibility |
 |---|---|
-| `data/` | Everything outside the browser: API services, React Query use cases, DTOs, storage, the SSE client |
+| `data/` | Everything outside the browser: API services, React Query use cases, DTOs, storage, the WebSocket client |
 | `presentation/` | Pages, components, their controllers and the router |
 | `shared/` | Route paths, entities, constants, utilities and hooks used across the app; it imports from no other layer |
 
@@ -89,7 +91,7 @@ flowchart LR
     useCase --> service["Service<br/>HTTP only"]
     service --> axios["axios instance<br/>token and refresh"]
     axios --> api[("myfood-api")]
-    api -. "SSE events" .-> stream["openEventStream"]
+    api -. "WebSocket events" .-> stream["openRealtimeSocket"]
     stream -. "invalidate queries" .-> useCase
 ```
 
@@ -119,9 +121,9 @@ history, so the analytics have something to show.
 
 | Suite | Tool | What it covers |
 |---|---|---|
-| Unit | Vitest | Masks, validators, formatters, Zod schemas, the SSE parser and the analytics math |
+| Unit | Vitest | Masks, validators, formatters, Zod schemas, the WebSocket client and the analytics math |
 | Feature | Vitest, Testing Library, MSW | Pages rendered with the real providers against a mocked API: sign-in and token refresh, restaurant gates, the live order board, settings, menu and team |
-| End-to-end | Playwright, axe | Sign-up to publishing a restaurant, the order board over SSE and image upload, on Chromium and WebKit, plus WCAG 2.1 AA checks on every screen |
+| End-to-end | Playwright, axe | Sign-up to publishing a restaurant, the live order board and image upload, on Chromium and WebKit, plus WCAG 2.1 AA checks on every screen |
 
 ```bash
 pnpm test                               # unit and feature
@@ -140,7 +142,7 @@ src/
   data/
     config/        axios instance, React Query client, ViaCEP client, validated environment
     contexts/      authentication and the selected restaurant
-    libs/          token storage and the SSE client
+    libs/          token storage and the WebSocket client
     modules/       one folder per API resource: services, useCases, keys, types
   presentation/
     pages/         one folder per screen, with its controller and components

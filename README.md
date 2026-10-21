@@ -97,13 +97,23 @@ flowchart LR
 
 ## Running locally
 
-Requirements: Node.js 22+ (`.nvmrc` pins 24), pnpm, and a running [myfood-api](https://github.com/pedrohdionisio/myfood-api).
+Requirements: Node.js 22+ (`.nvmrc` pins 24), pnpm, and a [myfood-api](https://github.com/pedrohdionisio/myfood-api)
+stage to talk to.
 
 ```bash
 pnpm install
-cp .env.example .env     # VITE_API_URL points to the API, http://localhost:3333 by default
+cp .env.example .env     # VITE_API_URL: the API the dashboard calls
 pnpm dev
 ```
+
+`VITE_API_URL` can point to either API; both use the same database and AWS resources:
+
+- the API server on your machine (`pnpm dev` in myfood-api), `http://localhost:3333` — the default;
+- the deployed API on AWS Lambda, the `HttpApiUrl` output of the `myfood-api-dev` stack — no local
+  server needed.
+
+The real-time order board works the same way with both: the API hands out the WebSocket URL along
+with the ticket, so the dashboard needs no extra variable.
 
 | Script | What it does |
 |---|---|
